@@ -49,6 +49,8 @@ for(i in 1:nrow(D)){
 D_tall =  reshape(D, varying = c(9:24), v.names = "measure", 
                   timevar = "condition",   direction = "long")
 
+D_tall = D_tall[order(D_tall$ID),] # order the data frame in terms of participant ID
+
 
 D_tall$trialType = rep(c("control","control","control","control","control","control","control",
                          "control","control","control","main","main",
@@ -62,8 +64,13 @@ D_tall$objectType = rep(c("A","B","C","D","E",
                            "A","B","C",
                            "A","B","C"), times = 94)
 
+D_tall$phaseOrder = rep(c("Phase 1","Phase 1","Phase 1","Phase 1","Phase 1",
+                          "Phase 2","Phase 2","Phase 2","Phase 2","Phase 2",
+                          "Phase 1","Phase 1","Phase 1",
+                          "Phase 2","Phase 2","Phase 2"), times = 94)
 
-D_tall = D_tall[order(D_tall$ID),] # order the data frame in terms of participant ID
+
+
 
 # remove unnecessary columns
 D_tall$id = NULL
@@ -542,6 +549,7 @@ summary(BB.6.C.glm.nonpassers)
 
 
 # Comparing A between the BB main and IS main conditions
+table(D_tall$choice[D_tall$Age=="6" & D_tall$Condition=="ISO" & D_tall$objectType=="A" & D_tall$phaseOrder=="Phase 1" & D_tall$trialType=="main"])
 D_tall_Exp1_6yos_obj_A = subset(D_tall_Exp1_6yos, ! objectType %in% c("B","C","D","E"))
 xtabs(~choice[D_tall$Pretest=="Correct" & D_tall$objectType=="A"]+Condition[D_tall$Pretest=="Correct" & D_tall$objectType=="A"]+trialType[D_tall$Pretest=="Correct" & D_tall$objectType=="A"], data=D_tall)
 BB.IS.6.A..main.glm.passers = glm(choice[D_tall$Pretest=="Correct" & D_tall$objectType=="A" & D_tall$trialType=="main"]~Condition[D_tall$Pretest=="Correct" & D_tall$objectType=="A" & D_tall$trialType=="main"], data=D_tall,
