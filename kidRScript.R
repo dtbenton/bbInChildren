@@ -49,7 +49,10 @@ for(i in 1:nrow(D)){
 D_tall =  reshape(D, varying = c(9:24), v.names = "measure", 
                   timevar = "condition",   direction = "long")
 
-D_tall = D_tall[order(D_tall$ID),] # order the data frame in terms of participant ID
+D_tall = D_tall[order(D_tall$ID),] # order the data frame in terms of participant ID;
+                                   # to avoid wonky things happening and to save yourself 
+                                   # a full-day headache in the future, reorder by ID
+                                   # immediately after reshaping the dataframe.
 
 
 D_tall$trialType = rep(c("control","control","control","control","control","control","control",
@@ -97,7 +100,7 @@ names(D_tall)
 # MODIFY CHOICES COLUMN
 D_tall$choices = rep(0, nrow(D_tall))
 for(i in 1:nrow(D_tall)){
-  if(is.na(D_tall$choice[i])==T){
+  if(is.na(D_tall$choice[i])==T|D_tall$choice[i]=="NaN"){
     D_tall$choices[i]= NA
   } else if(D_tall$choice[i]==1){
     D_tall$choices[i]="Yes"
@@ -144,7 +147,8 @@ D_tall$Experiment = as.factor(D_tall$Experiment)
 
 # REODRDER COLUMNS
 D_tall$condition = NULL
-D_tall = as.data.frame(D_tall[,c(1:3,6,5,7,4,10,11,12,9,8)])
+names(D_tall)
+D_tall = as.data.frame(D_tall[,c(1:3,6,5,7,4,10,11,12,13,9,8)])
 fix(D_tall)
 
 
@@ -236,14 +240,6 @@ prob_yes_5yo_C_BB_control_pretest_pass
 
 
 # D
-# main
-table(D_tall_Exp1_5yos$choice[D_tall_Exp1_5yos$Condition=="BB" & D_tall_Exp1_5yos$trialType=="main" & D_tall_Exp1_5yos$objectType=="D" & D_tall_Exp1_5yos$Pretest=="Correct"])
-prob_yes_5yo_C_BB_main_pretest_pass = table(D_tall_Exp1_5yos$choice[D_tall_Exp1_5yos$Condition=="BB" & D_tall_Exp1_5yos$trialType=="main" & D_tall_Exp1_5yos$objectType=="D" & D_tall_Exp1_5yos$Pretest=="Correct"])[3]/(table(D_tall_Exp1_5yos$choice[D_tall_Exp1_5yos$Condition=="BB" & D_tall_Exp1_5yos$trialType=="main" & D_tall_Exp1_5yos$objectType=="D" & D_tall_Exp1_5yos$Pretest=="Correct"])[1]+
-                                                                                                                                                                                                                           table(D_tall_Exp1_5yos$choice[D_tall_Exp1_5yos$Condition=="BB" & D_tall_Exp1_5yos$trialType=="main" & D_tall_Exp1_5yos$objectType=="D" & D_tall_Exp1_5yos$Pretest=="Correct"])[2]+
-                                                                                                                                                                                                                           table(D_tall_Exp1_5yos$choice[D_tall_Exp1_5yos$Condition=="BB" & D_tall_Exp1_5yos$trialType=="main" & D_tall_Exp1_5yos$objectType=="D" & D_tall_Exp1_5yos$Pretest=="Correct"])[3])
-prob_yes_5yo_C_BB_main_pretest_pass
-
-
 # control
 table(D_tall_Exp1_5yos$choice[D_tall_Exp1_5yos$Condition=="BB" & D_tall_Exp1_5yos$trialType=="control" & D_tall_Exp1_5yos$objectType=="D" & D_tall_Exp1_5yos$Pretest=="Correct"])
 prob_yes_5yo_C_BB_control_pretest_pass = table(D_tall_Exp1_5yos$choice[D_tall_Exp1_5yos$Condition=="BB" & D_tall_Exp1_5yos$trialType=="control" & D_tall_Exp1_5yos$objectType=="D" & D_tall_Exp1_5yos$Pretest=="Correct"])[3]/(table(D_tall_Exp1_5yos$choice[D_tall_Exp1_5yos$Condition=="BB" & D_tall_Exp1_5yos$trialType=="control" & D_tall_Exp1_5yos$objectType=="D" & D_tall_Exp1_5yos$Pretest=="Correct"])[1]+
@@ -256,14 +252,6 @@ prob_yes_5yo_C_BB_control_pretest_pass
 
 
 # E
-# main
-table(D_tall_Exp1_5yos$choice[D_tall_Exp1_5yos$Condition=="BB" & D_tall_Exp1_5yos$trialType=="main" & D_tall_Exp1_5yos$objectType=="E" & D_tall_Exp1_5yos$Pretest=="Correct"])
-prob_yes_5yo_C_BB_main_pretest_pass = table(D_tall_Exp1_5yos$choice[D_tall_Exp1_5yos$Condition=="BB" & D_tall_Exp1_5yos$trialType=="main" & D_tall_Exp1_5yos$objectType=="E" & D_tall_Exp1_5yos$Pretest=="Correct"])[3]/(table(D_tall_Exp1_5yos$choice[D_tall_Exp1_5yos$Condition=="BB" & D_tall_Exp1_5yos$trialType=="main" & D_tall_Exp1_5yos$objectType=="E" & D_tall_Exp1_5yos$Pretest=="Correct"])[1]+
-                                                                                                                                                                                                                           table(D_tall_Exp1_5yos$choice[D_tall_Exp1_5yos$Condition=="BB" & D_tall_Exp1_5yos$trialType=="main" & D_tall_Exp1_5yos$objectType=="E" & D_tall_Exp1_5yos$Pretest=="Correct"])[2]+
-                                                                                                                                                                                                                           table(D_tall_Exp1_5yos$choice[D_tall_Exp1_5yos$Condition=="BB" & D_tall_Exp1_5yos$trialType=="main" & D_tall_Exp1_5yos$objectType=="E" & D_tall_Exp1_5yos$Pretest=="Correct"])[3])
-prob_yes_5yo_C_BB_main_pretest_pass
-
-
 # control
 table(D_tall_Exp1_5yos$choice[D_tall_Exp1_5yos$Condition=="BB" & D_tall_Exp1_5yos$trialType=="control" & D_tall_Exp1_5yos$objectType=="E" & D_tall_Exp1_5yos$Pretest=="Correct"])
 prob_yes_5yo_C_BB_control_pretest_pass = table(D_tall_Exp1_5yos$choice[D_tall_Exp1_5yos$Condition=="BB" & D_tall_Exp1_5yos$trialType=="control" & D_tall_Exp1_5yos$objectType=="E" & D_tall_Exp1_5yos$Pretest=="Correct"])[3]/(table(D_tall_Exp1_5yos$choice[D_tall_Exp1_5yos$Condition=="BB" & D_tall_Exp1_5yos$trialType=="control" & D_tall_Exp1_5yos$objectType=="E" & D_tall_Exp1_5yos$Pretest=="Correct"])[1]+
@@ -277,12 +265,12 @@ prob_yes_5yo_C_BB_control_pretest_pass
 
 # Comparing A between the BB main and control trials
 # passers
-BB.5.A.glm.passers = glm(choice[D_tall_Exp1_5yos$objectType=="A" & D_tall_Exp1_5yos$Pretest=="Correct"]~trialType[D_tall_Exp1_5yos$objectType=="A" & D_tall_Exp1_5yos$Pretest=="Correct"], data=D_tall_Exp1_5yos,
+BB.5.A.glm.passers = glm(choice[D_tall_Exp1_5yos$objectType=="A" & D_tall_Exp1_5yos$Pretest=="Correct" & D_tall_Exp1_5yos$Condition=="BB"]~trialType[D_tall_Exp1_5yos$objectType=="A" & D_tall_Exp1_5yos$Pretest=="Correct" & D_tall_Exp1_5yos$Condition=="BB"], data=D_tall_Exp1_5yos,
                          family=binomial, subset = (choice != "Unsure"))
 summary(BB.5.A.glm.passers)
 
 # nonpassers
-BB.5.A.glm.nonpassers = glm(choice[D_tall_Exp1_5yos$objectType=="A" & D_tall_Exp1_5yos$Pretest=="Incorrect"]~trialType[D_tall_Exp1_5yos$objectType=="A" & D_tall_Exp1_5yos$Pretest=="Incorrect"], data=D_tall_Exp1_5yos,
+BB.5.A.glm.nonpassers = glm(choice[D_tall_Exp1_5yos$objectType=="A" & D_tall_Exp1_5yos$Pretest=="Incorrect" & D_tall_Exp1_5yos$Condition=="BB"]~trialType[D_tall_Exp1_5yos$objectType=="A" & D_tall_Exp1_5yos$Pretest=="Incorrect" & D_tall_Exp1_5yos$Condition=="BB"], data=D_tall_Exp1_5yos,
                             family=binomial, subset = (choice != "Unsure"))
 summary(BB.5.A.glm.nonpassers)
 
@@ -290,12 +278,12 @@ summary(BB.5.A.glm.nonpassers)
 
 # Comparing B between the BB main and control trials
 # passers
-BB.5.B.glm.passers = glm(choice[D_tall_Exp1_5yos$objectType=="B" & D_tall_Exp1_5yos$Pretest=="Correct"]~trialType[D_tall_Exp1_5yos$objectType=="B" & D_tall_Exp1_5yos$Pretest=="Correct"], data=D_tall_Exp1_5yos,
+BB.5.B.glm.passers = glm(choice[D_tall_Exp1_5yos$objectType=="B" & D_tall_Exp1_5yos$Pretest=="Correct" & D_tall_Exp1_5yos$Condition=="BB"]~trialType[D_tall_Exp1_5yos$objectType=="B" & D_tall_Exp1_5yos$Pretest=="Correct" & D_tall_Exp1_5yos$Condition=="BB"], data=D_tall_Exp1_5yos,
                   family=binomial, subset = (choice != "Unsure"))
 summary(BB.5.B.glm.passers)
 
 # nonpassers
-BB.5.B.glm.nonpassers = glm(choice[D_tall_Exp1_5yos$objectType=="B" & D_tall_Exp1_5yos$Pretest=="Incorrect"]~trialType[D_tall_Exp1_5yos$objectType=="B" & D_tall_Exp1_5yos$Pretest=="Incorrect"], data=D_tall_Exp1_5yos,
+BB.5.B.glm.nonpassers = glm(choice[D_tall_Exp1_5yos$objectType=="B" & D_tall_Exp1_5yos$Pretest=="Incorrect" & D_tall_Exp1_5yos$Condition=="BB"]~trialType[D_tall_Exp1_5yos$objectType=="B" & D_tall_Exp1_5yos$Pretest=="Incorrect" & D_tall_Exp1_5yos$Condition=="BB"], data=D_tall_Exp1_5yos,
                          family=binomial, subset = (choice != "Unsure"))
 summary(BB.5.B.glm.nonpassers)
 
@@ -303,12 +291,12 @@ summary(BB.5.B.glm.nonpassers)
 
 # Comparing C between the BB main and control trials
 # passers
-BB.5.C.glm.passers = glm(choice[D_tall_Exp1_5yos$objectType=="B" & D_tall_Exp1_5yos$Pretest=="Correct"]~trialType[D_tall_Exp1_5yos$objectType=="B" & D_tall_Exp1_5yos$Pretest=="Correct"], data=D_tall_Exp1_5yos,
+BB.5.C.glm.passers = glm(choice[D_tall_Exp1_5yos$objectType=="C" & D_tall_Exp1_5yos$Pretest=="Correct" & D_tall_Exp1_5yos$Condition=="BB"]~trialType[D_tall_Exp1_5yos$objectType=="C" & D_tall_Exp1_5yos$Pretest=="Correct" & D_tall_Exp1_5yos$Condition=="BB"], data=D_tall_Exp1_5yos,
                          family=binomial, subset = (choice != "Unsure"))
 summary(BB.5.C.glm.passers)
 
 # nonpassers
-BB.5.C.glm.nonpassers = glm(choice[D_tall_Exp1_5yos$objectType=="B" & D_tall_Exp1_5yos$Pretest=="Incorrect"]~trialType[D_tall_Exp1_5yos$objectType=="B" & D_tall_Exp1_5yos$Pretest=="Incorrect"], data=D_tall_Exp1_5yos,
+BB.5.C.glm.nonpassers = glm(choice[D_tall_Exp1_5yos$objectType=="C" & D_tall_Exp1_5yos$Pretest=="Incorrect" & D_tall_Exp1_5yos$Condition=="BB"]~trialType[D_tall_Exp1_5yos$objectType=="C" & D_tall_Exp1_5yos$Pretest=="Incorrect" & D_tall_Exp1_5yos$Condition=="BB"], data=D_tall_Exp1_5yos,
                             family=binomial, subset = (choice != "Unsure"))
 summary(BB.5.C.glm.nonpassers)
 
@@ -316,28 +304,28 @@ summary(BB.5.C.glm.nonpassers)
 
 # Comparing A between the BB main and IS main conditions
 D_tall_Exp1_5yos_obj_A = subset(D_tall_Exp1_5yos, ! objectType %in% c("B","C","D","E"))
-xtabs(~choice+trialType+Condition, data=D_tall_Exp1_5yos_obj_A)
+xtabs(~choice[D_tall_Exp1_5yos_obj_A$trialType=="main"]+Condition[D_tall_Exp1_5yos_obj_A$trialType=="main"], data=D_tall_Exp1_5yos_obj_A)
 BB.IS.5.A..main.glm.passers = glm(choice[D_tall_Exp1_5yos_obj_A$trialType=="main" & D_tall_Exp1_5yos_obj_A$Pretest=="Correct"]~Condition[D_tall_Exp1_5yos_obj_A$trialType=="main" & D_tall_Exp1_5yos_obj_A$Pretest=="Correct"], data=D_tall_Exp1_5yos_obj_A,
                  family=binomial, subset = (choice != "Unsure"))
 summary(BB.IS.5.A..main.glm.passers)
 
-prop.test(x = c(90, 10), n = c(113, 12))
+prop.test(x = c(90, 11), n = c(100, 20))
 
 
 # A BB main
 table(D_tall_Exp1_5yos$choice[D_tall_Exp1_5yos$Condition=="BB" & D_tall_Exp1_5yos$trialType=="main" & D_tall_Exp1_5yos$objectType=="A"])
-prob_yes_5yo_A_BB_main = table(D_tall_Exp1_5yos$choice[D_tall_Exp1_5yos$Condition=="BB" & D_tall_Exp1_5yos$trialType=="main" & D_tall_Exp1_5yos$objectType=="B"])[3]/(table(D_tall_Exp1_5yos$choice[D_tall_Exp1_5yos$Condition=="BB" & D_tall_Exp1_5yos$trialType=="main" & D_tall_Exp1_5yos$objectType=="A"])[1]+
-                                                                                                                              table(D_tall_Exp1_5yos$choice[D_tall_Exp1_5yos$Condition=="BB" & D_tall_Exp1_5yos$trialType=="main" & D_tall_Exp1_5yos$objectType=="A"])[2]+
-                                                                                                                              table(D_tall_Exp1_5yos$choice[D_tall_Exp1_5yos$Condition=="BB" & D_tall_Exp1_5yos$trialType=="main" & D_tall_Exp1_5yos$objectType=="A"])[3])
-prob_yes_5yo_A_BB_main
+prob_yes_5yo_A_BB_main_pretest_pass = table(D_tall_Exp1_5yos$choice[D_tall_Exp1_5yos$Condition=="BB" & D_tall_Exp1_5yos$trialType=="main" & D_tall_Exp1_5yos$objectType=="A" & D_tall_Exp1_5yos$Pretest=="Correct"])[3]/(table(D_tall_Exp1_5yos$choice[D_tall_Exp1_5yos$Condition=="BB" & D_tall_Exp1_5yos$trialType=="main" & D_tall_Exp1_5yos$objectType=="A" & D_tall_Exp1_5yos$Pretest=="Correct"])[1]+
+                                                                                                                                                                                                                           table(D_tall_Exp1_5yos$choice[D_tall_Exp1_5yos$Condition=="BB" & D_tall_Exp1_5yos$trialType=="main" & D_tall_Exp1_5yos$objectType=="A" & D_tall_Exp1_5yos$Pretest=="Correct"])[2]+
+                                                                                                                                                                                                                           table(D_tall_Exp1_5yos$choice[D_tall_Exp1_5yos$Condition=="BB" & D_tall_Exp1_5yos$trialType=="main" & D_tall_Exp1_5yos$objectType=="A" & D_tall_Exp1_5yos$Pretest=="Correct"])[3])
+prob_yes_5yo_A_BB_main_pretest_pass
 
 
 # A IS main
 table(D_tall_Exp1_5yos$choice[D_tall_Exp1_5yos$Condition=="ISO" & D_tall_Exp1_5yos$trialType=="main" & D_tall_Exp1_5yos$objectType=="A"])
-prob_yes_5yo_A_IS_main = table(D_tall_Exp1_5yos$choice[D_tall_Exp1_5yos$Condition=="IS" & D_tall_Exp1_5yos$trialType=="main" & D_tall_Exp1_5yos$objectType=="B"])[3]/(table(D_tall_Exp1_5yos$choice[D_tall_Exp1_5yos$Condition=="IS" & D_tall_Exp1_5yos$trialType=="main" & D_tall_Exp1_5yos$objectType=="A"])[1]+
-                                                                                                                                                                        table(D_tall_Exp1_5yos$choice[D_tall_Exp1_5yos$Condition=="IS" & D_tall_Exp1_5yos$trialType=="main" & D_tall_Exp1_5yos$objectType=="A"])[2]+
-                                                                                                                                                                        table(D_tall_Exp1_5yos$choice[D_tall_Exp1_5yos$Condition=="IS" & D_tall_Exp1_5yos$trialType=="main" & D_tall_Exp1_5yos$objectType=="A"])[3])
-prob_yes_5yo_A_IS_main
+prob_yes_5yo_A_ISO_main_pretest_pass = table(D_tall_Exp1_5yos$choice[D_tall_Exp1_5yos$Condition=="ISO" & D_tall_Exp1_5yos$trialType=="main" & D_tall_Exp1_5yos$objectType=="A"])[3]/(table(D_tall_Exp1_5yos$choice[D_tall_Exp1_5yos$Condition=="ISO" & D_tall_Exp1_5yos$trialType=="main" & D_tall_Exp1_5yos$objectType=="A"])[1]+
+                                                                                                                                                                                                                           table(D_tall_Exp1_5yos$choice[D_tall_Exp1_5yos$Condition=="ISO" & D_tall_Exp1_5yos$trialType=="main" & D_tall_Exp1_5yos$objectType=="A"])[2]+
+                                                                                                                                                                                                                           table(D_tall_Exp1_5yos$choice[D_tall_Exp1_5yos$Condition=="ISO" & D_tall_Exp1_5yos$trialType=="main" & D_tall_Exp1_5yos$objectType=="A"])[3])
+prob_yes_5yo_A_ISO_main_pretest_pass
 
 
 
@@ -348,7 +336,6 @@ prob_yes_5yo_A_IS_main
 ############################################
 ############################################
 
-## BB ##
 # A
 # main
 table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="main" & D_tall_Exp1_6yos$objectType=="A" & D_tall_Exp1_6yos$Pretest=="Correct"])
@@ -361,8 +348,8 @@ prob_yes_6yo_A_BB_main_pretest_pass
 # control
 table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="A" & D_tall_Exp1_6yos$Pretest=="Correct"])
 prob_yes_6yo_A_BB_control_pretest_pass = table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="A" & D_tall_Exp1_6yos$Pretest=="Correct"])[3]/(table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="A" & D_tall_Exp1_6yos$Pretest=="Correct"])[1]+
-                                                                                                                                                                                                                                 table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="A" & D_tall_Exp1_6yos$Pretest=="Correct"])[2]+
-                                                                                                                                                                                                                                 table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="A" & D_tall_Exp1_6yos$Pretest=="Correct"])[3])
+                                                                                                                                                                                                                           table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="A" & D_tall_Exp1_6yos$Pretest=="Correct"])[2]+
+                                                                                                                                                                                                                           table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="A" & D_tall_Exp1_6yos$Pretest=="Correct"])[3])
 prob_yes_6yo_A_BB_control_pretest_pass
 
 
@@ -379,8 +366,8 @@ prob_yes_6yo_B_BB_main_pretest_pass
 # control
 table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="B" & D_tall_Exp1_6yos$Pretest=="Correct"])
 prob_yes_6yo_B_BB_control_pretest_pass = table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="B" & D_tall_Exp1_6yos$Pretest=="Correct"])[3]/(table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="B" & D_tall_Exp1_6yos$Pretest=="Correct"])[1]+
-                                                                                                                                                                                                                                 table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="B" & D_tall_Exp1_6yos$Pretest=="Correct"])[2]+
-                                                                                                                                                                                                                                 table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="B" & D_tall_Exp1_6yos$Pretest=="Correct"])[3])
+                                                                                                                                                                                                                           table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="B" & D_tall_Exp1_6yos$Pretest=="Correct"])[2]+
+                                                                                                                                                                                                                           table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="B" & D_tall_Exp1_6yos$Pretest=="Correct"])[3])
 prob_yes_6yo_B_BB_control_pretest_pass
 
 
@@ -416,88 +403,6 @@ prob_yes_6yo_D_BB_control_pretest_pass
 
 
 # E
-# main
-
-# control
-table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="E" & D_tall_Exp1_6yos$Pretest=="Correct"])
-prob_yes_6yo_E_BB_control_pretest_pass = table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="E" & D_tall_Exp1_6yos$Pretest=="Correct"])[3]/(table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="E" & D_tall_Exp1_6yos$Pretest=="Correct"])[1]+
-                                                                                                                                                                                                                                 table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="E" & D_tall_Exp1_6yos$Pretest=="Correct"])[2]+
-                                                                                                                                                                                                                                 table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="E" & D_tall_Exp1_6yos$Pretest=="Correct"])[3])
-prob_yes_6yo_E_BB_control_pretest_pass
-
-
-
-
-## ISO ##
-# A
-# main
-table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="IS" & D_tall_Exp1_6yos$trialType=="main" & D_tall_Exp1_6yos$objectType=="A"])
-prob_yes_6yo_A_BB_main_pretest_pass = table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="main" & D_tall_Exp1_6yos$objectType=="A" & D_tall_Exp1_6yos$Pretest=="Correct"])[3]/(table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="main" & D_tall_Exp1_6yos$objectType=="A" & D_tall_Exp1_6yos$Pretest=="Correct"])[1]+
-                                                                                                                                                                                                                           table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="main" & D_tall_Exp1_6yos$objectType=="A" & D_tall_Exp1_6yos$Pretest=="Correct"])[2]+
-                                                                                                                                                                                                                           table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="main" & D_tall_Exp1_6yos$objectType=="A" & D_tall_Exp1_6yos$Pretest=="Correct"])[3])
-prob_yes_6yo_A_BB_main_pretest_pass
-
-
-# control
-table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="A" & D_tall_Exp1_6yos$Pretest=="Correct"])
-prob_yes_6yo_A_BB_control_pretest_pass = table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="A" & D_tall_Exp1_6yos$Pretest=="Correct"])[3]/(table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="A" & D_tall_Exp1_6yos$Pretest=="Correct"])[1]+
-                                                                                                                                                                                                                                 table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="A" & D_tall_Exp1_6yos$Pretest=="Correct"])[2]+
-                                                                                                                                                                                                                                 table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="A" & D_tall_Exp1_6yos$Pretest=="Correct"])[3])
-prob_yes_6yo_A_BB_control_pretest_pass
-
-
-
-# B
-# main
-table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="main" & D_tall_Exp1_6yos$objectType=="B" & D_tall_Exp1_6yos$Pretest=="Correct"])
-prob_yes_6yo_B_BB_main_pretest_pass = table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="main" & D_tall_Exp1_6yos$objectType=="B" & D_tall_Exp1_6yos$Pretest=="Correct"])[3]/(table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="main" & D_tall_Exp1_6yos$objectType=="B" & D_tall_Exp1_6yos$Pretest=="Correct"])[1]+
-                                                                                                                                                                                                                           table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="main" & D_tall_Exp1_6yos$objectType=="B" & D_tall_Exp1_6yos$Pretest=="Correct"])[2]+
-                                                                                                                                                                                                                           table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="main" & D_tall_Exp1_6yos$objectType=="B" & D_tall_Exp1_6yos$Pretest=="Correct"])[3])
-prob_yes_6yo_B_BB_main_pretest_pass
-
-
-# control
-table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="B" & D_tall_Exp1_6yos$Pretest=="Correct"])
-prob_yes_6yo_B_BB_control_pretest_pass = table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="B" & D_tall_Exp1_6yos$Pretest=="Correct"])[3]/(table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="B" & D_tall_Exp1_6yos$Pretest=="Correct"])[1]+
-                                                                                                                                                                                                                                 table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="B" & D_tall_Exp1_6yos$Pretest=="Correct"])[2]+
-                                                                                                                                                                                                                                 table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="B" & D_tall_Exp1_6yos$Pretest=="Correct"])[3])
-prob_yes_6yo_B_BB_control_pretest_pass
-
-
-# C
-# main
-table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="main" & D_tall_Exp1_6yos$objectType=="C" & D_tall_Exp1_6yos$Pretest=="Correct"])
-prob_yes_6yo_C_BB_main_pretest_pass = table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="main" & D_tall_Exp1_6yos$objectType=="C" & D_tall_Exp1_6yos$Pretest=="Correct"])[3]/(table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="main" & D_tall_Exp1_6yos$objectType=="C" & D_tall_Exp1_6yos$Pretest=="Correct"])[1]+
-                                                                                                                                                                                                                           table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="main" & D_tall_Exp1_6yos$objectType=="C" & D_tall_Exp1_6yos$Pretest=="Correct"])[2]+
-                                                                                                                                                                                                                           table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="main" & D_tall_Exp1_6yos$objectType=="C" & D_tall_Exp1_6yos$Pretest=="Correct"])[3])
-prob_yes_6yo_C_BB_main_pretest_pass
-
-
-# control
-table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="C" & D_tall_Exp1_6yos$Pretest=="Correct"])
-prob_yes_6yo_C_BB_control_pretest_pass = table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="C" & D_tall_Exp1_6yos$Pretest=="Correct"])[3]/(table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="C" & D_tall_Exp1_6yos$Pretest=="Correct"])[1]+
-                                                                                                                                                                                                                                 table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="C" & D_tall_Exp1_6yos$Pretest=="Correct"])[2]+
-                                                                                                                                                                                                                                 table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="C" & D_tall_Exp1_6yos$Pretest=="Correct"])[3])
-prob_yes_6yo_C_BB_control_pretest_pass
-
-
-
-
-# D
-# control
-table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="D" & D_tall_Exp1_6yos$Pretest=="Correct"])
-prob_yes_6yo_D_BB_control_pretest_pass = table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="D" & D_tall_Exp1_6yos$Pretest=="Correct"])[3]/(table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="D" & D_tall_Exp1_6yos$Pretest=="Correct"])[1]+
-                                                                                                                                                                                                                                 table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="D" & D_tall_Exp1_6yos$Pretest=="Correct"])[2]+
-                                                                                                                                                                                                                                 table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="D" & D_tall_Exp1_6yos$Pretest=="Correct"])[3])
-prob_yes_6yo_D_BB_control_pretest_pass
-
-
-
-
-
-# E
-# main
-
 # control
 table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="E" & D_tall_Exp1_6yos$Pretest=="Correct"])
 prob_yes_6yo_E_BB_control_pretest_pass = table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="E" & D_tall_Exp1_6yos$Pretest=="Correct"])[3]/(table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="E" & D_tall_Exp1_6yos$Pretest=="Correct"])[1]+
@@ -511,49 +416,63 @@ prob_yes_6yo_E_BB_control_pretest_pass
 
 # Comparing A between the BB main and control trials
 # passers
-BB.6.A.glm.passers = glm(choice[D_tall_Exp1_6yos$objectType=="A" & D_tall_Exp1_6yos$Pretest=="Correct"]~trialType[D_tall_Exp1_6yos$objectType=="A" & D_tall_Exp1_6yos$Pretest=="Correct"], data=D_tall_Exp1_6yos,
+BB.6.A.glm.passers = glm(choice[D_tall_Exp1_6yos$objectType=="A" & D_tall_Exp1_6yos$Pretest=="Correct" & D_tall_Exp1_6yos$Condition=="BB"]~trialType[D_tall_Exp1_6yos$objectType=="A" & D_tall_Exp1_6yos$Pretest=="Correct" & D_tall_Exp1_6yos$Condition=="BB"], data=D_tall_Exp1_6yos,
                          family=binomial, subset = (choice != "Unsure"))
 summary(BB.6.A.glm.passers)
 
 # nonpassers
-BB.6.A.glm.nonpassers = glm(choice[D_tall_Exp1_6yos$objectType=="A" & D_tall_Exp1_6yos$Pretest=="Incorrect"]~trialType[D_tall_Exp1_6yos$objectType=="A" & D_tall_Exp1_6yos$Pretest=="Incorrect"], data=D_tall_Exp1_6yos,
-                            family=binomial, subset = (choice != "Unsure"))
+BB.6.A.glm.nonpassers = glm(choice[D_tall_Exp1_6yos$objectType=="A" & D_tall_Exp1_6yos$Pretest=="Incorrect" & D_tall_Exp1_6yos$Condition=="BB"]~trialType[D_tall_Exp1_6yos$objectType=="A" & D_tall_Exp1_6yos$Pretest=="Incorrect" & D_tall_Exp1_6yos$Condition=="BB"], data=D_tall_Exp1_6yos,
+                         family=binomial, subset = (choice != "Unsure"))
 summary(BB.6.A.glm.nonpassers)
 
 
 
 # Comparing B between the BB main and control trials
 # passers
-BB.6.B.glm.passers = glm(choice[D_tall_Exp1_6yos$objectType=="B" & D_tall_Exp1_6yos$Pretest=="Correct"]~trialType[D_tall_Exp1_6yos$objectType=="B" & D_tall_Exp1_6yos$Pretest=="Correct"], data=D_tall_Exp1_6yos,
+BB.6.B.glm.passers = glm(choice[D_tall_Exp1_6yos$objectType=="B" & D_tall_Exp1_6yos$Pretest=="Correct" & D_tall_Exp1_6yos$Condition=="BB"]~trialType[D_tall_Exp1_6yos$objectType=="B" & D_tall_Exp1_6yos$Pretest=="Correct" & D_tall_Exp1_6yos$Condition=="BB"], data=D_tall_Exp1_6yos,
                          family=binomial, subset = (choice != "Unsure"))
 summary(BB.6.B.glm.passers)
 
 # nonpassers
-BB.6.B.glm.nonpassers = glm(choice[D_tall_Exp1_6yos$objectType=="B" & D_tall_Exp1_6yos$Pretest=="Incorrect"]~trialType[D_tall_Exp1_6yos$objectType=="B" & D_tall_Exp1_6yos$Pretest=="Incorrect"], data=D_tall_Exp1_6yos,
-                            family=binomial, subset = (choice != "Unsure"))
-summary(BB.6.B.glm.nonpassers)
+BB.6.A.glm.nonpassers = glm(choice[D_tall_Exp1_6yos$objectType=="A" & D_tall_Exp1_6yos$Pretest=="Incorrect" & D_tall_Exp1_6yos$Condition=="BB"]~trialType[D_tall_Exp1_6yos$objectType=="A" & D_tall_Exp1_6yos$Pretest=="Incorrect" & D_tall_Exp1_6yos$Condition=="BB"], data=D_tall_Exp1_6yos,
+                         family=binomial, subset = (choice != "Unsure"))
+summary(BB.6.A.glm.nonpassers)
 
 
 
 # Comparing C between the BB main and control trials
 # passers
-BB.6.C.glm.passers = glm(choice[D_tall_Exp1_6yos$objectType=="B" & D_tall_Exp1_6yos$Pretest=="Correct"]~trialType[D_tall_Exp1_6yos$objectType=="B" & D_tall_Exp1_6yos$Pretest=="Correct"], data=D_tall_Exp1_6yos,
+BB.6.C.glm.passers = glm(choice[D_tall_Exp1_6yos$objectType=="C" & D_tall_Exp1_6yos$Pretest=="Correct" & D_tall_Exp1_6yos$Condition=="BB"]~trialType[D_tall_Exp1_6yos$objectType=="C" & D_tall_Exp1_6yos$Pretest=="Correct" & D_tall_Exp1_6yos$Condition=="BB"], data=D_tall_Exp1_6yos,
                          family=binomial, subset = (choice != "Unsure"))
 summary(BB.6.C.glm.passers)
 
 # nonpassers
-BB.6.C.glm.nonpassers = glm(choice[D_tall_Exp1_6yos$objectType=="B" & D_tall_Exp1_6yos$Pretest=="Incorrect"]~trialType[D_tall_Exp1_6yos$objectType=="B" & D_tall_Exp1_6yos$Pretest=="Incorrect"], data=D_tall_Exp1_6yos,
-                            family=binomial, subset = (choice != "Unsure"))
+BB.6.C.glm.nonpassers = glm(choice[D_tall_Exp1_6yos$objectType=="C" & D_tall_Exp1_6yos$Pretest=="Incorrect" & D_tall_Exp1_6yos$Condition=="BB"]~trialType[D_tall_Exp1_6yos$objectType=="C" & D_tall_Exp1_6yos$Pretest=="Incorrect" & D_tall_Exp1_6yos$Condition=="BB"], data=D_tall_Exp1_6yos,
+                         family=binomial, subset = (choice != "Unsure"))
 summary(BB.6.C.glm.nonpassers)
 
 
 
 # Comparing A between the BB main and IS main conditions
-table(D_tall$choice[D_tall$Age=="6" & D_tall$Condition=="ISO" & D_tall$objectType=="A" & D_tall$phaseOrder=="Phase 1" & D_tall$trialType=="main"])
-D_tall_Exp1_6yos_obj_A = subset(D_tall_Exp1_6yos, ! objectType %in% c("B","C","D","E"))
-xtabs(~choice[D_tall$Pretest=="Correct" & D_tall$objectType=="A"]+Condition[D_tall$Pretest=="Correct" & D_tall$objectType=="A"]+trialType[D_tall$Pretest=="Correct" & D_tall$objectType=="A"], data=D_tall)
-BB.IS.6.A..main.glm.passers = glm(choice[D_tall$Pretest=="Correct" & D_tall$objectType=="A" & D_tall$trialType=="main"]~Condition[D_tall$Pretest=="Correct" & D_tall$objectType=="A" & D_tall$trialType=="main"], data=D_tall,
+xtabs(~choice[D_tall$trialType=="main" & D_tall$Age=="6" & D_tall$objectType=="A"]+Condition[D_tall$trialType=="main" & D_tall$Age=="6" & D_tall$objectType=="A"], data=D_tall)
+BB.IS.6.A..main.glm.passers = glm(choice[D_tall$trialType=="main" & D_tall$Age=="6" & D_tall$objectType=="A"]~Condition[D_tall$trialType=="main" & D_tall$Age=="6" & D_tall$objectType=="A"], data=D_tall,
                                   family=binomial, subset = (choice != "Unsure"))
 summary(BB.IS.6.A..main.glm.passers)
 
-prop.test(x = c(79, 33), n = c(100, 46))
+prop.test(x = c(90, 11), n = c(100, 20))
+
+
+# A BB main
+table(D_tall$choice[D_tall$Condition=="BB" & D_tall$trialType=="main" & D_tall$objectType=="A" & D_tall$Age=="6"])
+prob_yes_6yo_A_BB_main_pretest_pass = table(D_tall$choice[D_tall$Condition=="BB" & D_tall$trialType=="main" & D_tall$objectType=="A" & D_tall$Age=="6"])[3]/(table(D_tall$choice[D_tall$Condition=="BB" & D_tall$trialType=="main" & D_tall$objectType=="A" & D_tall$Age=="6"])[1]+
+                                                                                                                                                               table(D_tall$choice[D_tall$Condition=="BB" & D_tall$trialType=="main" & D_tall$objectType=="A" & D_tall$Age=="6"])[2]+
+                                                                                                                                                               table(D_tall$choice[D_tall$Condition=="BB" & D_tall$trialType=="main" & D_tall$objectType=="A" & D_tall$Age=="6"])[3])
+prob_yes_6yo_A_BB_main_pretest_pass
+
+
+# A IS main
+table(D_tall$choice[D_tall$Condition=="ISO" & D_tall$trialType=="main" & D_tall$objectType=="A" & D_tall$Age=="6"])
+prob_yes_6yo_A_IS_main_pretest_pass = table(D_tall$choice[D_tall$Condition=="ISO" & D_tall$trialType=="main" & D_tall$objectType=="A" & D_tall$Age=="6"])[3]/(table(D_tall$choice[D_tall$Condition=="ISO" & D_tall$trialType=="main" & D_tall$objectType=="A" & D_tall$Age=="6"])[1]+
+                                                                                                                                                               table(D_tall$choice[D_tall$Condition=="ISO" & D_tall$trialType=="main" & D_tall$objectType=="A" & D_tall$Age=="6"])[2]+
+                                                                                                                                                               table(D_tall$choice[D_tall$Condition=="ISO" & D_tall$trialType=="main" & D_tall$objectType=="A" & D_tall$Age=="6"])[3])
+prob_yes_6yo_A_IS_main_pretest_pass
