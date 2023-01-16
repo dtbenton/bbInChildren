@@ -1,0 +1,13 @@
+Logic of studies:
+
+
+Experiment 1: 5 and 6 year olds for 3 objects
+
+Experiment 2: what about younger kids for 3 objects
+
+Experiment 3: ok, can all three ages do it for 4 objects
+
+
+note that this paper cannot arbitrate between a bayesian and an RW model because both models make the same predictions for how the objects should be evaluated
+
+## it will be critical in a follow-up study to include a mid-rating and then ask whether participants perform in a manner that is consistent with a bayesian model ## 
