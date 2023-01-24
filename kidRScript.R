@@ -168,7 +168,7 @@ table(D_tall$Condition[D_tall$Age=="6"])/16
 ####################
 # OMNIBUS ANALYSIS #
 ####################
-omnibus.glm = glm(choice~(Condition+object_type+Pretest)^3, family = binomial,
+omnibus.glm = glm(choice~(Condition+objectType+Pretest)^3, family = binomial,
                   data = D_tall)
 Anova(omnibus.glm)
 
@@ -176,8 +176,9 @@ Anova(omnibus.glm)
 
 # Visualize the data for 4s and 5s
 # omnibus 2-yo figure
-ggplot(data = D_tall_Exp1_5yos) + geom_bar(mapping = aes(x=choice, color = trialType, fill = objectType),
-                                           stat="count", position = "dodge") + facet_wrap(~Condition)
+D_tall_Exp1_5yos_complete=D_tall_Exp1_5yos[complete.cases(D_tall_Exp1_5yos), ]
+ggplot(data = D_tall_Exp1_5yos_complete) + geom_bar(mapping = aes(x=choice, color = trialType, fill = objectType),
+                                           stat="count", position = "dodge",  na.rm = TRUE) + facet_wrap(~Condition)
 
 ############################################
 ############################################
