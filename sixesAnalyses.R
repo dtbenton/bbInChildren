@@ -101,6 +101,9 @@ D_tall$choice = as.factor(D_tall$choice)
 # get counts for choice 
 table(D_tall$choice)
 
+
+
+
 # RENAME LEVELS OF COLUMNS
 D_tall$Condition = revalue(x = as.factor(D_tall$Condition), 
                            c("0" = "BB", "1"="ISO"))
@@ -136,7 +139,17 @@ fix(D_tall)
 
 
 # subset dataframes by experiments
-D_tall_Exp1_6yos = subset(D_tall, ! Experiment %in% c("Experiment 2"), ! Age %in% c("4","6"))
+D_tall_Exp1_6yos = subset(D_tall, ! Experiment %in% c("Experiment 2"))
+D_tall_Exp1_6yos = subset(D_tall, ! Age %in% c("4","5"))
+D_tall_Exp1_6yos$Age = factor(D_tall_Exp1_6yos$Age)
+D_tall_Exp1_6yos$Experiment = factor(D_tall_Exp1_6yos$Experiment)
+
+dim(D_tall_Exp1_6yos)
+D_tall_Exp1_6yos = D_tall_Exp1_6yos[1:686,]
+
+
+# get the number of participants in each condition
+table(D_tall_Exp1_6yos$Condition)/14
 
 ###########
 ###########
@@ -168,20 +181,40 @@ glm.global.boot = function(a,a1,b1,b2,y,z, data){
                                                                        sd(glm.Bootobj$t))))
 }
 
-# EXAMPLE: glm.global.boot(10,"A",7,"BB",12,8, D_tall_Exp1_6yos)
+# EXAMPLE: glm.global.boot(10,"A",7,"BB",12,8, D_tall_Exp1_6yos_obj_C_BB_ISO)
+
+
+glm.global.boot.2 = function(a,a1,y,z, data){
+  glm.fit = function(data,b,formula){ 
+    d= data[b,]
+    dif.1 =  glm(d[d[,a]==a1,y]~d[d[,a]==a1,z], 
+                 data=data, family = "binomial", 
+                 subset = (choice != "Unsure"), na.action = na.omit)
+    return(coef(dif.1))
+  }
+  glm.Bootobj = boot(data, glm.fit, R=5000)
+  return(c(exp(glm.Bootobj$t0[[2]]),exp(glm.Bootobj$t0[[2]])  + 1.96*c(-sd(glm.Bootobj$t), 
+                                                                       sd(glm.Bootobj$t))))
+}
+
+# example: glm.global.boot.2(7,"BB",12,10,D_tall_Exp1_6yos_obj_A_D)
+
+
+
+
 
 # Bayes function
 bayes_function = function(a,a1,b1,b2,y,z, d){
   null.glm = glm(d[d[,a]==a1 & d[,b1]==b2,y]~1, data=d,
                  family=binomial, subset = (choice != "Unsure"))
-  null.glmBIC = BIC(null.glm)
+  null.glm.BIC = BIC(null.glm)
   
   alt.glm = glm(d[d[,a]==a1 & d[,b1]==b2,y]~d[d[,a]==a1 & d[,b1]==b2,z], data=d,
                 family=binomial, subset = (choice != "Unsure"))
   
   alt.glm.BIC = BIC(alt.glm)
   
-  BF01 = exp((glm.A.5.alternative.BIC - glm.A.5.null.BIC)/2)
+  BF01 = exp((alt.glm.BIC - null.glm.BIC)/2)
   BF10 = 1/BF01
   return(c(paste("BF01=",BF01),paste("BF10=",BF10)))
 }
@@ -200,10 +233,10 @@ bayes_function = function(a,a1,b1,b2,y,z, d){
 ##################
 # A
 # main
-table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="main" & D_tall_Exp1_6yos$objectType=="A" & D_tall_Exp1_6yos$Pretest=="Correct"])
-prob_yes_6yo_A_BB_main_pretest_pass = table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="main" & D_tall_Exp1_6yos$objectType=="A" & D_tall_Exp1_6yos$Pretest=="Correct"])[3]/(table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="main" & D_tall_Exp1_6yos$objectType=="A" & D_tall_Exp1_6yos$Pretest=="Correct"])[1]+
-                                                                                                                                                                                                                           table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="main" & D_tall_Exp1_6yos$objectType=="A" & D_tall_Exp1_6yos$Pretest=="Correct"])[2]+
-                                                                                                                                                                                                                           table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="main" & D_tall_Exp1_6yos$objectType=="A" & D_tall_Exp1_6yos$Pretest=="Correct"])[3])
+table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="main" & D_tall_Exp1_6yos$objectType=="A"])
+prob_yes_6yo_A_BB_main_pretest_pass = table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="main" & D_tall_Exp1_6yos$objectType=="A"])[3]/(table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="main" & D_tall_Exp1_6yos$objectType=="A"])[1]+
+                                                                                                                                                                                                                           table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="main" & D_tall_Exp1_6yos$objectType=="A"])[2]+
+                                                                                                                                                                                                                           table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="main" & D_tall_Exp1_6yos$objectType=="A"])[3])
 prob_yes_6yo_A_BB_main_pretest_pass
 
 
@@ -254,10 +287,10 @@ prob_yes_6yo_C_BB_control_pretest_pass
 
 # D
 # control
-table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="D" & D_tall_Exp1_6yos$Pretest=="Correct"])
-prob_yes_6yo_C_BB_control_pretest_pass = table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="D" & D_tall_Exp1_6yos$Pretest=="Correct"])[3]/(table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="D" & D_tall_Exp1_6yos$Pretest=="Correct"])[1]+
-                                                                                                                                                                                                                                 table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="D" & D_tall_Exp1_6yos$Pretest=="Correct"])[2]+
-                                                                                                                                                                                                                                 table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="D" & D_tall_Exp1_6yos$Pretest=="Correct"])[3])
+table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="D"])
+prob_yes_6yo_C_BB_control_pretest_pass = table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="D"])[3]/(table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="D"])[1]+
+                                                                                                                                                                                                                                 table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="D"])[2]+
+                                                                                                                                                                                                                                 table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="D"])[3])
 prob_yes_6yo_C_BB_control_pretest_pass
 
 
@@ -273,33 +306,55 @@ prob_yes_6yo_C_BB_control_pretest_pass = table(D_tall_Exp1_6yos$choice[D_tall_Ex
 prob_yes_6yo_C_BB_control_pretest_pass
 
 
-
+#####################
 ### MAIN ANALYSES ###
+####################
 
-# Comparing A between the BB main and control trials
+# Comparing A and D between the BB main and control trials
 # check to see whether there is an effect of pretest on participants' object choices
 pretest_check_glm = glm(choice~Pretest+objectType, data=D_tall,
                         family=binomial, subset = (choice != "Unsure"))
 summary(pretest_check_glm)
+Anova(pretest_check_glm)
 
-# comparing A choices between BB experimental and BB control
-BB.5.A.glm = glm(choice[D_tall_Exp1_6yos$objectType=="A" & D_tall_Exp1_6yos$Condition=="BB"]~trialType[D_tall_Exp1_6yos$objectType=="A" & D_tall_Exp1_6yos$Condition=="BB"], data=D_tall_Exp1_6yos,
-                 family=binomial, subset = (choice != "Unsure"))
-summary(BB.5.A.glm)
-exp(BB.5.A.glm$coefficients[[2]])
+# comparing A and D choices between BB experimental and BB control
+D_tall_Exp1_6yos_obj_A_D = subset(D_tall_Exp1_6yos, ! objectType %in% c("B","C"))
+D_tall_Exp1_6yos_obj_A_D$objectType = factor(D_tall_Exp1_6yos_obj_A_D$objectType)
+
+
+xtabs(~choice+objectType, data=D_tall_Exp1_6yos_obj_A_D)
+BB.5.A.D.glm = glm(choice[D_tall_Exp1_6yos_obj_A_D$Condition=="BB"]~objectType[D_tall_Exp1_6yos_obj_A_D$Condition=="BB"], 
+                   data=D_tall_Exp1_6yos_obj_A_D,
+                   family=binomial, subset = (choice != "Unsure"))
+summary(BB.5.A.D.glm)
+exp(BB.5.A.D.glm$coefficients[[2]])
 
 # get confidence interval of the difference in choice between A 
 # between the BB and control condition
-glm.global.boot(10,"A",7,"BB",12,8, D_tall_Exp1_6yos)
+glm.global.boot.2(7,"BB",12,10,D_tall_Exp1_6yos_obj_A_D)
 
 
 # get the Bayes factor on the coefficient above
-bayes_function(10,"A",7,"BB",12,8,D_tall_Exp1_6yos)
+# bayes factor to see if the alternative hypothesis that participants responses to A 
+# between the BB and ISO experimentla conditions was supported
+
+alt.glm = glm(choice[D_tall_Exp1_6yos_obj_A_D$Condition=="BB"]~objectType[D_tall_Exp1_6yos_obj_A_D$Condition=="BB"], 
+              data=D_tall_Exp1_6yos_obj_A_D,
+              family=binomial, subset = (choice != "Unsure"))
+alt.glm.BIC = BIC(alt.glm)
+
+control.glm = glm(choice[D_tall_Exp1_6yos_obj_A_D$Condition=="BB"]~1, 
+                  data=D_tall_Exp1_6yos_obj_A_D,
+                  family=binomial, subset = (choice != "Unsure"))
+control.glm.BIC = BIC(control.glm)
+
+BF01 = exp((alt.glm.BIC - control.glm.BIC)/2)
+BF10 = 1/BF01
+BF10
 
 
 
 # Comparing B between the BB main and control trials
-# comparing A choices between BB experimental and BB control
 BB.5.B.glm = glm(choice[D_tall_Exp1_6yos$objectType=="B" & D_tall_Exp1_6yos$Condition=="BB"]~trialType[D_tall_Exp1_6yos$objectType=="B" & D_tall_Exp1_6yos$Condition=="BB"], data=D_tall_Exp1_6yos,
                  family=binomial, subset = (choice != "Unsure"))
 summary(BB.5.B.glm)
@@ -334,6 +389,7 @@ bayes_function(10,"C",7,"BB",12,8,D_tall_Exp1_6yos)
 
 # Comparing A between the BB main and IS main conditions
 D_tall_Exp1_6yos_obj_A = subset(D_tall_Exp1_6yos, ! objectType %in% c("B","C","D","E"))
+D_tall_Exp1_6yos_obj_A$objectType = factor(D_tall_Exp1_6yos_obj_A$objectType)
 xtabs(~choice[D_tall_Exp1_6yos_obj_A$trialType=="main"]+Condition[D_tall_Exp1_6yos_obj_A$trialType=="main"], data=D_tall_Exp1_6yos_obj_A)
 BB.IS.5.A..main.glm.passers = glm(choice[D_tall_Exp1_6yos_obj_A$trialType=="main"]~Condition[D_tall_Exp1_6yos_obj_A$trialType=="main"], data=D_tall_Exp1_6yos_obj_A,
                                   family=binomial, subset = (choice != "Unsure"))
@@ -370,6 +426,48 @@ prob_yes_6yo_A_ISO_main_pretest_pass = table(D_tall_Exp1_6yos$choice[D_tall_Exp1
                                                                                                                                                                                        table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="ISO" & D_tall_Exp1_6yos$trialType=="main" & D_tall_Exp1_6yos$objectType=="A"])[2]+
                                                                                                                                                                                        table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="ISO" & D_tall_Exp1_6yos$trialType=="main" & D_tall_Exp1_6yos$objectType=="A"])[3])
 prob_yes_6yo_A_ISO_main_pretest_pass
+
+
+# Comparing A between the BB main and IS control conditions
+D_tall_Exp1_6yos_obj_D = subset(D_tall_Exp1_6yos, ! objectType %in% c("A","B","C","E"))
+xtabs(~choice[D_tall_Exp1_6yos_obj_D$trialType=="control"]+Condition[D_tall_Exp1_6yos_obj_D$trialType=="control"], data=D_tall_Exp1_6yos_obj_D)
+BB.IS.5.D.main.glm.passers = glm(choice[D_tall_Exp1_6yos_obj_D$trialType=="control"]~Condition[D_tall_Exp1_6yos_obj_D$trialType=="control"], data=D_tall_Exp1_6yos_obj_D,
+                                  family=binomial, subset = (choice != "Unsure"))
+summary(BB.IS.5.D.main.glm.passers)
+exp(BB.IS.5.D.main.glm.passers$coefficients[[2]])
+
+# bayes factor to see if the alternative hypothesis that participants responses to A 
+# between the BB and ISO experimentla conditions was supported
+
+alt.glm = glm(choice[D_tall_Exp1_6yos_obj_D$trialType=="control"]~Condition[D_tall_Exp1_6yos_obj_D$trialType=="control"], data=D_tall_Exp1_6yos_obj_D,
+              family=binomial, subset = (choice != "Unsure"))
+alt.glm.BIC = BIC(alt.glm)
+
+control.glm = glm(choice[D_tall_Exp1_6yos_obj_D$trialType=="control"]~1, data=D_tall_Exp1_6yos_obj_D,
+                  family=binomial, subset = (choice != "Unsure"))
+control.glm.BIC = BIC(control.glm)
+
+BF01 = exp((alt.glm.BIC - control.glm.BIC)/2)
+BF10 = 1/BF01
+BF10
+
+
+# D BB control
+table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="D"])
+prob_yes_6yo_D_BB_control_pretest_pass = table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="D"])[3]/(table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="D"])[1]+
+                                                                                                                                                                                     table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="D"])[2]+
+                                                                                                                                                                                     table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="D"])[3])
+prob_yes_6yo_D_BB_control_pretest_pass
+
+
+# D IS control
+table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="ISO" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="D"])
+prob_yes_6yo_D_BB_control_pretest_pass = table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="ISO" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="D"])[3]/(table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="ISO" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="D"])[1]+
+                                                                                                                                                                                           table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="ISO" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="D"])[2]+
+                                                                                                                                                                                           table(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="ISO" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="D"])[3])
+prob_yes_6yo_D_BB_control_pretest_pass
+
+
 
 ##################
 ## ISO CONDITION ##
@@ -459,19 +557,38 @@ pretest_check_glm = glm(choice~Pretest+objectType, data=D_tall,
                         family=binomial, subset = (choice != "Unsure"))
 summary(pretest_check_glm)
 
-# comparing A choices between BB experimental and BB control
-BB.5.A.glm = glm(choice[D_tall_Exp1_6yos$objectType=="A" & D_tall_Exp1_6yos$Condition=="ISO"]~trialType[D_tall_Exp1_6yos$objectType=="A" & D_tall_Exp1_6yos$Condition=="ISO"], data=D_tall_Exp1_6yos,
-                 family=binomial, subset = (choice != "Unsure"))
-summary(BB.5.A.glm)
-exp(BB.5.A.glm$coefficients[[2]])
+# comparing A and D choices between BB experimental and ISO control
+xtabs(~choice[D_tall_Exp1_6yos_obj_A_D$Condition=="ISO"]+objectType[D_tall_Exp1_6yos_obj_A_D$Condition=="ISO"], data=D_tall_Exp1_6yos_obj_A_D)
+ISO.5.A.D.glm = glm(choice[D_tall_Exp1_6yos_obj_A_D$Condition=="ISO"]~objectType[D_tall_Exp1_6yos_obj_A_D$Condition=="ISO"], 
+                   data=D_tall_Exp1_6yos_obj_A_D,
+                   family=binomial, subset = (choice != "Unsure"))
+summary(ISO.5.A.D.glm)
+exp(ISO.5.A.D.glm$coefficients[[2]])
 
 # get confidence interval of the difference in choice between A 
 # between the BB and control condition
-glm.global.boot(10,"A",7,"ISO",12,8, D_tall_Exp1_6yos)
+glm.global.boot.2(7,"ISO",12,10,D_tall_Exp1_6yos_obj_A_D)
 
 
 # get the Bayes factor on the coefficient above
-bayes_function(10,"A",7,"ISO",12,8,D_tall_Exp1_6yos)
+# bayes factor to see if the alternative hypothesis that participants responses to A 
+# between the BB and ISO experimentla conditions was supported
+
+alt.glm = glm(choice[D_tall_Exp1_6yos_obj_A_D$Condition=="ISO"]~objectType[D_tall_Exp1_6yos_obj_A_D$Condition=="ISO"], 
+              data=D_tall_Exp1_6yos_obj_A_D,
+              family=binomial, subset = (choice != "Unsure"))
+alt.glm.BIC = BIC(alt.glm)
+
+control.glm = glm(choice[D_tall_Exp1_6yos_obj_A_D$Condition=="ISO"]~1, 
+                  data=D_tall_Exp1_6yos_obj_A_D,
+                  family=binomial, subset = (choice != "Unsure"))
+control.glm.BIC = BIC(control.glm)
+
+BF01 = exp((alt.glm.BIC - control.glm.BIC)/2)
+BF10 = 1/BF01
+BF10
+
+
 
 
 
@@ -506,3 +623,129 @@ glm.global.boot(10,"C",7,"ISO",12,8, D_tall_Exp1_6yos)
 
 # get the Bayes factor on the coefficient above
 bayes_function(10,"C",7,"ISO",12,8,D_tall_Exp1_6yos)
+
+
+#########################################################################################
+#########################################################################################
+# Assessing participants’ treatment of redundant causes across the BB and ISO condition #
+#########################################################################################
+#########################################################################################
+
+##############
+## OBJECT B ##
+##############
+
+## MAIN ## 
+
+## Comparing object B between the BB and ISO **main** conditions ##
+D_tall_Exp1_6yos_obj_B_BB_ISO = subset(D_tall_Exp1_6yos, ! objectType %in% c("A","C","D"))
+D_tall_Exp1_6yos_obj_B_BB_ISO$objectType = factor(D_tall_Exp1_6yos_obj_B_BB_ISO$objectType)
+
+xtabs(~choice[D_tall_Exp1_6yos_obj_B_BB_ISO$trialType=="main"]+Condition[D_tall_Exp1_6yos_obj_B_BB_ISO$trialType=="main"], data=D_tall_Exp1_6yos_obj_B_BB_ISO)
+BB.IS.5.B..main.glm.passers = glm(choice[D_tall_Exp1_6yos_obj_B_BB_ISO$trialType=="main"]~Condition[D_tall_Exp1_6yos_obj_B_BB_ISO$trialType=="main"], data=D_tall_Exp1_6yos_obj_B_BB_ISO,
+                                  family=binomial, subset = (choice != "Unsure"))
+summary(BB.IS.5.B..main.glm.passers)
+exp(BB.IS.5.B..main.glm.passers$coefficients[[2]])
+
+# bayes factor to see if the alternative hypothesis that participants responses to A 
+# between the BB and ISO experimentla conditions was supported
+
+alt.glm = glm(choice[D_tall_Exp1_6yos_obj_B_BB_ISO$trialType=="main"]~Condition[D_tall_Exp1_6yos_obj_B_BB_ISO$trialType=="main"], data=D_tall_Exp1_6yos_obj_B_BB_ISO,
+              family=binomial, subset = (choice != "Unsure"))
+alt.glm.BIC = BIC(alt.glm)
+
+control.glm = glm(choice[D_tall_Exp1_6yos_obj_A$trialType=="main"]~1, data=D_tall_Exp1_6yos_obj_B_BB_ISO,
+                  family=binomial, subset = (choice != "Unsure"))
+control.glm.BIC = BIC(control.glm)
+
+BF01 = exp((alt.glm.BIC - control.glm.BIC)/2)
+BF10 = 1/BF01
+BF10
+
+
+## CONTROL ##
+
+## Comparing object B between the BB and ISO **main** conditions ##
+xtabs(~choice[D_tall_Exp1_6yos_obj_B_BB_ISO$trialType=="control"]+Condition[D_tall_Exp1_6yos_obj_B_BB_ISO$trialType=="control"], data=D_tall_Exp1_6yos_obj_B_BB_ISO)
+BB.IS.5.B.control.glm.passers = glm(choice[D_tall_Exp1_6yos_obj_B_BB_ISO$trialType=="control"]~Condition[D_tall_Exp1_6yos_obj_B_BB_ISO$trialType=="control"], data=D_tall_Exp1_6yos_obj_B_BB_ISO,
+                                  family=binomial, subset = (choice != "Unsure"))
+summary(BB.IS.5.B.control.glm.passers)
+exp(BB.IS.5.B.control.glm.passers$coefficients[[2]])
+
+# bayes factor to see if the alternative hypothesis that participants responses to A 
+# between the BB and ISO experimentla conditions was supported
+
+alt.glm = glm(choice[D_tall_Exp1_6yos_obj_B_BB_ISO$trialType=="control"]~Condition[D_tall_Exp1_6yos_obj_B_BB_ISO$trialType=="control"], data=D_tall_Exp1_6yos_obj_B_BB_ISO,
+              family=binomial, subset = (choice != "Unsure"))
+alt.glm.BIC = BIC(alt.glm)
+
+control.glm = glm(choice[D_tall_Exp1_6yos_obj_A$trialType=="control"]~1, data=D_tall_Exp1_6yos_obj_B_BB_ISO,
+                  family=binomial, subset = (choice != "Unsure"))
+control.glm.BIC = BIC(control.glm)
+
+BF01 = exp((alt.glm.BIC - control.glm.BIC)/2)
+BF10 = 1/BF01
+BF10
+
+
+
+##############
+## OBJECT C ##
+##############
+
+## MAIN ## 
+
+## Comparing object B between the BB and ISO **main** conditions ##
+D_tall_Exp1_6yos_obj_C_BB_ISO = subset(D_tall_Exp1_6yos, ! objectType %in% c("A","B","D"))
+D_tall_Exp1_6yos_obj_C_BB_ISO$objectType = factor(D_tall_Exp1_6yos_obj_C_BB_ISO$objectType)
+
+xtabs(~choice[D_tall_Exp1_6yos_obj_C_BB_ISO$trialType=="main"]+Condition[D_tall_Exp1_6yos_obj_C_BB_ISO$trialType=="main"], data=D_tall_Exp1_6yos_obj_C_BB_ISO)
+BB.IS.5.C.main.glm.passers = glm(choice[D_tall_Exp1_6yos_obj_C_BB_ISO$trialType=="main"]~Condition[D_tall_Exp1_6yos_obj_C_BB_ISO$trialType=="main"], data=D_tall_Exp1_6yos_obj_C_BB_ISO,
+                                  family=binomial, subset = (choice != "Unsure"))
+summary(BB.IS.5.C.main.glm.passers)
+exp(BB.IS.5.C.main.glm.passers$coefficients[[2]])
+
+# bayes factor to see if the alternative hypothesis that participants responses to A 
+# between the BB and ISO experimentla conditions was supported
+
+alt.glm = glm(choice[D_tall_Exp1_6yos_obj_C_BB_ISO$trialType=="main"]~Condition[D_tall_Exp1_6yos_obj_C_BB_ISO$trialType=="main"], data=D_tall_Exp1_6yos_obj_C_BB_ISO,
+              family=binomial, subset = (choice != "Unsure"))
+alt.glm.BIC = BIC(alt.glm)
+
+control.glm = glm(choice[D_tall_Exp1_6yos_obj_A$trialType=="main"]~1, data=D_tall_Exp1_6yos_obj_C_BB_ISO,
+                  family=binomial, subset = (choice != "Unsure"))
+control.glm.BIC = BIC(control.glm)
+
+BF01 = exp((alt.glm.BIC - control.glm.BIC)/2)
+BF10 = 1/BF01
+BF10
+
+# Confidence interval
+glm.global.boot.2(8,"main",12,7,D_tall_Exp1_6yos_obj_C_BB_ISO)
+
+## CONTROL ##
+
+## Comparing object B between the BB and ISO **control** conditions ##
+xtabs(~choice[D_tall_Exp1_6yos_obj_C_BB_ISO$trialType=="control"]+Condition[D_tall_Exp1_6yos_obj_C_BB_ISO$trialType=="control"], data=D_tall_Exp1_6yos_obj_C_BB_ISO)
+BB.IS.5.C.main.glm.passers = glm(choice[D_tall_Exp1_6yos_obj_C_BB_ISO$trialType=="control"]~Condition[D_tall_Exp1_6yos_obj_C_BB_ISO$trialType=="control"], data=D_tall_Exp1_6yos_obj_C_BB_ISO,
+                                  family=binomial, subset = (choice != "Unsure"))
+summary(BB.IS.5.C.main.glm.passers)
+exp(BB.IS.5.C.main.glm.passers$coefficients[[2]])
+
+# bayes factor to see if the alternative hypothesis that participants responses to A 
+# between the BB and ISO experimentla conditions was supported
+
+alt.glm = glm(choice[D_tall_Exp1_6yos_obj_C_BB_ISO$trialType=="control"]~Condition[D_tall_Exp1_6yos_obj_C_BB_ISO$trialType=="control"], data=D_tall_Exp1_6yos_obj_C_BB_ISO,
+              family=binomial, subset = (choice != "Unsure"))
+alt.glm.BIC = BIC(alt.glm)
+
+control.glm = glm(choice[D_tall_Exp1_6yos_obj_A$trialType=="control"]~1, data=D_tall_Exp1_6yos_obj_C_BB_ISO,
+                  family=binomial, subset = (choice != "Unsure"))
+control.glm.BIC = BIC(control.glm)
+
+BF01 = exp((alt.glm.BIC - control.glm.BIC)/2)
+BF10 = 1/BF01
+BF10
+
+# Confidence interval
+glm.global.boot.2(8,"control",12,7,D_tall_Exp1_6yos_obj_C_BB_ISO)
