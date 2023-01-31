@@ -7,13 +7,11 @@
 #############
 ## OBJECTS ##
 #############
-objects_full = diag(4)
-objects_full = as.data.frame(objects_full)
-
-
+objects_full = data.frame(x = c('1'))
 names(objects_full) = NULL
-rownames(objects_full) = NULL
-row.names(objects_full) = NULL
+rownames(objects_full)
+row.names(objects_full)
+
 
 
 
@@ -49,11 +47,11 @@ print(objects_full[1,], sep = "\t", quote = FALSE, row.names = FALSE)
 
 # Object B
 cat(paste("(B)", sep="\t"))
-print(objects_full[2,], sep = "\t", quote = FALSE, row.names = FALSE)
+print(objects_full[1,], sep = "\t", quote = FALSE, row.names = FALSE)
 
 # Object C
 cat(paste("(C)", sep="\t"))
-print(objects_full[3,], sep = "\t", quote = FALSE, row.names = FALSE)
+print(objects_full[1,], sep = "\t", quote = FALSE, row.names = FALSE)
 
 
 # OUTPUT
@@ -122,7 +120,7 @@ cat(paste("name: Dplus", "\n", sep=""))
 cat(paste("I:", "\n", sep="\t"))
 # Object A
 cat(paste("(D)", sep="\t"))
-print(objects_full[4,], sep = "\t", quote = FALSE, row.names = FALSE)
+print(objects_full[1,], sep = "\t", quote = FALSE, row.names = FALSE)
 
 
 # OUTPUT
@@ -146,7 +144,7 @@ cat(paste("name: Dminus", "\n", sep=""))
 cat(paste("I:", "\n", sep="\t"))
 # Object A
 cat(paste("(D)", sep="\t"))
-print(objects_full[4,], sep = "\t", quote = FALSE, row.names = FALSE)
+print(objects_full[1,], sep = "\t", quote = FALSE, row.names = FALSE)
 
 
 # OUTPUT
@@ -170,7 +168,7 @@ cat(paste("name: Dnothing", "\n", sep=""))
 cat(paste("I:", "\n", sep="\t"))
 # Object A
 cat(paste("(D)", sep="\t"))
-print(objects_full[4,], sep = "\t", quote = FALSE, row.names = FALSE)
+print(objects_full[1,], sep = "\t", quote = FALSE, row.names = FALSE)
 
 
 # OUTPUT
@@ -210,7 +208,7 @@ cat(paste("name: B", "\n", sep=""))
 cat(paste("I:", "\n", sep="\t"))
 # Object A
 cat(paste("(B)", sep="\t"))
-print(objects_full[2,], sep = "\t", quote = FALSE, row.names = FALSE)
+print(objects_full[1,], sep = "\t", quote = FALSE, row.names = FALSE)
 
 
 # OUTPUT
@@ -227,7 +225,7 @@ cat(paste("name: C", "\n", sep=""))
 cat(paste("I:", "\n", sep="\t"))
 # Object A
 cat(paste("(C)", sep="\t"))
-print(objects_full[3,], sep = "\t", quote = FALSE, row.names = FALSE)
+print(objects_full[1,], sep = "\t", quote = FALSE, row.names = FALSE)
 
 
 # OUTPUT
@@ -265,7 +263,7 @@ cat(paste("name: B", "\n", sep=""))
 cat(paste("I:", "\n", sep="\t"))
 # Object A
 cat(paste("(B)", sep="\t"))
-print(objects_full[2,], sep = "\t", quote = FALSE, row.names = FALSE)
+print(objects_full[1,], sep = "\t", quote = FALSE, row.names = FALSE)
 
 
 # OUTPUT
@@ -282,7 +280,7 @@ cat(paste("name: C", "\n", sep=""))
 cat(paste("I:", "\n", sep="\t"))
 # Object A
 cat(paste("(C)", sep="\t"))
-print(objects_full[3,], sep = "\t", quote = FALSE, row.names = FALSE)
+print(objects_full[1,], sep = "\t", quote = FALSE, row.names = FALSE)
 
 
 # OUTPUT
@@ -298,7 +296,7 @@ cat(paste("name: D", "\n", sep=""))
 cat(paste("I:", "\n", sep="\t"))
 # Object A
 cat(paste("(D)", sep="\t"))
-print(objects_full[4,], sep = "\t", quote = FALSE, row.names = FALSE)
+print(objects_full[1,], sep = "\t", quote = FALSE, row.names = FALSE)
 
 
 # OUTPUT

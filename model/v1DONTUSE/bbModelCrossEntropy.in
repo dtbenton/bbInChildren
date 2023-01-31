@@ -2,10 +2,10 @@
 addNet bbModelCrossEntropy
 
 # input groups
-addGroup A 1 INPUT
-addGroup B 1 INPUT
-addGroup C 1 INPUT
-addGroup D 1 INPUT
+addGroup A 4 INPUT
+addGroup B 4 INPUT
+addGroup C 4 INPUT
+addGroup D 4 INPUT
 
 # output group
 addGroup Effect 1 OUTPUT 
@@ -14,9 +14,6 @@ addGroup Effect 1 OUTPUT
 
 # connect groups (input -> output)
 connectGroups {A B C D} Effect
-
-# delete bias
-deleteGroups bias
 
 # training examples
 loadExamples ABCplus.ex
@@ -43,7 +40,7 @@ randWeights -r .001
 
 
 resetPlot 
-plotRow 2 b 6 n Effect 1 
+plotRow 2 b 12 n Effect 1 
 plotRow 2 b 2 n A 4 b 2 n B 4 b 2 n C 4 b 2 n D 4
 drawUnits
 viewUnits
@@ -117,7 +114,7 @@ proc testNetwork {n train trainNum train2 trainNum2 test1 train3 trainNum3 train
 }
 
 
-# BB condition command: testNetwork 32 ABCplus 30 Aplus 30 experimentalTest ABCplus 30 Dnothing 30 Dplus 30 controlTest ABCplus 30 Aplus 30 experimentalTest ABCplus 30 Dnothing 30 Dplus 30 controlTest BBconditionCrossEntropy.txt Effect
+# BB condition command: testNetwork 32 ABCplus 10 Aplus 10 experimentalTest ABCplus 10 Dnothing 10 Dplus 10 controlTest ABCplus 10 Aplus 10 experimentalTest ABCplus 10 Dnothing 10 Dplus 10 controlTest BBconditionCrossEntropy.txt Effect
 
-# ISO condition command: testNetwork 32 ABCplus 30 Aminus 30 experimentalTest ABCplus 30 Dnothing 30 Dminus 30 controlTest ABCplus 30 Aminus 30 experimentalTest ABCplus 30 Dnothing 30 Dminus 30 controlTest ISOconditionCrossEntropy.txt Effect
+# ISO condition command: testNetwork 32 ABCplus 10 Aminus 10 experimentalTest ABCplus 10 Dnothing 10 Dminus 10 controlTest ABCplus 10 Aminus 10 experimentalTest ABCplus 10 Dnothing 10 Dminus 10 controlTest ISOconditionCrossEntropy.txt Effect
 

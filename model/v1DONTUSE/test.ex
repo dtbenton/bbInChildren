@@ -3,32 +3,32 @@ defT:-
 ;
 name: A
 I:	
-(A)  
- 1
+(A)        
+ 1 0 0 0
 T:	
 (Effect)  
  1
 ;
 name: B
 I:	
-(B)  
- 1
+(B)        
+ 0 1 0 0
 T:	
 (Effect)  
  1
 ;
 name: C
 I:	
-(C)  
- 1
+(C)        
+ 0 0 1 0
 T:	
 (Effect)  
  1
 ;
 name: D
 I:	
-(D)  
- 1
+(D)        
+ 0 0 0 1
 T:	
 (Effect)  
  1

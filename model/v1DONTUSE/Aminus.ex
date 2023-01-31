@@ -1,10 +1,10 @@
 defI:-
 defT:-
 ;
-name: Dminus
+name: Aminus
 I:	
-(D)  
- 1
+(A)        
+ 1 0 0 0
 T:	
 (Effect)  
  0

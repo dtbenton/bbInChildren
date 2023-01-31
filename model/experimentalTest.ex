@@ -3,24 +3,24 @@ defT:-
 ;
 name: A
 I:	
-(A)        
- 1 0 0 0
+(A)  
+ 1
 T:	
 (Effect)  
  1
 ;
 name: B
 I:	
-(B)        
- 0 1 0 0
+(B)  
+ 1
 T:	
 (Effect)  
  1
 ;
 name: C
 I:	
-(C)        
- 0 0 1 0
+(C)  
+ 1
 T:	
 (Effect)  
  1

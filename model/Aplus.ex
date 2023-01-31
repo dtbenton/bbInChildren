@@ -3,8 +3,8 @@ defT:-
 ;
 name: Aplus
 I:	
-(A)        
- 1 0 0 0
+(A)  
+ 1
 T:	
 (Effect)  
  1
