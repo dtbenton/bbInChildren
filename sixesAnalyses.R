@@ -159,9 +159,8 @@ table(D_tall_Exp1_6yos$Condition)/14
 
 # 6 Yo
 D_tall_Exp1_6yos_complete=D_tall_Exp1_6yos[complete.cases(D_tall_Exp1_6yos), ]
-ggplot(data = D_tall_Exp1_6yos_complete) + geom_bar(mapping = aes(x=choice, color = trialType, fill = objectType),
-                                                    stat="count", position = "dodge",  na.rm = TRUE) + facet_wrap(~Condition)
-
+ggplot(data = D_tall_Exp1_6yos_complete) + geom_bar(mapping = aes(x=choice, color = Condition, fill = objectType),
+                                                    stat="count", position = "dodge",  na.rm = TRUE) + facet_wrap(~trialType)
 
 
 ######################

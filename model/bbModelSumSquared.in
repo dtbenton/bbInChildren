@@ -37,8 +37,9 @@ setObj numUpdates   50
 setObj reportInterval 1
 setObj unitCellSize 20
 setObj linkCellSize 10
-setObj randRange 0.00001
-randWeights -r .001
+#setObj randRange 0.00001
+randWeights -r .01
+#randWeights -r .001
 
 
 
@@ -136,4 +137,12 @@ proc testNetwork {n train trainNum train2 trainNum2 test1 train3 trainNum3 train
 # CONDITION D: testNetwork 32 ABCplus 30 Dminus 30 controlTest ABCplus 30 Aminus 30 experimentalTest ABCplus 30 Dminus 30 controlTest ABCplus 30 Aminus 30 experimentalTest ISOconditionSumSquaredConditionD.txt Effect
 
 
+testNetwork 32 ABCplus 30 Aplus 30 experimentalTest ABCplus 30 Dplus 30 controlTest ABCplus 30 Aplus 30 experimentalTest ABCplus 30 Dplus 30 controlTest BBconditionSumSquaredConditionA.txt Effect
+testNetwork 32 ABCplus 30 Dplus 30 controlTest ABCplus 30 Dplus 30 controlTest ABCplus 30 Aplus 30 experimentalTest ABCplus 30 Aplus 30 experimentalTest BBconditionSumSquaredConditionB.txt Effect
+testNetwork 32 ABCplus 30 Aplus 30 experimentalTest ABCplus 30 Aplus 30 experimentalTest ABCplus 30 Dplus 30 controlTest ABCplus 30 Dplus 30 controlTest BBconditionSumSquaredConditionC.txt Effect
+testNetwork 32 ABCplus 30 Dplus 30 controlTest ABCplus 30 Aplus 30 experimentalTest ABCplus 30 Dplus 30 controlTest ABCplus 30 Aplus 30 experimentalTest BBconditionSumSquaredConditionD.txt Effect
 
+testNetwork 32 ABCplus 30 Aminus 30 experimentalTest ABCplus 30 Dminus 30 controlTest ABCplus 30 Aminus 30 experimentalTest ABCplus 30 Dminus 30 controlTest ISOconditionSumSquaredConditionA.txt Effect
+testNetwork 32 ABCplus 30 Dminus 30 controlTest ABCplus 30 Dminus 30 controlTest ABCplus 30 Aminus 30 experimentalTest ABCplus 30 Aminus 30 experimentalTest ISOconditionSumSquaredConditionB.txt Effect
+testNetwork 32 ABCplus 30 Aminus 30 experimentalTest ABCplus 30 Aminus 30 experimentalTest ABCplus 30 Dminus 30 controlTest ABCplus 30 Dminus 30 controlTest ISOconditionSumSquaredConditionC.txt Effect
+testNetwork 32 ABCplus 30 Dminus 30 controlTest ABCplus 30 Aminus 30 experimentalTest ABCplus 30 Dminus 30 controlTest ABCplus 30 Aminus 30 experimentalTest ISOconditionSumSquaredConditionD.txt Effect
