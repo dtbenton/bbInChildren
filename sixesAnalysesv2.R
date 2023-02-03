@@ -753,6 +753,7 @@ glm.global.boot.2(8,"control",12,7,D_tall_Exp1_6yos_obj_C_BB_ISO)
 ################################
 ### CREATE NUMERIC DATAFRAME ###
 ################################
+<<<<<<< HEAD
 D.BB.DF = data.frame(ID = c(1:62), 
                      A.BB.MAIN.SUM = A.BB.MAIN.SUM, 
                      B.BB.MAIN.SUM = B.BB.MAIN.SUM,
@@ -778,17 +779,27 @@ names(D.BB.DF_tall)
 D.BB.DF_tall = D.BB.DF_tall[,c(1,3:4,2)]
 
 
+=======
+>>>>>>> 45f335df6e7345268f1416445bcf1d6cfb8c1963
 # BB MAIN
 A.BB.MAIN.SUM = (as.integer(D_tall$choice[D_tall$Condition=="BB" & D_tall$phaseOrder == "Phase 1" & D_tall$trialType=="main" & D_tall$objectType=="A"])+
                    as.numeric(D_tall$choice[D_tall$Condition=="BB" & D_tall$phaseOrder=="Phase 2" & D_tall$trialType=="main" & D_tall$objectType=="A"]))-2
 length(A.BB.MAIN.SUM)
 mean(A.BB.MAIN.SUM, na.rm=TRUE)
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 45f335df6e7345268f1416445bcf1d6cfb8c1963
 B.BB.MAIN.SUM = (as.integer(D_tall$choice[D_tall$Condition=="BB" & D_tall$phaseOrder == "Phase 1" & D_tall$trialType=="main" & D_tall$objectType=="B"])+
                    as.numeric(D_tall$choice[D_tall$Condition=="BB" & D_tall$phaseOrder=="Phase 2" & D_tall$trialType=="main" & D_tall$objectType=="B"]))-2
 length(B.BB.MAIN.SUM)
 mean(B.BB.MAIN.SUM, na.rm=TRUE)
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 45f335df6e7345268f1416445bcf1d6cfb8c1963
 C.BB.MAIN.SUM = (as.integer(D_tall$choice[D_tall$Condition=="BB" & D_tall$phaseOrder == "Phase 1" & D_tall$trialType=="main" & D_tall$objectType=="C"])+
                    as.numeric(D_tall$choice[D_tall$Condition=="BB" & D_tall$phaseOrder=="Phase 2" & D_tall$trialType=="main" & D_tall$objectType=="C"]))-2
 length(C.BB.MAIN.SUM)
@@ -800,23 +811,37 @@ A.BB.CONTROL.SUM = (as.integer(D_tall$choice[D_tall$Condition=="BB" & D_tall$pha
 length(A.BB.CONTROL.SUM)
 mean(A.BB.CONTROL.SUM, na.rm=TRUE)
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 45f335df6e7345268f1416445bcf1d6cfb8c1963
 B.BB.CONTROL.SUM = (as.integer(D_tall$choice[D_tall$Condition=="BB" & D_tall$phaseOrder == "Phase 1" & D_tall$trialType=="control" & D_tall$objectType=="B"])+
                    as.numeric(D_tall$choice[D_tall$Condition=="BB" & D_tall$phaseOrder=="Phase 2" & D_tall$trialType=="control" & D_tall$objectType=="B"]))-2
 length(B.BB.CONTROL.SUM)
 mean(B.BB.CONTROL.SUM, na.rm=TRUE)
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 45f335df6e7345268f1416445bcf1d6cfb8c1963
 C.BB.CONTROL.SUM = (as.integer(D_tall$choice[D_tall$Condition=="BB" & D_tall$phaseOrder == "Phase 1" & D_tall$trialType=="control" & D_tall$objectType=="C"])+
                    as.numeric(D_tall$choice[D_tall$Condition=="BB" & D_tall$phaseOrder=="Phase 2" & D_tall$trialType=="control" & D_tall$objectType=="C"]))-2
 length(C.BB.CONTROL.SUM)
 mean(C.BB.CONTROL.SUM, na.rm=TRUE)
 
+<<<<<<< HEAD
 D.BB.CONTROL.SUM = (as.integer(D_tall$choice[D_tall$Condition=="BB" & D_tall$phaseOrder == "Phase 1" & D_tall$trialType=="control" & D_tall$objectType=="C"])+
                        as.numeric(D_tall$choice[D_tall$Condition=="BB" & D_tall$phaseOrder=="Phase 2" & D_tall$trialType=="control" & D_tall$objectType=="C"]))-2
+=======
+D.BB.CONTROL.SUM = (as.integer(D_tall$choice[D_tall$Condition=="BB" & D_tall$phaseOrder == "Phase 1" & D_tall$trialType=="control" & D_tall$objectType=="D"])+
+                      as.numeric(D_tall$choice[D_tall$Condition=="BB" & D_tall$phaseOrder=="Phase 2" & D_tall$trialType=="control" & D_tall$objectType=="D"]))-2
+>>>>>>> 45f335df6e7345268f1416445bcf1d6cfb8c1963
 length(D.BB.CONTROL.SUM)
 mean(D.BB.CONTROL.SUM, na.rm=TRUE)
 
 
 
+<<<<<<< HEAD
 D.ISO.DF = data.frame(ID = c(1:35), 
                      A.ISO.MAIN.SUM = A.ISO.MAIN.SUM, 
                      B.ISO.MAIN.SUM = B.ISO.MAIN.SUM,
@@ -895,3 +920,47 @@ t.test(A.BB.MAIN.SUM,
 
 t.test(A.BB.MAIN.SUM,
        C.BB.MAIN.SUM, paired=TRUE, alternative="two.sided")
+=======
+# ISO MAIN
+A.ISO.MAIN.SUM = (as.integer(D_tall$choice[D_tall$Condition=="ISO" & D_tall$phaseOrder == "Phase 1" & D_tall$trialType=="main" & D_tall$objectType=="A"])+
+                   as.numeric(D_tall$choice[D_tall$Condition=="ISO" & D_tall$phaseOrder=="Phase 2" & D_tall$trialType=="main" & D_tall$objectType=="A"]))-2
+length(A.ISO.MAIN.SUM)
+mean(A.ISO.MAIN.SUM, na.rm=TRUE)
+
+
+B.ISO.MAIN.SUM = (as.integer(D_tall$choice[D_tall$Condition=="ISO" & D_tall$phaseOrder == "Phase 1" & D_tall$trialType=="main" & D_tall$objectType=="B"])+
+                   as.numeric(D_tall$choice[D_tall$Condition=="ISO" & D_tall$phaseOrder=="Phase 2" & D_tall$trialType=="main" & D_tall$objectType=="B"]))-2
+length(B.ISO.MAIN.SUM)
+mean(B.ISO.MAIN.SUM, na.rm=TRUE)
+
+
+C.ISO.MAIN.SUM = (as.integer(D_tall$choice[D_tall$Condition=="ISO" & D_tall$phaseOrder == "Phase 1" & D_tall$trialType=="main" & D_tall$objectType=="C"])+
+                   as.numeric(D_tall$choice[D_tall$Condition=="ISO" & D_tall$phaseOrder=="Phase 2" & D_tall$trialType=="main" & D_tall$objectType=="C"]))-2
+length(C.ISO.MAIN.SUM)
+mean(C.ISO.MAIN.SUM, na.rm=TRUE)
+
+
+
+# ISO CONTROL
+A.ISO.CONTROL.SUM = (as.integer(D_tall$choice[D_tall$Condition=="ISO" & D_tall$phaseOrder == "Phase 1" & D_tall$trialType=="control" & D_tall$objectType=="A"])+
+                    as.numeric(D_tall$choice[D_tall$Condition=="ISO" & D_tall$phaseOrder=="Phase 2" & D_tall$trialType=="control" & D_tall$objectType=="A"]))-2
+length(A.ISO.CONTROL.SUM)
+mean(A.ISO.CONTROL.SUM, na.rm=TRUE)
+
+
+B.ISO.CONTROL.SUM = (as.integer(D_tall$choice[D_tall$Condition=="ISO" & D_tall$phaseOrder == "Phase 1" & D_tall$trialType=="control" & D_tall$objectType=="B"])+
+                    as.numeric(D_tall$choice[D_tall$Condition=="ISO" & D_tall$phaseOrder=="Phase 2" & D_tall$trialType=="control" & D_tall$objectType=="B"]))-2
+length(B.ISO.CONTROL.SUM)
+mean(B.ISO.CONTROL.SUM, na.rm=TRUE)
+
+
+C.ISO.CONTROL.SUM = (as.integer(D_tall$choice[D_tall$Condition=="ISO" & D_tall$phaseOrder == "Phase 1" & D_tall$trialType=="control" & D_tall$objectType=="C"])+
+                    as.numeric(D_tall$choice[D_tall$Condition=="ISO" & D_tall$phaseOrder=="Phase 2" & D_tall$trialType=="control" & D_tall$objectType=="C"]))-2
+length(C.ISO.CONTROL.SUM)
+mean(C.ISO.CONTROL.SUM, na.rm=TRUE)
+
+D.ISO.CONTROL.SUM = (as.integer(D_tall$choice[D_tall$Condition=="ISO" & D_tall$phaseOrder == "Phase 1" & D_tall$trialType=="control" & D_tall$objectType=="D"])+
+                       as.numeric(D_tall$choice[D_tall$Condition=="ISO" & D_tall$phaseOrder=="Phase 2" & D_tall$trialType=="control" & D_tall$objectType=="D"]))-2
+length(D.ISO.CONTROL.SUM)
+mean(D.ISO.CONTROL.SUM, na.rm=TRUE)
+>>>>>>> 45f335df6e7345268f1416445bcf1d6cfb8c1963
