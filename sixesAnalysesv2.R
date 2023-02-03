@@ -753,6 +753,145 @@ glm.global.boot.2(8,"control",12,7,D_tall_Exp1_6yos_obj_C_BB_ISO)
 ################################
 ### CREATE NUMERIC DATAFRAME ###
 ################################
+D.BB.DF = data.frame(ID = c(1:62), 
+                     A.BB.MAIN.SUM = A.BB.MAIN.SUM, 
+                     B.BB.MAIN.SUM = B.BB.MAIN.SUM,
+                     C.BB.MAIN.SUM = C.BB.MAIN.SUM,
+                     A.BB.CONTROL.SUM = A.BB.CONTROL.SUM,
+                     B.BB.CONTROL.SUM = B.BB.CONTROL.SUM,
+                     C.BB.CONTROL.SUM = C.BB.CONTROL.SUM,
+                     D.BB.CONTROL.SUM = D.BB.CONTROL.SUM)
+names(D.BB.DF)
+
+D.BB.DF_tall = reshape(D.BB.DF, varying = c(2:8), v.names = "measure", 
+                       timevar = "condition",   direction = "long")
+D.BB.DF_tall = D.BB.DF_tall[order(D.BB.DF_tall$ID),] 
+
+D.BB.DF_tall$objects = rep(c("A","B","C","A","B","C","D"), times = 62)
+D.BB.DF_tall$eventType = rep(c("main","main","main",
+                               "control","control","control","control"), times = 62)
+
+names(D.BB.DF_tall)
+D.BB.DF_tall$id = NULL
+D.BB.DF_tall$condition = NULL
+names(D.BB.DF_tall)
+D.BB.DF_tall = D.BB.DF_tall[,c(1,3:4,2)]
+
+
+# BB MAIN
 A.BB.MAIN.SUM = (as.integer(D_tall$choice[D_tall$Condition=="BB" & D_tall$phaseOrder == "Phase 1" & D_tall$trialType=="main" & D_tall$objectType=="A"])+
                    as.numeric(D_tall$choice[D_tall$Condition=="BB" & D_tall$phaseOrder=="Phase 2" & D_tall$trialType=="main" & D_tall$objectType=="A"]))-2
+length(A.BB.MAIN.SUM)
+mean(A.BB.MAIN.SUM, na.rm=TRUE)
 
+B.BB.MAIN.SUM = (as.integer(D_tall$choice[D_tall$Condition=="BB" & D_tall$phaseOrder == "Phase 1" & D_tall$trialType=="main" & D_tall$objectType=="B"])+
+                   as.numeric(D_tall$choice[D_tall$Condition=="BB" & D_tall$phaseOrder=="Phase 2" & D_tall$trialType=="main" & D_tall$objectType=="B"]))-2
+length(B.BB.MAIN.SUM)
+mean(B.BB.MAIN.SUM, na.rm=TRUE)
+
+C.BB.MAIN.SUM = (as.integer(D_tall$choice[D_tall$Condition=="BB" & D_tall$phaseOrder == "Phase 1" & D_tall$trialType=="main" & D_tall$objectType=="C"])+
+                   as.numeric(D_tall$choice[D_tall$Condition=="BB" & D_tall$phaseOrder=="Phase 2" & D_tall$trialType=="main" & D_tall$objectType=="C"]))-2
+length(C.BB.MAIN.SUM)
+mean(C.BB.MAIN.SUM, na.rm=TRUE)
+
+# BB CONTROL
+A.BB.CONTROL.SUM = (as.integer(D_tall$choice[D_tall$Condition=="BB" & D_tall$phaseOrder == "Phase 1" & D_tall$trialType=="control" & D_tall$objectType=="A"])+
+                   as.numeric(D_tall$choice[D_tall$Condition=="BB" & D_tall$phaseOrder=="Phase 2" & D_tall$trialType=="control" & D_tall$objectType=="A"]))-2
+length(A.BB.CONTROL.SUM)
+mean(A.BB.CONTROL.SUM, na.rm=TRUE)
+
+B.BB.CONTROL.SUM = (as.integer(D_tall$choice[D_tall$Condition=="BB" & D_tall$phaseOrder == "Phase 1" & D_tall$trialType=="control" & D_tall$objectType=="B"])+
+                   as.numeric(D_tall$choice[D_tall$Condition=="BB" & D_tall$phaseOrder=="Phase 2" & D_tall$trialType=="control" & D_tall$objectType=="B"]))-2
+length(B.BB.CONTROL.SUM)
+mean(B.BB.CONTROL.SUM, na.rm=TRUE)
+
+C.BB.CONTROL.SUM = (as.integer(D_tall$choice[D_tall$Condition=="BB" & D_tall$phaseOrder == "Phase 1" & D_tall$trialType=="control" & D_tall$objectType=="C"])+
+                   as.numeric(D_tall$choice[D_tall$Condition=="BB" & D_tall$phaseOrder=="Phase 2" & D_tall$trialType=="control" & D_tall$objectType=="C"]))-2
+length(C.BB.CONTROL.SUM)
+mean(C.BB.CONTROL.SUM, na.rm=TRUE)
+
+D.BB.CONTROL.SUM = (as.integer(D_tall$choice[D_tall$Condition=="BB" & D_tall$phaseOrder == "Phase 1" & D_tall$trialType=="control" & D_tall$objectType=="C"])+
+                       as.numeric(D_tall$choice[D_tall$Condition=="BB" & D_tall$phaseOrder=="Phase 2" & D_tall$trialType=="control" & D_tall$objectType=="C"]))-2
+length(D.BB.CONTROL.SUM)
+mean(D.BB.CONTROL.SUM, na.rm=TRUE)
+
+
+
+D.ISO.DF = data.frame(ID = c(1:35), 
+                     A.ISO.MAIN.SUM = A.ISO.MAIN.SUM, 
+                     B.ISO.MAIN.SUM = B.ISO.MAIN.SUM,
+                     C.ISO.MAIN.SUM = C.ISO.MAIN.SUM,
+                     A.ISO.CONTROL.SUM = A.ISO.CONTROL.SUM,
+                     B.ISO.CONTROL.SUM = B.ISO.CONTROL.SUM,
+                     C.ISO.CONTROL.SUM = C.ISO.CONTROL.SUM,
+                     D.ISO.CONTROL.SUM = D.ISO.CONTROL.SUM)
+names(D.ISO.DF)
+
+D.ISO.DF_tall = reshape(D.ISO.DF, varying = c(2:8), v.names = "measure", 
+                       timevar = "condition",   direction = "long")
+D.ISO.DF_tall = D.ISO.DF_tall[order(D.ISO.DF_tall$ID),] 
+
+D.ISO.DF_tall$objects = rep(c("A","B","C","A","B","C","D"), times = 35)
+D.ISO.DF_tall$eventType = rep(c("main","main","main",
+                               "control","control","control","control"), times = 35)
+names(D.ISO.DF_tall)
+D.ISO.DF_tall$id = NULL
+D.ISO.DF_tall$condition = NULL
+names(D.ISO.DF_tall)
+D.ISO.DF_tall = D.ISO.DF_tall[,c(1,3:4,2)]
+
+# ISO MAIN
+A.ISO.MAIN.SUM = (as.integer(D_tall$choice[D_tall$Condition=="ISO" & D_tall$phaseOrder == "Phase 1" & D_tall$trialType=="main" & D_tall$objectType=="A"])+
+                    as.numeric(D_tall$choice[D_tall$Condition=="ISO" & D_tall$phaseOrder=="Phase 2" & D_tall$trialType=="main" & D_tall$objectType=="A"]))-2
+length(A.ISO.MAIN.SUM)
+mean(A.ISO.MAIN.SUM, na.rm=TRUE)
+
+B.ISO.MAIN.SUM = (as.integer(D_tall$choice[D_tall$Condition=="ISO" & D_tall$phaseOrder == "Phase 1" & D_tall$trialType=="main" & D_tall$objectType=="B"])+
+                    as.numeric(D_tall$choice[D_tall$Condition=="ISO" & D_tall$phaseOrder=="Phase 2" & D_tall$trialType=="main" & D_tall$objectType=="B"]))-2
+length(B.ISO.MAIN.SUM)
+mean(B.ISO.MAIN.SUM, na.rm=TRUE)
+
+C.ISO.MAIN.SUM = (as.integer(D_tall$choice[D_tall$Condition=="ISO" & D_tall$phaseOrder == "Phase 1" & D_tall$trialType=="main" & D_tall$objectType=="C"])+
+                    as.numeric(D_tall$choice[D_tall$Condition=="ISO" & D_tall$phaseOrder=="Phase 2" & D_tall$trialType=="main" & D_tall$objectType=="C"]))-2
+length(C.ISO.MAIN.SUM)
+mean(C.ISO.MAIN.SUM, na.rm=TRUE)
+
+# ISO CONTROL
+A.ISO.CONTROL.SUM = (as.integer(D_tall$choice[D_tall$Condition=="ISO" & D_tall$phaseOrder == "Phase 1" & D_tall$trialType=="control" & D_tall$objectType=="A"])+
+                       as.numeric(D_tall$choice[D_tall$Condition=="ISO" & D_tall$phaseOrder=="Phase 2" & D_tall$trialType=="control" & D_tall$objectType=="A"]))-2
+length(A.ISO.CONTROL.SUM)
+mean(A.ISO.CONTROL.SUM, na.rm=TRUE)
+
+B.ISO.CONTROL.SUM = (as.integer(D_tall$choice[D_tall$Condition=="ISO" & D_tall$phaseOrder == "Phase 1" & D_tall$trialType=="control" & D_tall$objectType=="B"])+
+                       as.numeric(D_tall$choice[D_tall$Condition=="ISO" & D_tall$phaseOrder=="Phase 2" & D_tall$trialType=="control" & D_tall$objectType=="B"]))-2
+length(B.ISO.CONTROL.SUM)
+mean(B.ISO.CONTROL.SUM, na.rm=TRUE)
+
+C.ISO.CONTROL.SUM = (as.integer(D_tall$choice[D_tall$Condition=="ISO" & D_tall$phaseOrder == "Phase 1" & D_tall$trialType=="control" & D_tall$objectType=="C"])+
+                        as.numeric(D_tall$choice[D_tall$Condition=="ISO" & D_tall$phaseOrder=="Phase 2" & D_tall$trialType=="control" & D_tall$objectType=="C"]))-2
+length(C.ISO.CONTROL.SUM)
+mean(C.ISO.CONTROL.SUM, na.rm=TRUE)
+
+D.ISO.CONTROL.SUM = (as.integer(D_tall$choice[D_tall$Condition=="ISO" & D_tall$phaseOrder == "Phase 1" & D_tall$trialType=="control" & D_tall$objectType=="C"])+
+                        as.numeric(D_tall$choice[D_tall$Condition=="ISO" & D_tall$phaseOrder=="Phase 2" & D_tall$trialType=="control" & D_tall$objectType=="C"]))-2
+length(D.ISO.CONTROL.SUM)
+mean(D.ISO.CONTROL.SUM, na.rm=TRUE)
+
+# PLOTS
+#BB
+condition_barplot = ggplot(D.BB.DF_tall, aes(eventType, measure, fill = objects)) # create the bar graph with test.trial.2 on the x-axis and measure on the y-axis
+condition_barplot + stat_summary(fun = mean, geom = "bar", position = "dodge") + # add the bars, which represent the means and the place them side-by-side with 'dodge'
+  stat_summary(fun.data=mean_cl_boot, geom = "errorbar", position = position_dodge(width=0.90), width = 0.2) 
+
+
+#ISO
+condition_barplot = ggplot(D.ISO.DF_tall, aes(eventType, measure, fill = objects)) # create the bar graph with test.trial.2 on the x-axis and measure on the y-axis
+condition_barplot + stat_summary(fun = mean, geom = "bar", position = "dodge") + # add the bars, which represent the means and the place them side-by-side with 'dodge'
+  stat_summary(fun.data=mean_cl_boot, geom = "errorbar", position = position_dodge(width=0.90), width = 0.2) 
+
+# t.tests
+t.test(A.BB.MAIN.SUM,
+       B.BB.MAIN.SUM, paired=TRUE, alternative="two.sided")
+
+t.test(A.BB.MAIN.SUM,
+       C.BB.MAIN.SUM, paired=TRUE, alternative="two.sided")
