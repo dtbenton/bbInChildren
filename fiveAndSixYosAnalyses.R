@@ -1,7 +1,4 @@
-################################
-### CREATE NUMERIC DATAFRAME ###
-################################
-library(lme4)
+# load all relevant libraries
 library(nlme)
 library(boot)
 library(car) 
@@ -142,222 +139,417 @@ fix(D_tall)
 
 
 # subset dataframes by experiments
-D_tall_Exp1_6yos = subset(D_tall, ! Experiment %in% c("Experiment 2"))
-D_tall_Exp1_6yos = subset(D_tall, ! Age %in% c("4"))
-D_tall_Exp1_6yos$Age = factor(D_tall_Exp1_6yos$Age)
-D_tall_Exp1_6yos$Experiment = factor(D_tall_Exp1_6yos$Experiment)
+D_tall_Exp1_5and6yos = subset(D_tall, ! Experiment %in% c("Experiment 2"))
+D_tall_Exp1_5and6yos = subset(D_tall, ! Age %in% c("4"))
+D_tall_Exp1_5and6yos$Age = factor(D_tall_Exp1_5and6yos$Age)
+D_tall_Exp1_5and6yos$Experiment = factor(D_tall_Exp1_5and6yos$Experiment)
 
-dim(D_tall_Exp1_6yos)
-D_tall_Exp1_6yos = D_tall_Exp1_6yos[1:1204,]
+dim(D_tall_Exp1_5and6yos)
+D_tall_Exp1_5and6yos = D_tall_Exp1_5and6yos[1:1204,]
 
 
 # get the number of participants in each condition
-table(D_tall_Exp1_6yos$Condition)/14
+table(D_tall_Exp1_5and6yos$Condition)/14
 
 
+##########################################################
+##########################################################
+###                                                    ###
+### ANALYSIS FOR CHILDREN ASSIGNED TO THE BB CONDITION ###
+###                                                    ###
+##########################################################
+##########################################################
+
+# BB MAIN 
+A.BB.MAIN.SUM.5s = as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="BB" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="main" & D_tall_Exp1_5and6yos$objectType=="A" & D_tall_Exp1_5and6yos$Age=="5"])+
+  as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="BB" & D_tall_Exp1_5and6yos$phaseOrder=="Phase 2" & D_tall_Exp1_5and6yos$trialType=="main" & D_tall_Exp1_5and6yos$objectType=="A" & D_tall_Exp1_5and6yos$Age=="5"])-2
+length(A.BB.MAIN.SUM.5s)
+mean(A.BB.MAIN.SUM.5s, na.rm=TRUE)
 
 
-# BB MAIN
-A.BB.MAIN.SUM = as.numeric(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$phaseOrder == "Phase 1" & D_tall_Exp1_6yos$trialType=="main" & D_tall_Exp1_6yos$objectType=="A"])+
-  as.numeric(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$phaseOrder=="Phase 2" & D_tall_Exp1_6yos$trialType=="main" & D_tall_Exp1_6yos$objectType=="A"])-2
-length(A.BB.MAIN.SUM)
-mean(A.BB.MAIN.SUM, na.rm=TRUE)
+A.BB.MAIN.SUM.6s = as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="BB" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="main" & D_tall_Exp1_5and6yos$objectType=="A" & D_tall_Exp1_5and6yos$Age=="6"])+
+  as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="BB" & D_tall_Exp1_5and6yos$phaseOrder=="Phase 2" & D_tall_Exp1_5and6yos$trialType=="main" & D_tall_Exp1_5and6yos$objectType=="A" & D_tall_Exp1_5and6yos$Age=="6"])-2
+length(A.BB.MAIN.SUM.6s)
+mean(A.BB.MAIN.SUM.6s, na.rm=TRUE)
 
 
-B.BB.MAIN.SUM = as.numeric(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$phaseOrder == "Phase 1" & D_tall_Exp1_6yos$trialType=="main" & D_tall_Exp1_6yos$objectType=="B"])+
-  as.numeric(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$phaseOrder=="Phase 2" & D_tall_Exp1_6yos$trialType=="main" & D_tall_Exp1_6yos$objectType=="B"])-2
-length(B.BB.MAIN.SUM)
-mean(B.BB.MAIN.SUM, na.rm=TRUE)
+B.BB.MAIN.SUM.5s = as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="BB" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="main" & D_tall_Exp1_5and6yos$objectType=="B" & D_tall_Exp1_5and6yos$Age=="5"])+
+  as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="BB" & D_tall_Exp1_5and6yos$phaseOrder=="Phase 2" & D_tall_Exp1_5and6yos$trialType=="main" & D_tall_Exp1_5and6yos$objectType=="B" & D_tall_Exp1_5and6yos$Age=="5"])-2
+length(B.BB.MAIN.SUM.5s)
+mean(B.BB.MAIN.SUM.5s, na.rm=TRUE)
 
 
-C.BB.MAIN.SUM = as.numeric(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$phaseOrder == "Phase 1" & D_tall_Exp1_6yos$trialType=="main" & D_tall_Exp1_6yos$objectType=="C"])+
-  as.numeric(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$phaseOrder=="Phase 2" & D_tall_Exp1_6yos$trialType=="main" & D_tall_Exp1_6yos$objectType=="C"])-2
-length(C.BB.MAIN.SUM)
-mean(C.BB.MAIN.SUM, na.rm=TRUE)
+B.BB.MAIN.SUM.6s = as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="BB" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="main" & D_tall_Exp1_5and6yos$objectType=="B" & D_tall_Exp1_5and6yos$Age=="6"])+
+  as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="BB" & D_tall_Exp1_5and6yos$phaseOrder=="Phase 2" & D_tall_Exp1_5and6yos$trialType=="main" & D_tall_Exp1_5and6yos$objectType=="B" & D_tall_Exp1_5and6yos$Age=="6"])-2
+length(B.BB.MAIN.SUM.6s)
+mean(B.BB.MAIN.SUM.6s, na.rm=TRUE)
+
+
+C.BB.MAIN.SUM.5s = as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="BB" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="main" & D_tall_Exp1_5and6yos$objectType=="C" & D_tall_Exp1_5and6yos$Age=="5"])+
+  as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="BB" & D_tall_Exp1_5and6yos$phaseOrder=="Phase 2" & D_tall_Exp1_5and6yos$trialType=="main" & D_tall_Exp1_5and6yos$objectType=="C" & D_tall_Exp1_5and6yos$Age=="5"])-2
+length(C.BB.MAIN.SUM.5s)
+mean(C.BB.MAIN.SUM.5s, na.rm=TRUE)
+
+
+C.BB.MAIN.SUM.6s = as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="BB" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="main" & D_tall_Exp1_5and6yos$objectType=="C" & D_tall_Exp1_5and6yos$Age=="6"])+
+  as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="BB" & D_tall_Exp1_5and6yos$phaseOrder=="Phase 2" & D_tall_Exp1_5and6yos$trialType=="main" & D_tall_Exp1_5and6yos$objectType=="C" & D_tall_Exp1_5and6yos$Age=="6"])-2
+length(C.BB.MAIN.SUM.6s)
+mean(C.BB.MAIN.SUM.6s, na.rm=TRUE)
+
 
 # BB CONTROL
-A.BB.CONTROL.SUM = as.numeric(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$phaseOrder == "Phase 1" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="A"])+
-  as.numeric(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$phaseOrder=="Phase 2" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="A"])-2
-length(A.BB.CONTROL.SUM)
-mean(A.BB.CONTROL.SUM, na.rm=TRUE)
+A.BB.CONTROL.SUM.5s = as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="BB" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="A" & D_tall_Exp1_5and6yos$Age=="5"])+
+  as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="BB" & D_tall_Exp1_5and6yos$phaseOrder=="Phase 2" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="A" & D_tall_Exp1_5and6yos$Age=="5"])-2
+length(A.BB.CONTROL.SUM.5s)
+mean(A.BB.CONTROL.SUM.5s, na.rm=TRUE)
 
 
-B.BB.CONTROL.SUM = as.numeric(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$phaseOrder == "Phase 1" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="B"])+
-  as.numeric(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$phaseOrder=="Phase 2" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="B"])-2
-length(B.BB.CONTROL.SUM)
-mean(B.BB.CONTROL.SUM, na.rm=TRUE)
+A.BB.CONTROL.SUM.6s = as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="BB" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="A" & D_tall_Exp1_5and6yos$Age=="6"])+
+  as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="BB" & D_tall_Exp1_5and6yos$phaseOrder=="Phase 2" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="A" & D_tall_Exp1_5and6yos$Age=="6"])-2
+length(A.BB.CONTROL.SUM.6s)
+mean(A.BB.CONTROL.SUM.6s, na.rm=TRUE)
 
 
-C.BB.CONTROL.SUM = as.numeric(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$phaseOrder == "Phase 1" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="C"])+
-  as.numeric(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$phaseOrder=="Phase 2" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="C"])-2
-length(C.BB.CONTROL.SUM)
-mean(C.BB.CONTROL.SUM, na.rm=TRUE)
+B.BB.CONTROL.SUM.5s = as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="BB" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="B" & D_tall_Exp1_5and6yos$Age=="5"])+
+  as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="BB" & D_tall_Exp1_5and6yos$phaseOrder=="Phase 2" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="B" & D_tall_Exp1_5and6yos$Age=="5"])-2
+length(B.BB.CONTROL.SUM.5s)
+mean(B.BB.CONTROL.SUM.5s, na.rm=TRUE)
 
 
-D.BB.CONTROL.SUM = as.numeric(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$phaseOrder == "Phase 1" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="D"])+
-  as.numeric(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="BB" & D_tall_Exp1_6yos$phaseOrder=="Phase 2" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="D"])-2
-length(D.BB.CONTROL.SUM)
-mean(D.BB.CONTROL.SUM, na.rm=TRUE)
+B.BB.CONTROL.SUM.6s = as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="BB" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="B" & D_tall_Exp1_5and6yos$Age=="6"])+
+  as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="BB" & D_tall_Exp1_5and6yos$phaseOrder=="Phase 2" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="B" & D_tall_Exp1_5and6yos$Age=="6"])-2
+length(B.BB.CONTROL.SUM.6s)
+mean(B.BB.CONTROL.SUM.6s, na.rm=TRUE)
 
 
-D.BB.DF = data.frame(ID = c(1:56), 
-                     A.BB.MAIN.SUM = A.BB.MAIN.SUM, 
-                     B.BB.MAIN.SUM = B.BB.MAIN.SUM,
-                     C.BB.MAIN.SUM = C.BB.MAIN.SUM,
-                     A.BB.CONTROL.SUM = A.BB.CONTROL.SUM,
-                     B.BB.CONTROL.SUM = B.BB.CONTROL.SUM,
-                     C.BB.CONTROL.SUM = C.BB.CONTROL.SUM,
-                     D.BB.CONTROL.SUM = D.BB.CONTROL.SUM)
-names(D.BB.DF)
-
-D.BB.DF_tall = reshape(D.BB.DF, varying = c(2:8), v.names = "measure", 
-                       timevar = "condition",   direction = "long")
-D.BB.DF_tall = D.BB.DF_tall[order(D.BB.DF_tall$ID),] 
-
-D.BB.DF_tall$objects = rep(c("A","B","C","A","B","C","D"), times = 56)
-D.BB.DF_tall$eventType = rep(c("main","main","main",
-                               "control","control","control","control"), times = 56)
-
-names(D.BB.DF_tall)
-D.BB.DF_tall$id = NULL
-D.BB.DF_tall$condition = NULL
-names(D.BB.DF_tall)
-D.BB.DF_tall = D.BB.DF_tall[,c(1,3:4,2)]
+C.BB.CONTROL.SUM.5s = as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="BB" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="C" & D_tall_Exp1_5and6yos$Age=="5"])+
+  as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="BB" & D_tall_Exp1_5and6yos$phaseOrder=="Phase 2" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="C" & D_tall_Exp1_5and6yos$Age=="5"])-2
+length(C.BB.CONTROL.SUM.5s)
+mean(C.BB.CONTROL.SUM.5s, na.rm=TRUE)
 
 
+C.BB.CONTROL.SUM.6s = as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="BB" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="C" & D_tall_Exp1_5and6yos$Age=="6"])+
+  as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="BB" & D_tall_Exp1_5and6yos$phaseOrder=="Phase 2" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="C" & D_tall_Exp1_5and6yos$Age=="6"])-2
+length(C.BB.CONTROL.SUM.6s)
+mean(C.BB.CONTROL.SUM.6s, na.rm=TRUE)
+
+D.BB.CONTROL.SUM.5s = as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="BB" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="D" & D_tall_Exp1_5and6yos$Age=="5"])+
+  as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="BB" & D_tall_Exp1_5and6yos$phaseOrder=="Phase 2" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="D" & D_tall_Exp1_5and6yos$Age=="5"])-2
+length(D.BB.CONTROL.SUM.5s)
+mean(D.BB.CONTROL.SUM.5s, na.rm=TRUE)
+
+
+D.BB.CONTROL.SUM.6s = as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="BB" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="D" & D_tall_Exp1_5and6yos$Age=="6"])+
+  as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="BB" & D_tall_Exp1_5and6yos$phaseOrder=="Phase 2" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="D" & D_tall_Exp1_5and6yos$Age=="6"])-2
+length(D.BB.CONTROL.SUM.6s)
+mean(D.BB.CONTROL.SUM.6s, na.rm=TRUE)
+
+
+# 5s data frame
+D.BB.DF.5s = data.frame(ID = c(1:32), Age = rep(c("5"),32), Condition = rep(c("BB"),32),
+                        A.BB.MAIN.SUM.5s = A.BB.MAIN.SUM.5s, 
+                        B.BB.MAIN.SUM.5s = B.BB.MAIN.SUM.5s,
+                        C.BB.MAIN.SUM.5s = C.BB.MAIN.SUM.5s,
+                        A.BB.CONTROL.SUM.5s = A.BB.CONTROL.SUM.5s,
+                        B.BB.CONTROL.SUM.5s = B.BB.CONTROL.SUM.5s,
+                        C.BB.CONTROL.SUM.5s = C.BB.CONTROL.SUM.5s,
+                        D.BB.CONTROL.SUM.5s = D.BB.CONTROL.SUM.5s)
+names(D.BB.DF.5s)
+
+D.BB.DF.5s_tall = reshape(D.BB.DF.5s, varying = c(4:10), v.names = "measure", 
+                          timevar = "condition",   direction = "long")
+D.BB.DF.5s_tall = D.BB.DF.5s_tall[order(D.BB.DF.5s_tall$ID),] 
+
+D.BB.DF.5s_tall$objects = rep(c("A","B","C","A","B","C","D"), times = 32)
+D.BB.DF.5s_tall$eventType = rep(c("main","main","main",
+                                  "control","control","control","control"), times = 32)
+
+names(D.BB.DF.5s_tall)
+D.BB.DF.5s_tall$id = NULL
+D.BB.DF.5s_tall$condition = NULL
+names(D.BB.DF.5s_tall)
+D.BB.DF.5s_tall = D.BB.DF.5s_tall[,c(1:3,5:6,4)]
+names(D.BB.DF.5s_tall)
+
+D.BB.DF.5s_tall$Age = factor(D.BB.DF.5s_tall$Age)
+D.BB.DF.5s_tall$objects = factor(D.BB.DF.5s_tall$objects)
+D.BB.DF.5s_tall$eventType = factor(D.BB.DF.5s_tall$eventType)
+D.BB.DF.5s_tall$Condition = factor(D.BB.DF.5s_tall$Condition)
+
+
+# 6s data frame
+D.BB.DF.6s = data.frame(ID = c(1:24), Age = rep(c("6"),24), Condition = rep(c("BB"),24),
+                        A.BB.MAIN.SUM.6s = A.BB.MAIN.SUM.6s, 
+                        B.BB.MAIN.SUM.6s = B.BB.MAIN.SUM.6s,
+                        C.BB.MAIN.SUM.6s = C.BB.MAIN.SUM.6s,
+                        A.BB.CONTROL.SUM.6s = A.BB.CONTROL.SUM.6s,
+                        B.BB.CONTROL.SUM.6s = B.BB.CONTROL.SUM.6s,
+                        C.BB.CONTROL.SUM.6s = C.BB.CONTROL.SUM.6s,
+                        D.BB.CONTROL.SUM.6s = D.BB.CONTROL.SUM.6s)
+names(D.BB.DF.6s)
+
+D.BB.DF.6s_tall = reshape(D.BB.DF.6s, varying = c(4:10), v.names = "measure", 
+                          timevar = "condition",   direction = "long")
+D.BB.DF.6s_tall = D.BB.DF.6s_tall[order(D.BB.DF.6s_tall$ID),] 
+
+D.BB.DF.6s_tall$objects = rep(c("A","B","C","A","B","C","D"), times = 24)
+D.BB.DF.6s_tall$eventType = rep(c("main","main","main",
+                                  "control","control","control","control"), times = 24)
+
+names(D.BB.DF.6s_tall)
+D.BB.DF.6s_tall$id = NULL
+D.BB.DF.6s_tall$condition = NULL
+names(D.BB.DF.6s_tall)
+D.BB.DF.6s_tall = D.BB.DF.6s_tall[,c(1:3,5:6,4)]
+names(D.BB.DF.6s_tall)
+
+D.BB.DF.6s_tall$Age = factor(D.BB.DF.6s_tall$Age)
+D.BB.DF.6s_tall$objects = factor(D.BB.DF.6s_tall$objects)
+D.BB.DF.6s_tall$eventType = factor(D.BB.DF.6s_tall$eventType)
+D.BB.DF.6s_tall$Condition = factor(D.BB.DF.6s_tall$Condition)
+
+###########################################################
+###########################################################
+###                                                     ###
+### ANALYSIS FOR CHILDREN ASSIGNED TO THE ISO CONDITION ###
+###                                                     ###
+###########################################################
+###########################################################
 # ISO MAIN
-A.ISO.MAIN.SUM = as.numeric(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="ISO" & D_tall_Exp1_6yos$phaseOrder == "Phase 1" & D_tall_Exp1_6yos$trialType=="main" & D_tall_Exp1_6yos$objectType=="A"])+
-  as.numeric(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="ISO" & D_tall_Exp1_6yos$phaseOrder=="Phase 2" & D_tall_Exp1_6yos$trialType=="main" & D_tall_Exp1_6yos$objectType=="A"])-2
-length(A.ISO.MAIN.SUM)
-mean(A.ISO.MAIN.SUM, na.rm=TRUE)
+
+A.ISO.MAIN.SUM.5s = as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="ISO" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="main" & D_tall_Exp1_5and6yos$objectType=="A" & D_tall_Exp1_5and6yos$Age=="5"])+
+  as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="ISO" & D_tall_Exp1_5and6yos$phaseOrder=="Phase 2" & D_tall_Exp1_5and6yos$trialType=="main" & D_tall_Exp1_5and6yos$objectType=="A" & D_tall_Exp1_5and6yos$Age=="5"])-2
+length(A.ISO.MAIN.SUM.5s)
+mean(A.ISO.MAIN.SUM.5s, na.rm=TRUE)
 
 
-B.ISO.MAIN.SUM = as.numeric(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="ISO" & D_tall_Exp1_6yos$phaseOrder == "Phase 1" & D_tall_Exp1_6yos$trialType=="main" & D_tall_Exp1_6yos$objectType=="B"])+
-  as.numeric(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="ISO" & D_tall_Exp1_6yos$phaseOrder=="Phase 2" & D_tall_Exp1_6yos$trialType=="main" & D_tall_Exp1_6yos$objectType=="B"])-2
-length(B.ISO.MAIN.SUM)
-mean(B.ISO.MAIN.SUM, na.rm=TRUE)
+A.ISO.MAIN.SUM.6s = as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="ISO" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="main" & D_tall_Exp1_5and6yos$objectType=="A" & D_tall_Exp1_5and6yos$Age=="6"])+
+  as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="ISO" & D_tall_Exp1_5and6yos$phaseOrder=="Phase 2" & D_tall_Exp1_5and6yos$trialType=="main" & D_tall_Exp1_5and6yos$objectType=="A" & D_tall_Exp1_5and6yos$Age=="6"])-2
+length(A.ISO.MAIN.SUM.6s)
+mean(A.ISO.MAIN.SUM.6s, na.rm=TRUE)
 
 
-C.ISO.MAIN.SUM = as.numeric(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="ISO" & D_tall_Exp1_6yos$phaseOrder == "Phase 1" & D_tall_Exp1_6yos$trialType=="main" & D_tall_Exp1_6yos$objectType=="C"])+
-  as.numeric(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="ISO" & D_tall_Exp1_6yos$phaseOrder=="Phase 2" & D_tall_Exp1_6yos$trialType=="main" & D_tall_Exp1_6yos$objectType=="C"])-2
-length(C.ISO.MAIN.SUM)
-mean(C.ISO.MAIN.SUM, na.rm=TRUE)
-
-# ISO CONTROL
-A.ISO.CONTROL.SUM = as.numeric(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="ISO" & D_tall_Exp1_6yos$phaseOrder == "Phase 1" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="A"])+
-  as.numeric(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="ISO" & D_tall_Exp1_6yos$phaseOrder=="Phase 2" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="A"])-2
-length(A.ISO.CONTROL.SUM)
-mean(A.ISO.CONTROL.SUM, na.rm=TRUE)
+B.ISO.MAIN.SUM.5s = as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="ISO" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="main" & D_tall_Exp1_5and6yos$objectType=="B" & D_tall_Exp1_5and6yos$Age=="5"])+
+  as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="ISO" & D_tall_Exp1_5and6yos$phaseOrder=="Phase 2" & D_tall_Exp1_5and6yos$trialType=="main" & D_tall_Exp1_5and6yos$objectType=="B" & D_tall_Exp1_5and6yos$Age=="5"])-2
+length(B.ISO.MAIN.SUM.5s)
+mean(B.ISO.MAIN.SUM.5s, na.rm=TRUE)
 
 
-B.ISO.CONTROL.SUM = as.numeric(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="ISO" & D_tall_Exp1_6yos$phaseOrder == "Phase 1" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="B"])+
-  as.numeric(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="ISO" & D_tall_Exp1_6yos$phaseOrder=="Phase 2" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="B"])-2
-length(B.ISO.CONTROL.SUM)
-mean(B.ISO.CONTROL.SUM, na.rm=TRUE)
+B.ISO.MAIN.SUM.6s = as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="ISO" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="main" & D_tall_Exp1_5and6yos$objectType=="B" & D_tall_Exp1_5and6yos$Age=="6"])+
+  as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="ISO" & D_tall_Exp1_5and6yos$phaseOrder=="Phase 2" & D_tall_Exp1_5and6yos$trialType=="main" & D_tall_Exp1_5and6yos$objectType=="B" & D_tall_Exp1_5and6yos$Age=="6"])-2
+length(B.ISO.MAIN.SUM.6s)
+mean(B.ISO.MAIN.SUM.6s, na.rm=TRUE)
 
 
-C.ISO.CONTROL.SUM = as.numeric(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="ISO" & D_tall_Exp1_6yos$phaseOrder == "Phase 1" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="C"])+
-  as.numeric(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="ISO" & D_tall_Exp1_6yos$phaseOrder=="Phase 2" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="C"])-2
-length(C.ISO.CONTROL.SUM)
-mean(C.ISO.CONTROL.SUM, na.rm=TRUE)
+C.ISO.MAIN.SUM.5s = as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="ISO" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="main" & D_tall_Exp1_5and6yos$objectType=="C" & D_tall_Exp1_5and6yos$Age=="5"])+
+  as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="ISO" & D_tall_Exp1_5and6yos$phaseOrder=="Phase 2" & D_tall_Exp1_5and6yos$trialType=="main" & D_tall_Exp1_5and6yos$objectType=="C" & D_tall_Exp1_5and6yos$Age=="5"])-2
+length(C.ISO.MAIN.SUM.5s)
+mean(C.ISO.MAIN.SUM.5s, na.rm=TRUE)
 
 
-D.ISO.CONTROL.SUM = as.numeric(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="ISO" & D_tall_Exp1_6yos$phaseOrder == "Phase 1" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="D"])+
-  as.numeric(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="ISO" & D_tall_Exp1_6yos$phaseOrder=="Phase 2" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="D"])-2
-length(D.ISO.CONTROL.SUM)
-mean(D.ISO.CONTROL.SUM, na.rm=TRUE)
-
-
-D.ISO.DF = data.frame(ID = c(1:25), 
-                      A.ISO.MAIN.SUM = A.ISO.MAIN.SUM, 
-                      B.ISO.MAIN.SUM = B.ISO.MAIN.SUM,
-                      C.ISO.MAIN.SUM = C.ISO.MAIN.SUM,
-                      A.ISO.CONTROL.SUM = A.ISO.CONTROL.SUM,
-                      B.ISO.CONTROL.SUM = B.ISO.CONTROL.SUM,
-                      C.ISO.CONTROL.SUM = C.ISO.CONTROL.SUM,
-                      D.ISO.CONTROL.SUM = D.ISO.CONTROL.SUM)
-names(D.ISO.DF)
-
-D.ISO.DF_tall = reshape(D.ISO.DF, varying = c(2:8), v.names = "measure", 
-                        timevar = "condition",   direction = "long")
-D.ISO.DF_tall = D.ISO.DF_tall[order(D.ISO.DF_tall$ID),] 
-
-D.ISO.DF_tall$objects = rep(c("A","B","C","A","B","C","D"), times = 25)
-D.ISO.DF_tall$eventType = rep(c("main","main","main",
-                                "control","control","control","control"), times = 25)
-names(D.ISO.DF_tall)
-D.ISO.DF_tall$id = NULL
-D.ISO.DF_tall$condition = NULL
-names(D.ISO.DF_tall)
-D.ISO.DF_tall = D.ISO.DF_tall[,c(1,3:4,2)]
-
-#########
-#########
-# PLOTS #
-#########
-#########
-
-#BB
-condition_barplot = ggplot(D.BB.DF_tall, aes(eventType, measure, fill = objects)) # create the bar graph with test.trial.2 on the x-axis and measure on the y-axis
-condition_barplot + stat_summary(fun = mean, geom = "bar", position = "dodge") + # add the bars, which represent the means and the place them side-by-side with 'dodge'
-  stat_summary(fun.data=mean_cl_boot, geom = "errorbar", position = position_dodge(width=0.90), width = 0.2) 
-
-
-#ISO
-condition_barplot = ggplot(D.ISO.DF_tall, aes(eventType, measure, fill = objects)) # create the bar graph with test.trial.2 on the x-axis and measure on the y-axis
-condition_barplot + stat_summary(fun = mean, geom = "bar", position = "dodge") + # add the bars, which represent the means and the place them side-by-side with 'dodge'
-  stat_summary(fun.data=mean_cl_boot, geom = "errorbar", position = position_dodge(width=0.90), width = 0.2) 
-
-# t.tests
-t.test(A.BB.MAIN.SUM,
-       B.BB.MAIN.SUM, paired=TRUE, alternative="two.sided")
-
-t.test(A.BB.MAIN.SUM,
-       C.BB.MAIN.SUM, paired=TRUE, alternative="two.sided")
-
-t.test(B.BB.MAIN.SUM,
-       B.BB.CONTROL.SUM, paired=TRUE, alternative="two.sided")
-
-
-# ISO MAIN
-A.ISO.MAIN.SUM = (as.integer(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="ISO" & D_tall_Exp1_6yos$phaseOrder == "Phase 1" & D_tall_Exp1_6yos$trialType=="main" & D_tall_Exp1_6yos$objectType=="A"])+
-                    as.numeric(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="ISO" & D_tall_Exp1_6yos$phaseOrder=="Phase 2" & D_tall_Exp1_6yos$trialType=="main" & D_tall_Exp1_6yos$objectType=="A"]))-2
-length(A.ISO.MAIN.SUM)
-mean(A.ISO.MAIN.SUM, na.rm=TRUE)
-
-
-B.ISO.MAIN.SUM = (as.integer(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="ISO" & D_tall_Exp1_6yos$phaseOrder == "Phase 1" & D_tall_Exp1_6yos$trialType=="main" & D_tall_Exp1_6yos$objectType=="B"])+
-                    as.numeric(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="ISO" & D_tall_Exp1_6yos$phaseOrder=="Phase 2" & D_tall_Exp1_6yos$trialType=="main" & D_tall_Exp1_6yos$objectType=="B"]))-2
-length(B.ISO.MAIN.SUM)
-mean(B.ISO.MAIN.SUM, na.rm=TRUE)
-
-
-C.ISO.MAIN.SUM = (as.integer(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="ISO" & D_tall_Exp1_6yos$phaseOrder == "Phase 1" & D_tall_Exp1_6yos$trialType=="main" & D_tall_Exp1_6yos$objectType=="C"])+
-                    as.numeric(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="ISO" & D_tall_Exp1_6yos$phaseOrder=="Phase 2" & D_tall_Exp1_6yos$trialType=="main" & D_tall_Exp1_6yos$objectType=="C"]))-2
-length(C.ISO.MAIN.SUM)
-mean(C.ISO.MAIN.SUM, na.rm=TRUE)
-
+C.ISO.MAIN.SUM.6s = as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="ISO" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="main" & D_tall_Exp1_5and6yos$objectType=="C" & D_tall_Exp1_5and6yos$Age=="6"])+
+  as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="ISO" & D_tall_Exp1_5and6yos$phaseOrder=="Phase 2" & D_tall_Exp1_5and6yos$trialType=="main" & D_tall_Exp1_5and6yos$objectType=="C" & D_tall_Exp1_5and6yos$Age=="6"])-2
+length(C.ISO.MAIN.SUM.6s)
+mean(C.ISO.MAIN.SUM.6s, na.rm=TRUE)
 
 
 # ISO CONTROL
-A.ISO.CONTROL.SUM = (as.integer(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="ISO" & D_tall_Exp1_6yos$phaseOrder == "Phase 1" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="A"])+
-                       as.numeric(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="ISO" & D_tall_Exp1_6yos$phaseOrder=="Phase 2" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="A"]))-2
-length(A.ISO.CONTROL.SUM)
-mean(A.ISO.CONTROL.SUM, na.rm=TRUE)
+A.ISO.CONTROL.SUM.5s = as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="ISO" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="A" & D_tall_Exp1_5and6yos$Age=="5"])+
+  as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="ISO" & D_tall_Exp1_5and6yos$phaseOrder=="Phase 2" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="A" & D_tall_Exp1_5and6yos$Age=="5"])-2
+length(A.ISO.CONTROL.SUM.5s)
+mean(A.ISO.CONTROL.SUM.5s, na.rm=TRUE)
 
 
-B.ISO.CONTROL.SUM = (as.integer(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="ISO" & D_tall_Exp1_6yos$phaseOrder == "Phase 1" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="B"])+
-                       as.numeric(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="ISO" & D_tall_Exp1_6yos$phaseOrder=="Phase 2" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="B"]))-2
-length(B.ISO.CONTROL.SUM)
-mean(B.ISO.CONTROL.SUM, na.rm=TRUE)
+A.ISO.CONTROL.SUM.6s = as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="ISO" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="A" & D_tall_Exp1_5and6yos$Age=="6"])+
+  as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="ISO" & D_tall_Exp1_5and6yos$phaseOrder=="Phase 2" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="A" & D_tall_Exp1_5and6yos$Age=="6"])-2
+length(A.ISO.CONTROL.SUM.6s)
+mean(A.ISO.CONTROL.SUM.6s, na.rm=TRUE)
 
 
-C.ISO.CONTROL.SUM = (as.integer(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="ISO" & D_tall_Exp1_6yos$phaseOrder == "Phase 1" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="C"])+
-                       as.numeric(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="ISO" & D_tall_Exp1_6yos$phaseOrder=="Phase 2" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="C"]))-2
-length(C.ISO.CONTROL.SUM)
-mean(C.ISO.CONTROL.SUM, na.rm=TRUE)
+B.ISO.CONTROL.SUM.5s = as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="ISO" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="B" & D_tall_Exp1_5and6yos$Age=="5"])+
+  as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="ISO" & D_tall_Exp1_5and6yos$phaseOrder=="Phase 2" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="B" & D_tall_Exp1_5and6yos$Age=="5"])-2
+length(B.ISO.CONTROL.SUM.5s)
+mean(B.ISO.CONTROL.SUM.5s, na.rm=TRUE)
 
-D.ISO.CONTROL.SUM = (as.integer(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="ISO" & D_tall_Exp1_6yos$phaseOrder == "Phase 1" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="D"])+
-                       as.numeric(D_tall_Exp1_6yos$choice[D_tall_Exp1_6yos$Condition=="ISO" & D_tall_Exp1_6yos$phaseOrder=="Phase 2" & D_tall_Exp1_6yos$trialType=="control" & D_tall_Exp1_6yos$objectType=="D"]))-2
-length(D.ISO.CONTROL.SUM)
-mean(D.ISO.CONTROL.SUM, na.rm=TRUE)
+
+B.ISO.CONTROL.SUM.6s = as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="ISO" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="B" & D_tall_Exp1_5and6yos$Age=="6"])+
+  as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="ISO" & D_tall_Exp1_5and6yos$phaseOrder=="Phase 2" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="B" & D_tall_Exp1_5and6yos$Age=="6"])-2
+length(B.ISO.CONTROL.SUM.6s)
+mean(B.ISO.CONTROL.SUM.6s, na.rm=TRUE)
+
+
+C.ISO.CONTROL.SUM.5s = as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="ISO" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="C" & D_tall_Exp1_5and6yos$Age=="5"])+
+  as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="ISO" & D_tall_Exp1_5and6yos$phaseOrder=="Phase 2" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="C" & D_tall_Exp1_5and6yos$Age=="5"])-2
+length(C.ISO.CONTROL.SUM.5s)
+mean(C.ISO.CONTROL.SUM.5s, na.rm=TRUE)
+
+
+C.ISO.CONTROL.SUM.6s = as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="ISO" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="C" & D_tall_Exp1_5and6yos$Age=="6"])+
+  as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="ISO" & D_tall_Exp1_5and6yos$phaseOrder=="Phase 2" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="C" & D_tall_Exp1_5and6yos$Age=="6"])-2
+length(C.ISO.CONTROL.SUM.6s)
+mean(C.ISO.CONTROL.SUM.6s, na.rm=TRUE)
+
+D.ISO.CONTROL.SUM.5s = as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="ISO" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="D" & D_tall_Exp1_5and6yos$Age=="5"])+
+  as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="ISO" & D_tall_Exp1_5and6yos$phaseOrder=="Phase 2" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="D" & D_tall_Exp1_5and6yos$Age=="5"])-2
+length(D.ISO.CONTROL.SUM.5s)
+mean(D.ISO.CONTROL.SUM.5s, na.rm=TRUE)
+
+
+D.ISO.CONTROL.SUM.6s = as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="ISO" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="D" & D_tall_Exp1_5and6yos$Age=="6"])+
+  as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="ISO" & D_tall_Exp1_5and6yos$phaseOrder=="Phase 2" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="D" & D_tall_Exp1_5and6yos$Age=="6"])-2
+length(D.ISO.CONTROL.SUM.6s)
+mean(D.ISO.CONTROL.SUM.6s, na.rm=TRUE)
+
+
+# 5s data frame
+D.ISO.DF.5s = data.frame(ID = c(1:5), Age = rep(c("5"),5), Condition = rep(c("ISO"),5),
+                         A.ISO.MAIN.SUM.5s = A.ISO.MAIN.SUM.5s, 
+                         B.ISO.MAIN.SUM.5s = B.ISO.MAIN.SUM.5s,
+                         C.ISO.MAIN.SUM.5s = C.ISO.MAIN.SUM.5s,
+                         A.ISO.CONTROL.SUM.5s = A.ISO.CONTROL.SUM.5s,
+                         B.ISO.CONTROL.SUM.5s = B.ISO.CONTROL.SUM.5s,
+                         C.ISO.CONTROL.SUM.5s = C.ISO.CONTROL.SUM.5s,
+                         D.ISO.CONTROL.SUM.5s = D.ISO.CONTROL.SUM.5s)
+names(D.ISO.DF.5s)
+
+D.ISO.DF.5s_tall = reshape(D.ISO.DF.5s, varying = c(4:10), v.names = "measure", 
+                           timevar = "condition",   direction = "long")
+D.ISO.DF.5s_tall = D.ISO.DF.5s_tall[order(D.ISO.DF.5s_tall$ID),] 
+
+D.ISO.DF.5s_tall$objects = rep(c("A","B","C","A","B","C","D"), times = 5)
+D.ISO.DF.5s_tall$eventType = rep(c("main","main","main",
+                                   "control","control","control","control"), times = 5)
+
+names(D.ISO.DF.5s_tall)
+D.ISO.DF.5s_tall$id = NULL
+D.ISO.DF.5s_tall$condition = NULL
+names(D.ISO.DF.5s_tall)
+D.ISO.DF.5s_tall = D.ISO.DF.5s_tall[,c(1:3,5:6,4)]
+names(D.ISO.DF.5s_tall)
+
+
+D.ISO.DF.5s_tall$Age = factor(D.ISO.DF.5s_tall$Age)
+D.ISO.DF.5s_tall$objects = factor(D.ISO.DF.5s_tall$objects)
+D.ISO.DF.5s_tall$eventType = factor(D.ISO.DF.5s_tall$eventType)
+D.ISO.DF.5s_tall$Condition = factor(D.ISO.DF.5s_tall$Condition)
+
+
+# 6s data frame
+D.ISO.DF.6s = data.frame(ID = c(1:25), Age = rep(c("6"),25), Condition = rep(c("ISO"),25),
+                         A.ISO.MAIN.SUM.6s = A.ISO.MAIN.SUM.6s, 
+                         B.ISO.MAIN.SUM.6s = B.ISO.MAIN.SUM.6s,
+                         C.ISO.MAIN.SUM.6s = C.ISO.MAIN.SUM.6s,
+                         A.ISO.CONTROL.SUM.6s = A.ISO.CONTROL.SUM.6s,
+                         B.ISO.CONTROL.SUM.6s = B.ISO.CONTROL.SUM.6s,
+                         C.ISO.CONTROL.SUM.6s = C.ISO.CONTROL.SUM.6s,
+                         D.ISO.CONTROL.SUM.6s = D.ISO.CONTROL.SUM.6s)
+names(D.ISO.DF.6s)
+
+D.ISO.DF.6s_tall = reshape(D.ISO.DF.6s, varying = c(4:10), v.names = "measure", 
+                           timevar = "condition",   direction = "long")
+D.ISO.DF.6s_tall = D.ISO.DF.6s_tall[order(D.ISO.DF.6s_tall$ID),] 
+
+D.ISO.DF.6s_tall$objects = rep(c("A","B","C","A","B","C","D"), times = 25)
+D.ISO.DF.6s_tall$eventType = rep(c("main","main","main",
+                                   "control","control","control","control"), times = 25)
+
+names(D.ISO.DF.6s_tall)
+D.ISO.DF.6s_tall$id = NULL
+D.ISO.DF.6s_tall$condition = NULL
+names(D.ISO.DF.6s_tall)
+D.ISO.DF.6s_tall = D.ISO.DF.6s_tall[,c(1:3,5:6,4)]
+names(D.ISO.DF.6s_tall)
+
+
+D.ISO.DF.6s_tall$Age = factor(D.ISO.DF.6s_tall$Age)
+D.ISO.DF.6s_tall$objects = factor(D.ISO.DF.6s_tall$objects)
+D.ISO.DF.6s_tall$eventType = factor(D.ISO.DF.6s_tall$eventType)
+D.ISO.DF.6s_tall$Condition = factor(D.ISO.DF.6s_tall$Condition)
+
+
+
+##################################################################
+##################################################################
+###                                                            ###
+### COMBINE THE DATA FOR CHILDREN IN THE BB AND ISO CONDITIONS ###
+###                                                            ###
+##################################################################
+##################################################################
+
+
+# COMBINE 5S AND 6S BB DATAFRAMES
+D.DF.5s.and.6s_tall = rbind(D.BB.DF.5s_tall, D.BB.DF.6s_tall, 
+                            D.ISO.DF.5s_tall, D.ISO.DF.6s_tall)
+D.DF.5s.and.6s_tall$ID = rep(c(1:86),each=7)
+
+
+# main analysis
+lm.fit = lm(measure~(Age+Condition+objects+eventType)^4, data = D.DF.5s.and.6s_tall, 
+              na.action=na.exclude)
+Anova(lm.fit)
+
+
+# ISO follow-up analyses
+lm.fit.4 = lm(measure[D.DF.5s.and.6s_tall$Condition=="ISO" & D.DF.5s.and.6s_tall$eventType=="control"]~
+                objects[D.DF.5s.and.6s_tall$Condition=="ISO" & D.DF.5s.and.6s_tall$eventType=="control"], data = D.DF.5s.and.6s_tall, 
+              na.action=na.exclude)
+Anova(lm.fit.4)
+
+# A
+A = D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="ISO" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="A"]
+mean(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="ISO" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="A"], na.rm=TRUE)
+sd(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="ISO" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="A"], na.rm=TRUE)
+
+# B
+B = D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="ISO" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="B"]
+mean(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="ISO" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="B"], na.rm=TRUE)
+sd(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="ISO" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="B"], na.rm=TRUE)
+
+# C
+C = D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="ISO" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="C"]
+mean(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="ISO" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="C"], na.rm=TRUE)
+sd(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="ISO" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="C"], na.rm=TRUE)
+
+# D
+D = D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="ISO" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="D"]
+mean(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="ISO" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="D"], na.rm=TRUE)
+sd(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="ISO" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="D"], na.rm=TRUE)
+
+t.test(D,A, alternative="two.sided", paired = TRUE)
+t.test(D,B, alternative="two.sided", paired = TRUE)
+t.test(D,C, alternative="two.sided", paired = TRUE)
+
+
+
+lm.fit.5 = lm(measure[D.DF.5s.and.6s_tall$Condition=="ISO" & D.DF.5s.and.6s_tall$eventType=="main"]~
+                objects[D.DF.5s.and.6s_tall$Condition=="ISO" & D.DF.5s.and.6s_tall$eventType=="main"], data = D.DF.5s.and.6s_tall, 
+              na.action=na.exclude)
+Anova(lm.fit.5)
+
+# A
+A = D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="ISO" & D.DF.5s.and.6s_tall$eventType=="main" & D.DF.5s.and.6s_tall$objects=="A"]
+mean(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="ISO" & D.DF.5s.and.6s_tall$eventType=="main" & D.DF.5s.and.6s_tall$objects=="A"], na.rm=TRUE)
+sd(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="ISO" & D.DF.5s.and.6s_tall$eventType=="main" & D.DF.5s.and.6s_tall$objects=="A"], na.rm=TRUE)
+
+# B
+B = D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="ISO" & D.DF.5s.and.6s_tall$eventType=="main" & D.DF.5s.and.6s_tall$objects=="B"]
+mean(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="ISO" & D.DF.5s.and.6s_tall$eventType=="main" & D.DF.5s.and.6s_tall$objects=="B"], na.rm=TRUE)
+sd(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="ISO" & D.DF.5s.and.6s_tall$eventType=="main" & D.DF.5s.and.6s_tall$objects=="B"], na.rm=TRUE)
+
+# C
+C = D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="ISO" & D.DF.5s.and.6s_tall$eventType=="main" & D.DF.5s.and.6s_tall$objects=="C"]
+mean(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="ISO" & D.DF.5s.and.6s_tall$eventType=="main" & D.DF.5s.and.6s_tall$objects=="C"], na.rm=TRUE)
+sd(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="ISO" & D.DF.5s.and.6s_tall$eventType=="main" & D.DF.5s.and.6s_tall$objects=="C"], na.rm=TRUE)
+
+t.test(A,B, alternative="two.sided", paired = TRUE)
+t.test(A,C, alternative="two.sided", paired = TRUE)
+t.test(B,C, alternative="two.sided", paired = TRUE)
+
+
+
+
+# Figure
+condition_barplot = ggplot(D.DF.5s.and.6s_tall, aes(eventType, measure, fill = objects)) # create the bar graph with test.trial.2 on the x-axis and measure on the y-axis
+condition_barplot + stat_summary(fun = mean, geom = "bar", position = "dodge") + # add the bars, which represent the means and the place them side-by-side with 'dodge'
+  facet_wrap(~Condition) +
+  stat_summary(fun.data=mean_cl_boot, geom = "errorbar", position = position_dodge(width=0.90), width = 0.2) 
