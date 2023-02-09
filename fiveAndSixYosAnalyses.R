@@ -489,6 +489,63 @@ lm.fit = lm(measure~(Age+Condition+objects+eventType)^4, data = D.DF.5s.and.6s_t
 Anova(lm.fit)
 
 
+# BB follow-up analyses
+lm.fit.4 = lm(measure[D.DF.5s.and.6s_tall$Condition=="BB" & D.DF.5s.and.6s_tall$eventType=="control"]~
+                objects[D.DF.5s.and.6s_tall$Condition=="BB" & D.DF.5s.and.6s_tall$eventType=="control"], data = D.DF.5s.and.6s_tall, 
+              na.action=na.exclude)
+Anova(lm.fit.4)
+
+# A
+A = D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="BB" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="A"]
+mean(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="BB" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="A"], na.rm=TRUE)
+sd(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="BB" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="A"], na.rm=TRUE)
+
+# B
+B = D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="BB" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="B"]
+mean(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="BB" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="B"], na.rm=TRUE)
+sd(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="BB" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="B"], na.rm=TRUE)
+
+# C
+C = D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="BB" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="C"]
+mean(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="BB" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="C"], na.rm=TRUE)
+sd(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="BB" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="C"], na.rm=TRUE)
+
+# D
+D = D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="BB" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="D"]
+mean(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="BB" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="D"], na.rm=TRUE)
+sd(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="BB" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="D"], na.rm=TRUE)
+
+t.test(D,A, alternative="two.sided", paired = TRUE)
+t.test(D,B, alternative="two.sided", paired = TRUE)
+t.test(D,C, alternative="two.sided", paired = TRUE)
+
+
+
+lm.fit.5 = lm(measure[D.DF.5s.and.6s_tall$Condition=="BB" & D.DF.5s.and.6s_tall$eventType=="main"]~
+                objects[D.DF.5s.and.6s_tall$Condition=="BB" & D.DF.5s.and.6s_tall$eventType=="main"], data = D.DF.5s.and.6s_tall, 
+              na.action=na.exclude)
+Anova(lm.fit.5)
+
+# A
+A = D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="BB" & D.DF.5s.and.6s_tall$eventType=="main" & D.DF.5s.and.6s_tall$objects=="A"]
+mean(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="BB" & D.DF.5s.and.6s_tall$eventType=="main" & D.DF.5s.and.6s_tall$objects=="A"], na.rm=TRUE)
+sd(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="BB" & D.DF.5s.and.6s_tall$eventType=="main" & D.DF.5s.and.6s_tall$objects=="A"], na.rm=TRUE)
+
+# B
+B = D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="BB" & D.DF.5s.and.6s_tall$eventType=="main" & D.DF.5s.and.6s_tall$objects=="B"]
+mean(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="BB" & D.DF.5s.and.6s_tall$eventType=="main" & D.DF.5s.and.6s_tall$objects=="B"], na.rm=TRUE)
+sd(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="BB" & D.DF.5s.and.6s_tall$eventType=="main" & D.DF.5s.and.6s_tall$objects=="B"], na.rm=TRUE)
+
+# C
+C = D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="BB" & D.DF.5s.and.6s_tall$eventType=="main" & D.DF.5s.and.6s_tall$objects=="C"]
+mean(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="BB" & D.DF.5s.and.6s_tall$eventType=="main" & D.DF.5s.and.6s_tall$objects=="C"], na.rm=TRUE)
+sd(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="BB" & D.DF.5s.and.6s_tall$eventType=="main" & D.DF.5s.and.6s_tall$objects=="C"], na.rm=TRUE)
+
+t.test(A,B, alternative="two.sided", paired = TRUE)
+t.test(A,C, alternative="two.sided", paired = TRUE)
+t.test(B,C, alternative="two.sided", paired = TRUE)
+
+
 # ISO follow-up analyses
 lm.fit.4 = lm(measure[D.DF.5s.and.6s_tall$Condition=="ISO" & D.DF.5s.and.6s_tall$eventType=="control"]~
                 objects[D.DF.5s.and.6s_tall$Condition=="ISO" & D.DF.5s.and.6s_tall$eventType=="control"], data = D.DF.5s.and.6s_tall, 
@@ -546,7 +603,141 @@ t.test(A,C, alternative="two.sided", paired = TRUE)
 t.test(B,C, alternative="two.sided", paired = TRUE)
 
 
+########################################
+########################################
+# OLD AND NEW OPERATIONALIZATION OF BB #
+########################################
+########################################
+# NEW OPERATIONALIZATION #
+# BB #
+# A control
+A.control = D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="BB" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="A"]
+mean(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="BB" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="A"], na.rm=TRUE)
+sd(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="BB" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="A"], na.rm=TRUE)
 
+
+# B main v B control
+B.control = D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="BB" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="B"]
+mean(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="BB" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="B"], na.rm=TRUE)
+sd(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="BB" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="B"], na.rm=TRUE)
+
+B.main = D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="BB" & D.DF.5s.and.6s_tall$eventType=="main" & D.DF.5s.and.6s_tall$objects=="B"]
+mean(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="BB" & D.DF.5s.and.6s_tall$eventType=="main" & D.DF.5s.and.6s_tall$objects=="B"], na.rm=TRUE)
+sd(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="BB" & D.DF.5s.and.6s_tall$eventType=="main" & D.DF.5s.and.6s_tall$objects=="B"], na.rm=TRUE)
+t.test(B.main,B.control, alternative="two.sided", paired = TRUE)
+
+
+# C main v C control
+C.control = D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="BB" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="C"]
+mean(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="BB" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="C"], na.rm=TRUE)
+sd(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="BB" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="C"], na.rm=TRUE)
+
+C.main = D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="BB" & D.DF.5s.and.6s_tall$eventType=="main" & D.DF.5s.and.6s_tall$objects=="C"]
+mean(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="BB" & D.DF.5s.and.6s_tall$eventType=="main" & D.DF.5s.and.6s_tall$objects=="C"], na.rm=TRUE)
+sd(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="BB" & D.DF.5s.and.6s_tall$eventType=="main" & D.DF.5s.and.6s_tall$objects=="C"], na.rm=TRUE)
+t.test(C.main,C.control, alternative="two.sided", paired = TRUE)
+
+
+# create data frame and add columns from the variables above 
+D.new.op = data.frame(ID = c(1:56),
+                      A.control = A.control, B.main = B.main, B.control = B.control,
+                      C.main = C.main, C.control = C.control)
+names(D.new.op)
+
+D.new.op_tall = reshape(D.new.op, varying = c(2:6), v.names = "measure", 
+                        timevar = "condition",   direction = "long")
+D.new.op_tall = D.new.op_tall[order(D.new.op_tall$ID),] 
+
+D.new.op_tall$objects = rep(c("A","B","B","C","C"), times = 56)
+D.new.op_tall$eventType = rep(c("control","main","control",
+                                "main","control"), times = 56)
+D.new.op_tall$objects = factor(D.new.op_tall$objects)
+D.new.op_tall$eventType = factor(D.new.op_tall$eventType)
+
+# main analysis 
+lm.fit.7 = lm(measure~(objects+eventType)^2, data = D.new.op_tall, 
+              na.action=na.exclude)
+Anova(lm.fit.7)
+
+
+mean(D.new.op_tall$measure[D.new.op_tall$eventType=="main"], na.rm = TRUE)
+sd(D.new.op_tall$measure[D.new.op_tall$eventType=="main"], na.rm = TRUE)
+
+mean(D.new.op_tall$measure[D.new.op_tall$eventType=="control"], na.rm = TRUE)
+sd(D.new.op_tall$measure[D.new.op_tall$eventType=="control"], na.rm = TRUE)
+
+
+# OLD OPERATIONALIZATION #
+# BB #
+b.bb.main = D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="BB" & D.DF.5s.and.6s_tall$eventType=="main" & D.DF.5s.and.6s_tall$objects=="B"]
+c.bb.main = D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="BB" & D.DF.5s.and.6s_tall$eventType=="main" & D.DF.5s.and.6s_tall$objects=="C"]
+A.bb.control = D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="BB" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="A"]
+B.bb.control = D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="BB" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="B"]
+C.bb.control = D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="BB" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="C"]
+
+b.iso.main = D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="ISO" & D.DF.5s.and.6s_tall$eventType=="main" & D.DF.5s.and.6s_tall$objects=="B"]
+c.iso.main = D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="ISO" & D.DF.5s.and.6s_tall$eventType=="main" & D.DF.5s.and.6s_tall$objects=="C"]
+A.iso.control = D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="ISO" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="A"]
+B.iso.control = D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="ISO" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="B"]
+C.iso.control = D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="ISO" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="C"]
+
+
+
+
+# create data frame and add columns from the variables above 
+# BB
+D.old.bb = data.frame(ID = c(1:56), Condition = rep("BB",times=56),
+                      B.main = b.bb.main, C.main = c.bb.main, A.control = A.bb.control,
+                      B.control = B.bb.control, C.control = C.bb.control)
+names(D.old.bb)
+
+D.old.bb_tall = reshape(D.old.bb, varying = c(3:7), v.names = "measure", 
+                        timevar = "condition",   direction = "long")
+D.old.bb_tall = D.old.bb_tall[order(D.old.bb_tall$ID),] 
+D.old.bb_tall$condition = NULL
+
+D.old.bb_tall$objects = rep(c("B","C","A","B","C"), times = 56)
+D.old.bb_tall$eventType = rep(c("main","main","control",
+                                "control","control"), times = 56)
+D.old.bb_tall$objects = factor(D.old.bb_tall$objects)
+D.old.bb_tall$eventType = factor(D.old.bb_tall$eventType)
+
+# ISO
+D.old.iso = data.frame(ID = c(57:86), Condition = rep("ISO",times=30),
+                      B.main = b.iso.main, C.main = c.iso.main, A.control = A.iso.control,
+                      B.control = B.iso.control, C.control = C.iso.control)
+names(D.old.iso)
+
+D.old.iso_tall = reshape(D.old.iso, varying = c(3:7), v.names = "measure", 
+                        timevar = "condition",   direction = "long")
+D.old.iso_tall = D.old.iso_tall[order(D.old.iso_tall$ID),] 
+D.old.iso_tall$condition = NULL
+
+D.old.iso_tall$objects = rep(c("B","C","A","B","C"), times = 30)
+D.old.iso_tall$eventType = rep(c("main","main","control",
+                                "control","control"), times = 30)
+D.old.iso_tall$objects = factor(D.old.iso_tall$objects)
+D.old.iso_tall$eventType = factor(D.old.iso_tall$eventType)
+
+
+# combine the BB and ISO dataframes
+D.old.BB.ISO = rbind(D.old.bb_tall, D.old.iso_tall)
+names(D.old.BB.ISO)
+D.old.BB.ISO$id = NULL
+names(D.old.BB.ISO)
+
+
+# main analysis 
+lm.fit.8 = lm(measure~(objects+eventType)^2, data = D.old.BB.ISO, 
+              na.action=na.exclude)
+Anova(lm.fit.8)
+
+
+mean(D.old.BB.ISO$measure[D.old.BB.ISO$eventType=="main"], na.rm = TRUE)
+sd(D.old.BB.ISO$measure[D.old.BB.ISO$eventType=="main"], na.rm = TRUE)
+
+mean(D.old.BB.ISO$measure[D.old.BB.ISO$eventType=="control"], na.rm = TRUE)
+sd(D.old.BB.ISO$measure[D.old.BB.ISO$eventType=="control"], na.rm = TRUE)
 
 # Figure
 condition_barplot = ggplot(D.DF.5s.and.6s_tall, aes(eventType, measure, fill = objects)) # create the bar graph with test.trial.2 on the x-axis and measure on the y-axis
