@@ -162,6 +162,8 @@ table(D_tall$Sex[D_tall$Age=="5"])/14
 # number of males and females
 table(D_tall$Sex[D_tall$Age=="6"])/14
 
+
+# power analysis for sample size
 ##########################################################
 ##########################################################
 ###                                                    ###
