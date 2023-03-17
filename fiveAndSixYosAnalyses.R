@@ -21,11 +21,13 @@ options(scipen=9999)
 # DATA CLEAN UP AND RESTRUCTURING #
 D = read.csv(file.choose(), header = TRUE, stringsAsFactors = FALSE)
 
-# remove E columns 
+# remove unnecessary columns
+names(D)
+D$X = NULL
 D$CTRL_1__E = NULL
 D$CTRL_2__E = NULL
-
 names(D)
+dim(D)
 
 
 D_tall =  reshape(D, varying = c(9:22), v.names = "measure", 
@@ -39,20 +41,20 @@ D_tall = D_tall[order(D_tall$ID),] # order the data frame in terms of participan
 
 D_tall$trialType = rep(c("control","control","control","control","control","control","control",
                          "control","main","main",
-                         "main","main","main","main"), times = 94)
+                         "main","main","main","main"), times = 65)
 
 D_tall$testPhase = rep(c("first","first","first","first","second","second","second","second",
-                         "first","first","first","second","second","second"), times = 94)
+                         "first","first","first","second","second","second"), times = 65)
 
 D_tall$objectType = rep(c("A","B","C","D",
                           "A","B","C","D",
                           "A","B","C",
-                          "A","B","C"), times = 94)
+                          "A","B","C"), times = 65)
 
 D_tall$phaseOrder = rep(c("Phase 1","Phase 1","Phase 1","Phase 1",
                           "Phase 2","Phase 2","Phase 2","Phase 2",
                           "Phase 1","Phase 1","Phase 1",
-                          "Phase 2","Phase 2","Phase 2"), times = 94)
+                          "Phase 2","Phase 2","Phase 2"), times = 65)
 
 
 
@@ -65,12 +67,14 @@ D_tall$id = NULL
 names(D_tall)
 colnames(D_tall)[which(names(D_tall) == "AGE.Y.")] <- "Age"
 colnames(D_tall)[which(names(D_tall) == "SEX")] <- "Sex"
-colnames(D_tall)[which(names(D_tall) == "CONDITION")] <- "Experiment"
 colnames(D_tall)[which(names(D_tall) == "BB.IS")] <- "Condition"
 colnames(D_tall)[which(names(D_tall) == "SUBCONDITION")] <- "SubCondition"
 colnames(D_tall)[which(names(D_tall) == "VIDORDER")] <- "Vidorder"
 colnames(D_tall)[which(names(D_tall) == "PRETEST")] <- "Pretest"
 colnames(D_tall)[which(names(D_tall) == "measure")] <- "choice"
+
+# remove more unnecessary columns
+D_tall$CONDITION = NULL
 
 # colnames(D_tall)[which(names(D_tall) == "SUBCONDITION")] <- "Subcondition"
 names(D_tall)
@@ -121,36 +125,42 @@ D_tall$Vidorder = revalue(x = as.factor(D_tall$Vidorder),
 D_tall$Pretest = revalue(x = as.factor(D_tall$Pretest), 
                          c("0" = "Incorrect", "1"="Correct"))
 
-D_tall$Experiment = revalue(x = as.factor(D_tall$Experiment), 
-                            c("0" = "Experiment 1", "1"="Experiment 1",
-                              "2" = "Experiment 2"))
 
 D_tall$Age = as.factor(D_tall$Age)
 D_tall$testPhase = as.factor(D_tall$testPhase)
 D_tall$objectType = as.factor(D_tall$objectType)
 D_tall$trialType = as.factor(D_tall$trialType)
-D_tall$Experiment = as.factor(D_tall$Experiment)
 
 # REODRDER COLUMNS
 D_tall$condition = NULL
+D_tall$id = NULL
 names(D_tall)
+dim(D_tall)
 D_tall = as.data.frame(D_tall[,c(1:3,6,5,7,4,10,11,12,13,9,8)])
 fix(D_tall)
 
 
 # subset dataframes by experiments
-D_tall_Exp1_5and6yos = subset(D_tall, ! Experiment %in% c("Experiment 2"))
-D_tall_Exp1_5and6yos = subset(D_tall, ! Age %in% c("4"))
+D_tall_Exp1_5and6yos = subset(D_tall, ! Age %in% c("0"))
 D_tall_Exp1_5and6yos$Age = factor(D_tall_Exp1_5and6yos$Age)
-D_tall_Exp1_5and6yos$Experiment = factor(D_tall_Exp1_5and6yos$Experiment)
+D_tall_Exp1_5and6yos$Condition = factor(D_tall_Exp1_5and6yos$Condition)
 
 dim(D_tall_Exp1_5and6yos)
-D_tall_Exp1_5and6yos = D_tall_Exp1_5and6yos[1:1204,]
 
 
 # get the number of participants in each condition
 table(D_tall_Exp1_5and6yos$Condition)/14
 
+###################################
+# Participant section information #
+###################################
+# 5 yos #
+# number of males and females
+table(D_tall$Sex[D_tall$Age=="5"])/14
+
+# 6 yos #
+# number of males and females
+table(D_tall$Sex[D_tall$Age=="6"])/14
 
 ##########################################################
 ##########################################################
@@ -246,7 +256,7 @@ mean(D.BB.CONTROL.SUM.6s, na.rm=TRUE)
 
 
 # 5s data frame
-D.BB.DF.5s = data.frame(ID = c(1:32), Age = rep(c("5"),32), Condition = rep(c("BB"),32),
+D.BB.DF.5s = data.frame(ID = c(1:15), Age = rep(c("5"),15), Condition = rep(c("BB"),15),
                         A.BB.MAIN.SUM.5s = A.BB.MAIN.SUM.5s, 
                         B.BB.MAIN.SUM.5s = B.BB.MAIN.SUM.5s,
                         C.BB.MAIN.SUM.5s = C.BB.MAIN.SUM.5s,
@@ -255,19 +265,21 @@ D.BB.DF.5s = data.frame(ID = c(1:32), Age = rep(c("5"),32), Condition = rep(c("B
                         C.BB.CONTROL.SUM.5s = C.BB.CONTROL.SUM.5s,
                         D.BB.CONTROL.SUM.5s = D.BB.CONTROL.SUM.5s)
 names(D.BB.DF.5s)
+dim(D.BB.DF.5s)
 
 D.BB.DF.5s_tall = reshape(D.BB.DF.5s, varying = c(4:10), v.names = "measure", 
                           timevar = "condition",   direction = "long")
 D.BB.DF.5s_tall = D.BB.DF.5s_tall[order(D.BB.DF.5s_tall$ID),] 
 
-D.BB.DF.5s_tall$objects = rep(c("A","B","C","A","B","C","D"), times = 32)
+D.BB.DF.5s_tall$objects = rep(c("A","B","C","A","B","C","D"), times = 15)
 D.BB.DF.5s_tall$eventType = rep(c("main","main","main",
-                                  "control","control","control","control"), times = 32)
+                                  "control","control","control","control"), times = 15)
 
 names(D.BB.DF.5s_tall)
 D.BB.DF.5s_tall$id = NULL
 D.BB.DF.5s_tall$condition = NULL
 names(D.BB.DF.5s_tall)
+dim(D.BB.DF.5s_tall)
 D.BB.DF.5s_tall = D.BB.DF.5s_tall[,c(1:3,5:6,4)]
 names(D.BB.DF.5s_tall)
 
@@ -278,7 +290,7 @@ D.BB.DF.5s_tall$Condition = factor(D.BB.DF.5s_tall$Condition)
 
 
 # 6s data frame
-D.BB.DF.6s = data.frame(ID = c(1:24), Age = rep(c("6"),24), Condition = rep(c("BB"),24),
+D.BB.DF.6s = data.frame(ID = c(1:16), Age = rep(c("6"),16), Condition = rep(c("BB"),16),
                         A.BB.MAIN.SUM.6s = A.BB.MAIN.SUM.6s, 
                         B.BB.MAIN.SUM.6s = B.BB.MAIN.SUM.6s,
                         C.BB.MAIN.SUM.6s = C.BB.MAIN.SUM.6s,
@@ -292,14 +304,15 @@ D.BB.DF.6s_tall = reshape(D.BB.DF.6s, varying = c(4:10), v.names = "measure",
                           timevar = "condition",   direction = "long")
 D.BB.DF.6s_tall = D.BB.DF.6s_tall[order(D.BB.DF.6s_tall$ID),] 
 
-D.BB.DF.6s_tall$objects = rep(c("A","B","C","A","B","C","D"), times = 24)
+D.BB.DF.6s_tall$objects = rep(c("A","B","C","A","B","C","D"), times = 16)
 D.BB.DF.6s_tall$eventType = rep(c("main","main","main",
-                                  "control","control","control","control"), times = 24)
+                                  "control","control","control","control"), times = 16)
 
 names(D.BB.DF.6s_tall)
 D.BB.DF.6s_tall$id = NULL
 D.BB.DF.6s_tall$condition = NULL
 names(D.BB.DF.6s_tall)
+dim(D.BB.DF.6s_tall)
 D.BB.DF.6s_tall = D.BB.DF.6s_tall[,c(1:3,5:6,4)]
 names(D.BB.DF.6s_tall)
 
@@ -402,7 +415,9 @@ mean(D.ISO.CONTROL.SUM.6s, na.rm=TRUE)
 
 
 # 5s data frame
-D.ISO.DF.5s = data.frame(ID = c(1:5), Age = rep(c("5"),5), Condition = rep(c("ISO"),5),
+# note: the number "16" comes from the length of the one of the columns above
+# e.g., length(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="ISO" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="main" & D_tall_Exp1_5and6yos$objectType=="C" & D_tall_Exp1_5and6yos$Age=="5"])
+D.ISO.DF.5s = data.frame(ID = c(1:16), Age = rep(c("5"),16), Condition = rep(c("ISO"),16),
                          A.ISO.MAIN.SUM.5s = A.ISO.MAIN.SUM.5s, 
                          B.ISO.MAIN.SUM.5s = B.ISO.MAIN.SUM.5s,
                          C.ISO.MAIN.SUM.5s = C.ISO.MAIN.SUM.5s,
@@ -416,9 +431,9 @@ D.ISO.DF.5s_tall = reshape(D.ISO.DF.5s, varying = c(4:10), v.names = "measure",
                            timevar = "condition",   direction = "long")
 D.ISO.DF.5s_tall = D.ISO.DF.5s_tall[order(D.ISO.DF.5s_tall$ID),] 
 
-D.ISO.DF.5s_tall$objects = rep(c("A","B","C","A","B","C","D"), times = 5)
+D.ISO.DF.5s_tall$objects = rep(c("A","B","C","A","B","C","D"), times = 16)
 D.ISO.DF.5s_tall$eventType = rep(c("main","main","main",
-                                   "control","control","control","control"), times = 5)
+                                   "control","control","control","control"), times = 16)
 
 names(D.ISO.DF.5s_tall)
 D.ISO.DF.5s_tall$id = NULL
@@ -435,7 +450,9 @@ D.ISO.DF.5s_tall$Condition = factor(D.ISO.DF.5s_tall$Condition)
 
 
 # 6s data frame
-D.ISO.DF.6s = data.frame(ID = c(1:25), Age = rep(c("6"),25), Condition = rep(c("ISO"),25),
+# Note: The number "15" comes from the length of one of the columns above;
+# e.g., D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="ISO" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="main" & D_tall_Exp1_5and6yos$objectType=="A" & D_tall_Exp1_5and6yos$Age=="6"]
+D.ISO.DF.6s = data.frame(ID = c(1:15), Age = rep(c("6"),15), Condition = rep(c("ISO"),15),
                          A.ISO.MAIN.SUM.6s = A.ISO.MAIN.SUM.6s, 
                          B.ISO.MAIN.SUM.6s = B.ISO.MAIN.SUM.6s,
                          C.ISO.MAIN.SUM.6s = C.ISO.MAIN.SUM.6s,
@@ -449,9 +466,9 @@ D.ISO.DF.6s_tall = reshape(D.ISO.DF.6s, varying = c(4:10), v.names = "measure",
                            timevar = "condition",   direction = "long")
 D.ISO.DF.6s_tall = D.ISO.DF.6s_tall[order(D.ISO.DF.6s_tall$ID),] 
 
-D.ISO.DF.6s_tall$objects = rep(c("A","B","C","A","B","C","D"), times = 25)
+D.ISO.DF.6s_tall$objects = rep(c("A","B","C","A","B","C","D"), times = 15)
 D.ISO.DF.6s_tall$eventType = rep(c("main","main","main",
-                                   "control","control","control","control"), times = 25)
+                                   "control","control","control","control"), times = 15)
 
 names(D.ISO.DF.6s_tall)
 D.ISO.DF.6s_tall$id = NULL
@@ -480,7 +497,7 @@ D.ISO.DF.6s_tall$Condition = factor(D.ISO.DF.6s_tall$Condition)
 # COMBINE 5S AND 6S BB DATAFRAMES
 D.DF.5s.and.6s_tall = rbind(D.BB.DF.5s_tall, D.BB.DF.6s_tall, 
                             D.ISO.DF.5s_tall, D.ISO.DF.6s_tall)
-D.DF.5s.and.6s_tall$ID = rep(c(1:86),each=7)
+D.DF.5s.and.6s_tall$ID = rep(c(1:62),each=7) # 62 --> 31 5s and 31 6s
 
 
 # main analysis
@@ -639,7 +656,7 @@ t.test(C.main,C.control, alternative="two.sided", paired = TRUE)
 
 
 # create data frame and add columns from the variables above 
-D.new.op = data.frame(ID = c(1:56),
+D.new.op = data.frame(ID = c(1:31),
                       A.control = A.control, B.main = B.main, B.control = B.control,
                       C.main = C.main, C.control = C.control)
 names(D.new.op)
@@ -648,9 +665,9 @@ D.new.op_tall = reshape(D.new.op, varying = c(2:6), v.names = "measure",
                         timevar = "condition",   direction = "long")
 D.new.op_tall = D.new.op_tall[order(D.new.op_tall$ID),] 
 
-D.new.op_tall$objects = rep(c("A","B","B","C","C"), times = 56)
+D.new.op_tall$objects = rep(c("A","B","B","C","C"), times = 31)
 D.new.op_tall$eventType = rep(c("control","main","control",
-                                "main","control"), times = 56)
+                                "main","control"), times = 31)
 D.new.op_tall$objects = factor(D.new.op_tall$objects)
 D.new.op_tall$eventType = factor(D.new.op_tall$eventType)
 
@@ -686,7 +703,7 @@ C.iso.control = D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="ISO"
 
 # create data frame and add columns from the variables above 
 # BB
-D.old.bb = data.frame(ID = c(1:56), Condition = rep("BB",times=56),
+D.old.bb = data.frame(ID = c(1:31), Condition = rep("BB",times=31),
                       B.main = b.bb.main, C.main = c.bb.main, A.control = A.bb.control,
                       B.control = B.bb.control, C.control = C.bb.control)
 names(D.old.bb)
@@ -696,14 +713,14 @@ D.old.bb_tall = reshape(D.old.bb, varying = c(3:7), v.names = "measure",
 D.old.bb_tall = D.old.bb_tall[order(D.old.bb_tall$ID),] 
 D.old.bb_tall$condition = NULL
 
-D.old.bb_tall$objects = rep(c("B","C","A","B","C"), times = 56)
+D.old.bb_tall$objects = rep(c("B","C","A","B","C"), times = 31)
 D.old.bb_tall$eventType = rep(c("main","main","control",
-                                "control","control"), times = 56)
+                                "control","control"), times = 31)
 D.old.bb_tall$objects = factor(D.old.bb_tall$objects)
 D.old.bb_tall$eventType = factor(D.old.bb_tall$eventType)
 
 # ISO
-D.old.iso = data.frame(ID = c(57:86), Condition = rep("ISO",times=30),
+D.old.iso = data.frame(ID = c(1:31), Condition = rep("ISO",times=31),
                       B.main = b.iso.main, C.main = c.iso.main, A.control = A.iso.control,
                       B.control = B.iso.control, C.control = C.iso.control)
 names(D.old.iso)
@@ -713,9 +730,9 @@ D.old.iso_tall = reshape(D.old.iso, varying = c(3:7), v.names = "measure",
 D.old.iso_tall = D.old.iso_tall[order(D.old.iso_tall$ID),] 
 D.old.iso_tall$condition = NULL
 
-D.old.iso_tall$objects = rep(c("B","C","A","B","C"), times = 30)
+D.old.iso_tall$objects = rep(c("B","C","A","B","C"), times = 31)
 D.old.iso_tall$eventType = rep(c("main","main","control",
-                                "control","control"), times = 30)
+                                "control","control"), times = 31)
 D.old.iso_tall$objects = factor(D.old.iso_tall$objects)
 D.old.iso_tall$eventType = factor(D.old.iso_tall$eventType)
 
@@ -728,16 +745,17 @@ names(D.old.BB.ISO)
 
 
 # main analysis 
-lm.fit.8 = lm(measure~(objects+eventType)^2, data = D.old.BB.ISO, 
+lm.fit.8 = lm(measure~(objects+eventType+Condition)^3, data = D.old.BB.ISO, 
               na.action=na.exclude)
 Anova(lm.fit.8)
 
 
-mean(D.old.BB.ISO$measure[D.old.BB.ISO$eventType=="main"], na.rm = TRUE)
-sd(D.old.BB.ISO$measure[D.old.BB.ISO$eventType=="main"], na.rm = TRUE)
+mean(D.old.BB.ISO$measure[D.old.BB.ISO$Condition=="BB"], na.rm = TRUE)
+sd(D.old.BB.ISO$measure[D.old.BB.ISO$Condition=="BB"], na.rm = TRUE)
 
-mean(D.old.BB.ISO$measure[D.old.BB.ISO$eventType=="control"], na.rm = TRUE)
-sd(D.old.BB.ISO$measure[D.old.BB.ISO$eventType=="control"], na.rm = TRUE)
+mean(D.old.BB.ISO$measure[D.old.BB.ISO$Condition=="ISO"], na.rm = TRUE)
+sd(D.old.BB.ISO$measure[D.old.BB.ISO$Condition=="ISO"], na.rm = TRUE)
+
 
 # Figure
 condition_barplot = ggplot(D.DF.5s.and.6s_tall, aes(eventType, measure, fill = objects)) # create the bar graph with test.trial.2 on the x-axis and measure on the y-axis
@@ -750,6 +768,6 @@ condition_barplot + stat_summary(fun = mean, geom = "bar", position = "dodge") +
                                       "#C8C8C8",
                                       "#696969")) +
                                         
-  coord_cartesian(ylim=c(0, 2)) +
+  coord_cartesian(ylim=c(0, 2.5)) +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_blank(), axis.line = element_line(colour = "black"))
