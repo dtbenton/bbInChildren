@@ -713,6 +713,58 @@ mean(D.new.op_tall$measure[D.new.op_tall$eventType=="control"], na.rm = TRUE)
 sd(D.new.op_tall$measure[D.new.op_tall$eventType=="control"], na.rm = TRUE)
 
 
+# follow-up comparisons #
+# A control vs B main == significant
+t.test(D.new.op$A.control,
+       D.new.op$B.main, 
+       paired = TRUE,
+       alternative = "two.sided")
+
+mean(D.new.op$A.control, na.rm = TRUE)
+sd(D.new.op$A.control, na.rm = TRUE)
+mean(D.new.op$B.main, na.rm = TRUE)
+sd(D.new.op$B.main, na.rm = TRUE)
+
+
+# A control vs C main
+t.test(D.new.op$A.control,
+       D.new.op$C.main, 
+       paired = TRUE,
+       alternative = "two.sided")
+
+# B control vs B main == significant
+t.test(D.new.op$B.control,
+       D.new.op$B.main, 
+       paired = TRUE,
+       alternative = "two.sided")
+
+mean(D.new.op$B.control, na.rm = TRUE)
+sd(D.new.op$B.control, na.rm = TRUE)
+mean(D.new.op$B.main, na.rm = TRUE)
+sd(D.new.op$B.main, na.rm = TRUE)
+
+# B control vs C main
+t.test(D.new.op$B.control,
+       D.new.op$C.main, 
+       paired = TRUE,
+       alternative = "two.sided")
+
+# C control vs B main == significant
+t.test(D.new.op$C.control,
+       D.new.op$B.main, 
+       paired = TRUE,
+       alternative = "two.sided")
+
+mean(D.new.op$C.control, na.rm = TRUE)
+sd(D.new.op$C.control, na.rm = TRUE)
+
+# C control vs C main
+t.test(D.new.op$C.control,
+       D.new.op$C.main, 
+       paired = TRUE,
+       alternative = "two.sided")
+
+
 # OLD OPERATIONALIZATION #
 # BB #
 b.bb.main = D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="BB" & D.DF.5s.and.6s_tall$eventType=="main" & D.DF.5s.and.6s_tall$objects=="B"]
