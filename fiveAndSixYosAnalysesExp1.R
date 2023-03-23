@@ -708,28 +708,33 @@ t.test(C.main,C.control, alternative="two.sided", paired = TRUE)
 
 
 # create data frame and add columns from the variables above 
-D.new.op.5s = data.frame(ID = c(1:15), A.control.5s = A.control.5s, B.control.5s = B.control.5s, B.main.5s = B.main.5s,
-                         C.control.5s = C.control.5s, C.main.5s = C.main.5s)
+D.new.op.5s = data.frame(ID = c(1:15), Age = rep(5,15), A.control = A.control.5s, B.control = B.control.5s, B.main = B.main.5s,
+                         C.control = C.control.5s, C.main = C.main.5s)
+D.new.op.5s$Age = factor(D.new.op.5s$Age)
   
   
-D.new.op.6s = data.frame(ID = c(1:16), A.control.6s = A.control.6s, B.control.6s = B.control.6s, B.main.6s = B.main.6s,
-                         C.control.6s = C.control.6s, C.main.6s = C.main.6s)
+D.new.op.6s = data.frame(ID = c(16:31), Age = rep(6,16), A.control = A.control.6s, B.control = B.control.6s, B.main = B.main.6s,
+                         C.control = C.control.6s, C.main = C.main.6s)
+D.new.op.6s$Age = factor(D.new.op.6s$Age)
 
+D.new.op = rbind(D.new.op.5s,
+                 D.new.op.6s)
 
 names(D.new.op)
+dim(D.new.op)
 
-D.new.op_tall = reshape(D.new.op, varying = c(2:6), v.names = "measure", 
+D.new.op_tall = reshape(D.new.op, varying = c(3:7), v.names = "measure", 
                         timevar = "condition",   direction = "long")
 D.new.op_tall = D.new.op_tall[order(D.new.op_tall$ID),] 
 
 D.new.op_tall$objects = rep(c("A","B","B","C","C"), times = 31)
-D.new.op_tall$eventType = rep(c("control","main","control",
-                                "main","control"), times = 31)
+D.new.op_tall$eventType = rep(c("control","control","main",
+                                "control","main"), times = 31)
 D.new.op_tall$objects = factor(D.new.op_tall$objects)
 D.new.op_tall$eventType = factor(D.new.op_tall$eventType)
 
 # main analysis 
-lm.fit.7 = lm(measure~(objects+eventType)^2, data = D.new.op_tall, 
+lm.fit.7 = lm(measure~(objects+eventType+Age)^3, data = D.new.op_tall, 
               na.action=na.exclude)
 Anova(lm.fit.7)
 
