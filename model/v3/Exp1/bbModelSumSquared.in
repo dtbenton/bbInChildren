@@ -6,7 +6,6 @@ addGroup A 1 INPUT
 addGroup B 1 INPUT
 addGroup C 1 INPUT
 addGroup D 1 INPUT
-addGroup E 1 INPUT
 
 # output group
 addGroup Effect 1 OUTPUT SUM_SQUARED
@@ -14,22 +13,18 @@ addGroup Effect 1 OUTPUT SUM_SQUARED
 
 
 # connect groups (input -> output)
-connectGroups {A B C D E} Effect
+connectGroups {A B C D} Effect
 
 # delete bias
 deleteGroups bias
 
 # training examples
 loadExamples ABCplus.ex
-loadExamples ABplus.ex
-loadExamples ABminus.ex
 loadExamples Aplus.ex
 loadExamples Aminus.ex
 loadExamples Dplus.ex
 loadExamples Dminus.ex
 loadExamples Dnothing.ex
-loadExamples DEplus.ex
-loadExamples DEminus.ex
 loadExamples experimentalTest.ex
 loadExamples controlTest.ex
 
@@ -42,7 +37,7 @@ setObj numUpdates   50
 setObj reportInterval 1
 setObj unitCellSize 20
 setObj linkCellSize 10
-# setObj randRange 0.00001
+setObj randRange 0
 randWeights -r 0
 #randWeights -r .001
 
@@ -94,10 +89,17 @@ proc testNetwork {n train trainNum train2 trainNum2 test fname groups} {
 
 ### BB condition command: ##
 
-# BB experimental: testNetwork 1000 ABCplus 30 Aplus 30 experimentalTest BBcontrol.txt Effect
-# BB control: testNetwork 1000 ABCplus 30 Dplus 30 controlTest BBexperimental.txt Effect
-# ISO experimental: testNetwork 1000 ABCplus 30 Aminus 30 experimentalTest ISOexperimental.txt Effect
-# ISO control: testNetwork 1000 ABCplus 30 Dminus 30 controlTest ISOcontrol.txt Effect
+# BB experimental: 
+testNetwork 16 ABCplus 100 Aplus 100 experimentalTest BBexperimentalExp1.txt Effect
+
+# BB control: 
+testNetwork 16 ABCplus 100 Dplus 100 controlTest BBcontrolExp1.txt Effect
+
+# ISO experimental: 
+testNetwork 16 ABCplus 100 Aminus 100 experimentalTest ISOexperimentalExp1.txt Effect
+
+# ISO control: 
+testNetwork 16 ABCplus 100 Dminus 100 controlTest ISOcontrolExp1.txt Effect
 
 
 #testNetwork 1000 ABCplus 50 Aplus 50 experimentalTest BBexperimental.txt Effect
