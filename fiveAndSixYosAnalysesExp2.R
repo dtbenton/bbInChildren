@@ -14,7 +14,6 @@ library(BayesFactor)
 library(foreign)
 library(dplyr)
 library(lattice)
-library(openxlsx)
 library(BFpack)
 options(scipen=9999)
 
@@ -147,6 +146,9 @@ dim(D_tall_Exp1_5and6yos)
 
 # get the number of participants in each condition
 table(D_tall_Exp1_5and6yos$Condition)/16
+
+table(D_tall_Exp1_5and6yos$Condition[D_tall_Exp1_5and6yos$Age=="5"])/16
+table(D_tall_Exp1_5and6yos$Condition[D_tall_Exp1_5and6yos$Age=="6"])/16
 
 ###################################
 # Participant section information #
@@ -525,7 +527,9 @@ D.ISO.DF.6s_tall$Condition = factor(D.ISO.DF.6s_tall$Condition)
 # COMBINE 5S AND 6S BB DATAFRAMES
 D.DF.5s.and.6s_tall = rbind(D.BB.DF.5s_tall, D.BB.DF.6s_tall, 
                             D.ISO.DF.5s_tall, D.ISO.DF.6s_tall)
-D.DF.5s.and.6s_tall$ID = rep(c(1:24),each=8) # 64 --> 32 5s and 32 6s
+D.DF.5s_tall = rbind(D.BB.DF.5s_tall, D.ISO.DF.5s_tall)
+D.DF.6s_tall = rbind(D.BB.DF.6s_tall, D.ISO.DF.6s_tall)
+#D.DF.5s.and.6s_tall$ID = rep(c(1:24),each=8) # 64 --> 32 5s and 32 6s
 
 
 # main analysis
@@ -887,7 +891,8 @@ mean(D.old.BB.ISO$measure[D.old.BB.ISO$Condition=="ISO"], na.rm = TRUE)
 sd(D.old.BB.ISO$measure[D.old.BB.ISO$Condition=="ISO"], na.rm = TRUE)
 
 
-# Figure
+## Figures ##
+# omnibus figure
 condition_barplot = ggplot(D.DF.5s.and.6s_tall, aes(eventType, measure, fill = objects)) # create the bar graph with test.trial.2 on the x-axis and measure on the y-axis
 condition_barplot + stat_summary(fun = mean, geom = "bar", position = "dodge") + # add the bars, which represent the means and the place them side-by-side with 'dodge'
   facet_wrap(~Condition) +
@@ -903,6 +908,38 @@ condition_barplot + stat_summary(fun = mean, geom = "bar", position = "dodge") +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_blank(), axis.line = element_line(colour = "black"))
 
+# 5 yos figure
+condition_barplot = ggplot(D.DF.5s_tall, aes(eventType, measure, fill = objects)) # create the bar graph with test.trial.2 on the x-axis and measure on the y-axis
+condition_barplot + stat_summary(fun = mean, geom = "bar", position = "dodge") + # add the bars, which represent the means and the place them side-by-side with 'dodge'
+  facet_wrap(~Condition) +
+  stat_summary(fun.data=mean_cl_boot, geom = "errorbar", position = position_dodge(width=0.90), width = 0.2) +
+  scale_y_continuous(expand = c(0, 0)) +
+  scale_fill_manual(values=c("#000000",
+                             "#888888",
+                             "#C8C8C8",
+                             "#696969",
+                             "#548548")) +
+  
+  coord_cartesian(ylim=c(0, 2.5)) +
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+        panel.background = element_blank(), axis.line = element_line(colour = "black"))
+
+
+# 6 yos figure
+condition_barplot = ggplot(D.DF.6s_tall, aes(eventType, measure, fill = objects)) # create the bar graph with test.trial.2 on the x-axis and measure on the y-axis
+condition_barplot + stat_summary(fun = mean, geom = "bar", position = "dodge") + # add the bars, which represent the means and the place them side-by-side with 'dodge'
+  facet_wrap(~Condition) +
+  stat_summary(fun.data=mean_cl_boot, geom = "errorbar", position = position_dodge(width=0.90), width = 0.2) +
+  scale_y_continuous(expand = c(0, 0)) +
+  scale_fill_manual(values=c("#000000",
+                             "#888888",
+                             "#C8C8C8",
+                             "#696969",
+                             "#548548")) +
+  
+  coord_cartesian(ylim=c(0, 2.5)) +
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+        panel.background = element_blank(), axis.line = element_line(colour = "black"))
 
 
 # compare B control vs B main directly in BB condition
