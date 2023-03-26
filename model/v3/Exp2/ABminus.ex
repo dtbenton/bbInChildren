@@ -7,7 +7,7 @@ I:
  1
 T:	
 (Effect)  
- 1
+ 0
 ;
 name: Bplus
 I:	
@@ -15,6 +15,6 @@ I:
  1
 T:	
 (Effect)  
- 1
+ 0
 ;
 
