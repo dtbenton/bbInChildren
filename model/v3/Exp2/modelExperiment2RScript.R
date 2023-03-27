@@ -1,5 +1,5 @@
 ############################
-# EXPERIMENT 1 MODEL DATA #
+# EXPERIMENT 2 MODEL DATA #
 ###########################
 library(nlme)
 library(boot)
@@ -116,13 +116,13 @@ D_main_tall = D_main_tall[,c(3,4,1,5,2)]
 
 D.new.control = data.frame(BB.A.control = BB.A.control,
                            BB.B.control = BB.B.control, BB.C.control = BB.C.control,
-                           BB.D.control = BB.D.control, ISO.A.control = ISO.A.control,
+                           BB.D.control = BB.D.control,BB.E.control = BB.E.control, ISO.A.control = ISO.A.control,
                            ISO.B.control = ISO.B.control, ISO.C.control = ISO.C.control,
-                           ISO.D.control = ISO.D.control)
+                           ISO.D.control = ISO.D.control, ISO.E.control = ISO.E.control)
 
-D_control_tall =  reshape(D.new.control, varying = c(1:8), v.names = "measure", 
+D_control_tall =  reshape(D.new.control, varying = c(1:10), v.names = "measure", 
                        timevar = "condition",   direction = "long")
-D_control_tall$ID = rep(c(1:16), times = 8)
+D_control_tall$ID = rep(c(1:16), times = 10)
 
 # remove 'id' column from the reshape() function
 D_control_tall$id = NULL
@@ -131,13 +131,13 @@ D_control_tall$id = NULL
 D_control_tall = D_control_tall[order(D_control_tall$ID),] 
 
 # replace the 'condition' column with a more appropriate one
-D_control_tall$condition = rep(c("BB","ISO"), each = 4, times = 16)
+D_control_tall$condition = rep(c("BB","ISO"), each = 5, times = 16)
 
 # create a 'trial' column
-D_control_tall$trial = rep(c("control"), times = 128)
+D_control_tall$trial = rep(c("control"), times = 160)
 
 # create 'object' column
-D_control_tall$objects = rep(c("A","B","C","D"), times = 32)
+D_control_tall$objects = rep(c("A","B","C","D", "E"), times = 32)
 
 # remove 'row.names' column 
 D_control_tall$row.names = NULL
