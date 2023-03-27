@@ -1,257 +1,769 @@
-ID,condition,trial,object,choice
-1,BB,main,A,0.86
-2,BB,main,B,0.86
-3,BB,main,C,0.793
-4,BB,main,A,0.86
-5,BB,main,B,0.86
-6,BB,main,C,0.793
-7,BB,main,A,0.86
-8,BB,main,B,0.86
-9,BB,main,C,0.793
-10,BB,main,A,0.86
-11,BB,main,B,0.86
-12,BB,main,C,0.793
-13,BB,main,A,0.86
-14,BB,main,B,0.86
-15,BB,main,C,0.793
-16,BB,main,A,0.86
-17,BB,main,B,0.86
-18,BB,main,C,0.793
-19,BB,main,A,0.86
-20,BB,main,B,0.86
-21,BB,main,C,0.793
-22,BB,main,A,0.86
-23,BB,main,B,0.86
-24,BB,main,C,0.793
-25,BB,main,A,0.86
-26,BB,main,B,0.86
-27,BB,main,C,0.793
-28,BB,main,A,0.86
-29,BB,main,B,0.86
-30,BB,main,C,0.793
-31,BB,main,A,0.86
-32,BB,main,B,0.86
-33,BB,main,C,0.793
-34,BB,main,A,0.86
-35,BB,main,B,0.86
-36,BB,main,C,0.793
-37,BB,main,A,0.86
-38,BB,main,B,0.86
-39,BB,main,C,0.793
-40,BB,main,A,0.86
-41,BB,main,B,0.86
-42,BB,main,C,0.793
-43,BB,main,A,0.86
-44,BB,main,B,0.86
-45,BB,main,C,0.793
-46,BB,main,A,0.86
-47,BB,main,B,0.86
-48,BB,main,C,0.793
-49,BB,control,A,0.793
-50,BB,control,B,0.793
-51,BB,control,C,0.793
-52,BB,control,D,0.793
-53,BB,control,E,0.793
-54,BB,control,A,0.793
-55,BB,control,B,0.793
-56,BB,control,C,0.793
-57,BB,control,D,0.793
-58,BB,control,E,0.793
-59,BB,control,A,0.793
-60,BB,control,B,0.793
-61,BB,control,C,0.793
-62,BB,control,D,0.793
-63,BB,control,E,0.793
-64,BB,control,A,0.793
-65,BB,control,B,0.793
-66,BB,control,C,0.793
-67,BB,control,D,0.793
-68,BB,control,E,0.793
-69,BB,control,A,0.793
-70,BB,control,B,0.793
-71,BB,control,C,0.793
-72,BB,control,D,0.793
-73,BB,control,E,0.793
-74,BB,control,A,0.793
-75,BB,control,B,0.793
-76,BB,control,C,0.793
-77,BB,control,D,0.793
-78,BB,control,E,0.793
-79,BB,control,A,0.793
-80,BB,control,B,0.793
-81,BB,control,C,0.793
-82,BB,control,D,0.793
-83,BB,control,E,0.793
-84,BB,control,A,0.793
-85,BB,control,B,0.793
-86,BB,control,C,0.793
-87,BB,control,D,0.793
-88,BB,control,E,0.793
-89,BB,control,A,0.793
-90,BB,control,B,0.793
-91,BB,control,C,0.793
-92,BB,control,D,0.793
-93,BB,control,E,0.793
-94,BB,control,A,0.793
-95,BB,control,B,0.793
-96,BB,control,C,0.793
-97,BB,control,D,0.793
-98,BB,control,E,0.793
-99,BB,control,A,0.793
-100,BB,control,B,0.793
-101,BB,control,C,0.793
-102,BB,control,D,0.793
-103,BB,control,E,0.793
-104,BB,control,A,0.793
-105,BB,control,B,0.793
-106,BB,control,C,0.793
-107,BB,control,D,0.793
-108,BB,control,E,0.793
-109,BB,control,A,0.793
-110,BB,control,B,0.793
-111,BB,control,C,0.793
-112,BB,control,D,0.793
-113,BB,control,E,0.793
-114,BB,control,A,0.793
-115,BB,control,B,0.793
-116,BB,control,C,0.793
-117,BB,control,D,0.793
-118,BB,control,E,0.793
-119,BB,control,A,0.793
-120,BB,control,B,0.793
-121,BB,control,C,0.793
-122,BB,control,D,0.793
-123,BB,control,E,0.793
-124,BB,control,A,0.793
-125,BB,control,B,0.793
-126,BB,control,C,0.793
-127,BB,control,D,0.793
-128,BB,control,E,0.793
-129,ISO,main,A,0.369
-130,ISO,main,B,0.369
-131,ISO,main,C,0.793
-132,ISO,main,A,0.369
-133,ISO,main,B,0.369
-134,ISO,main,C,0.793
-135,ISO,main,A,0.369
-136,ISO,main,B,0.369
-137,ISO,main,C,0.793
-138,ISO,main,A,0.369
-139,ISO,main,B,0.369
-140,ISO,main,C,0.793
-141,ISO,main,A,0.369
-142,ISO,main,B,0.369
-143,ISO,main,C,0.793
-144,ISO,main,A,0.369
-145,ISO,main,B,0.369
-146,ISO,main,C,0.793
-147,ISO,main,A,0.369
-148,ISO,main,B,0.369
-149,ISO,main,C,0.793
-150,ISO,main,A,0.369
-151,ISO,main,B,0.369
-152,ISO,main,C,0.793
-153,ISO,main,A,0.369
-154,ISO,main,B,0.369
-155,ISO,main,C,0.793
-156,ISO,main,A,0.369
-157,ISO,main,B,0.369
-158,ISO,main,C,0.793
-159,ISO,main,A,0.369
-160,ISO,main,B,0.369
-161,ISO,main,C,0.793
-162,ISO,main,A,0.369
-163,ISO,main,B,0.369
-164,ISO,main,C,0.793
-165,ISO,main,A,0.369
-166,ISO,main,B,0.369
-167,ISO,main,C,0.793
-168,ISO,main,A,0.369
-169,ISO,main,B,0.369
-170,ISO,main,C,0.793
-171,ISO,main,A,0.369
-172,ISO,main,B,0.369
-173,ISO,main,C,0.793
-174,ISO,main,A,0.369
-175,ISO,main,B,0.369
-176,ISO,main,C,0.793
-177,ISO,control,A,0.793
-178,ISO,control,B,0.793
-179,ISO,control,C,0.793
-180,ISO,control,D,0.207
-181,ISO,control,E,0.207
-182,ISO,control,A,0.793
-183,ISO,control,B,0.793
-184,ISO,control,C,0.793
-185,ISO,control,D,0.207
-186,ISO,control,E,0.207
-187,ISO,control,A,0.793
-188,ISO,control,B,0.793
-189,ISO,control,C,0.793
-190,ISO,control,D,0.207
-191,ISO,control,E,0.207
-192,ISO,control,A,0.793
-193,ISO,control,B,0.793
-194,ISO,control,C,0.793
-195,ISO,control,D,0.207
-196,ISO,control,E,0.207
-197,ISO,control,A,0.793
-198,ISO,control,B,0.793
-199,ISO,control,C,0.793
-200,ISO,control,D,0.207
-201,ISO,control,E,0.207
-202,ISO,control,A,0.793
-203,ISO,control,B,0.793
-204,ISO,control,C,0.793
-205,ISO,control,D,0.207
-206,ISO,control,E,0.207
-207,ISO,control,A,0.793
-208,ISO,control,B,0.793
-209,ISO,control,C,0.793
-210,ISO,control,D,0.207
-211,ISO,control,E,0.207
-212,ISO,control,A,0.793
-213,ISO,control,B,0.793
-214,ISO,control,C,0.793
-215,ISO,control,D,0.207
-216,ISO,control,E,0.207
-217,ISO,control,A,0.793
-218,ISO,control,B,0.793
-219,ISO,control,C,0.793
-220,ISO,control,D,0.207
-221,ISO,control,E,0.207
-222,ISO,control,A,0.793
-223,ISO,control,B,0.793
-224,ISO,control,C,0.793
-225,ISO,control,D,0.207
-226,ISO,control,E,0.207
-227,ISO,control,A,0.793
-228,ISO,control,B,0.793
-229,ISO,control,C,0.793
-230,ISO,control,D,0.207
-231,ISO,control,E,0.207
-232,ISO,control,A,0.793
-233,ISO,control,B,0.793
-234,ISO,control,C,0.793
-235,ISO,control,D,0.207
-236,ISO,control,E,0.207
-237,ISO,control,A,0.793
-238,ISO,control,B,0.793
-239,ISO,control,C,0.793
-240,ISO,control,D,0.207
-241,ISO,control,E,0.207
-242,ISO,control,A,0.793
-243,ISO,control,B,0.793
-244,ISO,control,C,0.793
-245,ISO,control,D,0.207
-246,ISO,control,E,0.207
-247,ISO,control,A,0.793
-248,ISO,control,B,0.793
-249,ISO,control,C,0.793
-250,ISO,control,D,0.207
-251,ISO,control,E,0.207
-252,ISO,control,A,0.793
-253,ISO,control,B,0.793
-254,ISO,control,C,0.793
-255,ISO,control,D,0.207
-256,ISO,control,E,0.207
+ID,condition,trial,phase,object,choice
+1,BB,main,Phase 1,A,0.86
+2,BB,main,Phase 1,B,0.86
+3,BB,main,Phase 1,C,0.793
+4,BB,main,Phase 2,A,0.86
+5,BB,main,Phase 2,B,0.86
+6,BB,main,Phase 2,C,0.793
+7,BB,main,Phase 1,A,0.86
+8,BB,main,Phase 1,B,0.86
+9,BB,main,Phase 1,C,0.793
+10,BB,main,Phase 2,A,0.86
+11,BB,main,Phase 2,B,0.86
+12,BB,main,Phase 2,C,0.793
+13,BB,main,Phase 1,A,0.86
+14,BB,main,Phase 1,B,0.86
+15,BB,main,Phase 1,C,0.793
+16,BB,main,Phase 2,A,0.86
+17,BB,main,Phase 2,B,0.86
+18,BB,main,Phase 2,C,0.793
+19,BB,main,Phase 1,A,0.86
+20,BB,main,Phase 1,B,0.86
+21,BB,main,Phase 1,C,0.793
+22,BB,main,Phase 2,A,0.86
+23,BB,main,Phase 2,B,0.86
+24,BB,main,Phase 2,C,0.793
+25,BB,main,Phase 1,A,0.86
+26,BB,main,Phase 1,B,0.86
+27,BB,main,Phase 1,C,0.793
+28,BB,main,Phase 2,A,0.86
+29,BB,main,Phase 2,B,0.86
+30,BB,main,Phase 2,C,0.793
+31,BB,main,Phase 1,A,0.86
+32,BB,main,Phase 1,B,0.86
+33,BB,main,Phase 1,C,0.793
+34,BB,main,Phase 2,A,0.86
+35,BB,main,Phase 2,B,0.86
+36,BB,main,Phase 2,C,0.793
+37,BB,main,Phase 1,A,0.86
+38,BB,main,Phase 1,B,0.86
+39,BB,main,Phase 1,C,0.793
+40,BB,main,Phase 2,A,0.86
+41,BB,main,Phase 2,B,0.86
+42,BB,main,Phase 2,C,0.793
+43,BB,main,Phase 1,A,0.86
+44,BB,main,Phase 1,B,0.86
+45,BB,main,Phase 1,C,0.793
+46,BB,main,Phase 2,A,0.86
+47,BB,main,Phase 2,B,0.86
+48,BB,main,Phase 2,C,0.793
+49,BB,main,Phase 1,A,0.86
+50,BB,main,Phase 1,B,0.86
+51,BB,main,Phase 1,C,0.793
+52,BB,main,Phase 2,A,0.86
+53,BB,main,Phase 2,B,0.86
+54,BB,main,Phase 2,C,0.793
+55,BB,main,Phase 1,A,0.86
+56,BB,main,Phase 1,B,0.86
+57,BB,main,Phase 1,C,0.793
+58,BB,main,Phase 2,A,0.86
+59,BB,main,Phase 2,B,0.86
+60,BB,main,Phase 2,C,0.793
+61,BB,main,Phase 1,A,0.86
+62,BB,main,Phase 1,B,0.86
+63,BB,main,Phase 1,C,0.793
+64,BB,main,Phase 2,A,0.86
+65,BB,main,Phase 2,B,0.86
+66,BB,main,Phase 2,C,0.793
+67,BB,main,Phase 1,A,0.86
+68,BB,main,Phase 1,B,0.86
+69,BB,main,Phase 1,C,0.793
+70,BB,main,Phase 2,A,0.86
+71,BB,main,Phase 2,B,0.86
+72,BB,main,Phase 2,C,0.793
+73,BB,main,Phase 1,A,0.86
+74,BB,main,Phase 1,B,0.86
+75,BB,main,Phase 1,C,0.793
+76,BB,main,Phase 2,A,0.86
+77,BB,main,Phase 2,B,0.86
+78,BB,main,Phase 2,C,0.793
+79,BB,main,Phase 1,A,0.86
+80,BB,main,Phase 1,B,0.86
+81,BB,main,Phase 1,C,0.793
+82,BB,main,Phase 2,A,0.86
+83,BB,main,Phase 2,B,0.86
+84,BB,main,Phase 2,C,0.793
+85,BB,main,Phase 1,A,0.86
+86,BB,main,Phase 1,B,0.86
+87,BB,main,Phase 1,C,0.793
+88,BB,main,Phase 2,A,0.86
+89,BB,main,Phase 2,B,0.86
+90,BB,main,Phase 2,C,0.793
+91,BB,main,Phase 1,A,0.86
+92,BB,main,Phase 1,B,0.86
+93,BB,main,Phase 1,C,0.793
+94,BB,main,Phase 2,A,0.86
+95,BB,main,Phase 2,B,0.86
+96,BB,main,Phase 2,C,0.793
+97,BB,main,Phase 1,A,0.86
+98,BB,main,Phase 1,B,0.86
+99,BB,main,Phase 1,C,0.793
+100,BB,main,Phase 1,A,0.86
+101,BB,main,Phase 2,B,0.86
+102,BB,main,Phase 2,C,0.793
+103,BB,main,Phase 2,A,0.86
+104,BB,main,Phase 2,B,0.86
+105,BB,main,Phase 1,C,0.793
+106,BB,main,Phase 1,A,0.86
+107,BB,main,Phase 1,B,0.86
+108,BB,main,Phase 1,C,0.793
+109,BB,main,Phase 2,A,0.86
+110,BB,main,Phase 2,B,0.86
+111,BB,main,Phase 2,C,0.793
+112,BB,main,Phase 2,A,0.86
+113,BB,main,Phase 1,B,0.86
+114,BB,main,Phase 1,C,0.793
+115,BB,main,Phase 1,A,0.86
+116,BB,main,Phase 1,B,0.86
+117,BB,main,Phase 2,C,0.793
+118,BB,main,Phase 2,A,0.86
+119,BB,main,Phase 2,B,0.86
+120,BB,main,Phase 2,C,0.793
+121,BB,main,Phase 1,A,0.86
+122,BB,main,Phase 1,B,0.86
+123,BB,main,Phase 1,C,0.793
+124,BB,main,Phase 1,A,0.86
+125,BB,main,Phase 2,B,0.86
+126,BB,main,Phase 2,C,0.793
+127,BB,main,Phase 2,A,0.86
+128,BB,main,Phase 2,B,0.86
+129,BB,main,Phase 1,C,0.793
+130,BB,main,Phase 1,A,0.86
+131,BB,main,Phase 1,B,0.86
+132,BB,main,Phase 1,C,0.793
+133,BB,main,Phase 2,A,0.86
+134,BB,main,Phase 2,B,0.86
+135,BB,main,Phase 2,C,0.793
+136,BB,main,Phase 2,A,0.86
+137,BB,main,Phase 1,B,0.86
+138,BB,main,Phase 1,C,0.793
+139,BB,main,Phase 1,A,0.86
+140,BB,main,Phase 1,B,0.86
+141,BB,main,Phase 2,C,0.793
+142,BB,main,Phase 2,A,0.86
+143,BB,main,Phase 2,B,0.86
+144,BB,main,Phase 2,C,0.793
+145,BB,control,Phase 1,A,0.793
+146,BB,control,Phase 1,B,0.793
+147,BB,control,Phase 1,C,0.793
+148,BB,control,Phase 1,D,0.793
+149,BB,control,Phase 1,E,0.793
+150,BB,control,Phase 2,A,0.793
+151,BB,control,Phase 2,B,0.793
+152,BB,control,Phase 2,C,0.793
+153,BB,control,Phase 2,D,0.793
+154,BB,control,Phase 2,E,0.793
+155,BB,control,Phase 1,A,0.793
+156,BB,control,Phase 1,B,0.793
+157,BB,control,Phase 1,C,0.793
+158,BB,control,Phase 1,D,0.793
+159,BB,control,Phase 1,E,0.793
+160,BB,control,Phase 2,A,0.793
+161,BB,control,Phase 2,B,0.793
+162,BB,control,Phase 2,C,0.793
+163,BB,control,Phase 2,D,0.793
+164,BB,control,Phase 2,E,0.793
+165,BB,control,Phase 1,A,0.793
+166,BB,control,Phase 1,B,0.793
+167,BB,control,Phase 1,C,0.793
+168,BB,control,Phase 1,D,0.793
+169,BB,control,Phase 1,E,0.793
+170,BB,control,Phase 2,A,0.793
+171,BB,control,Phase 2,B,0.793
+172,BB,control,Phase 2,C,0.793
+173,BB,control,Phase 2,D,0.793
+174,BB,control,Phase 2,E,0.793
+175,BB,control,Phase 1,A,0.793
+176,BB,control,Phase 1,B,0.793
+177,BB,control,Phase 1,C,0.793
+178,BB,control,Phase 1,D,0.793
+179,BB,control,Phase 1,E,0.793
+180,BB,control,Phase 2,A,0.793
+181,BB,control,Phase 2,B,0.793
+182,BB,control,Phase 2,C,0.793
+183,BB,control,Phase 2,D,0.793
+184,BB,control,Phase 2,E,0.793
+185,BB,control,Phase 1,A,0.793
+186,BB,control,Phase 1,B,0.793
+187,BB,control,Phase 1,C,0.793
+188,BB,control,Phase 1,D,0.793
+189,BB,control,Phase 1,E,0.793
+190,BB,control,Phase 2,A,0.793
+191,BB,control,Phase 2,B,0.793
+192,BB,control,Phase 2,C,0.793
+193,BB,control,Phase 2,D,0.793
+194,BB,control,Phase 2,E,0.793
+195,BB,control,Phase 1,A,0.793
+196,BB,control,Phase 1,B,0.793
+197,BB,control,Phase 1,C,0.793
+198,BB,control,Phase 1,D,0.793
+199,BB,control,Phase 1,E,0.793
+200,BB,control,Phase 2,A,0.793
+201,BB,control,Phase 2,B,0.793
+202,BB,control,Phase 2,C,0.793
+203,BB,control,Phase 2,D,0.793
+204,BB,control,Phase 2,E,0.793
+205,BB,control,Phase 1,A,0.793
+206,BB,control,Phase 1,B,0.793
+207,BB,control,Phase 1,C,0.793
+208,BB,control,Phase 1,D,0.793
+209,BB,control,Phase 1,E,0.793
+210,BB,control,Phase 2,A,0.793
+211,BB,control,Phase 2,B,0.793
+212,BB,control,Phase 2,C,0.793
+213,BB,control,Phase 2,D,0.793
+214,BB,control,Phase 2,E,0.793
+215,BB,control,Phase 1,A,0.793
+216,BB,control,Phase 1,B,0.793
+217,BB,control,Phase 1,C,0.793
+218,BB,control,Phase 1,D,0.793
+219,BB,control,Phase 1,E,0.793
+220,BB,control,Phase 2,A,0.793
+221,BB,control,Phase 2,B,0.793
+222,BB,control,Phase 2,C,0.793
+223,BB,control,Phase 2,D,0.793
+224,BB,control,Phase 2,E,0.793
+225,BB,control,Phase 1,A,0.793
+226,BB,control,Phase 1,B,0.793
+227,BB,control,Phase 1,C,0.793
+228,BB,control,Phase 1,D,0.793
+229,BB,control,Phase 1,E,0.793
+230,BB,control,Phase 2,A,0.793
+231,BB,control,Phase 2,B,0.793
+232,BB,control,Phase 2,C,0.793
+233,BB,control,Phase 2,D,0.793
+234,BB,control,Phase 2,E,0.793
+235,BB,control,Phase 1,A,0.793
+236,BB,control,Phase 1,B,0.793
+237,BB,control,Phase 1,C,0.793
+238,BB,control,Phase 1,D,0.793
+239,BB,control,Phase 1,E,0.793
+240,BB,control,Phase 2,A,0.793
+241,BB,control,Phase 2,B,0.793
+242,BB,control,Phase 2,C,0.793
+243,BB,control,Phase 2,D,0.793
+244,BB,control,Phase 2,E,0.793
+245,BB,control,Phase 1,A,0.793
+246,BB,control,Phase 1,B,0.793
+247,BB,control,Phase 1,C,0.793
+248,BB,control,Phase 1,D,0.793
+249,BB,control,Phase 1,E,0.793
+250,BB,control,Phase 2,A,0.793
+251,BB,control,Phase 2,B,0.793
+252,BB,control,Phase 2,C,0.793
+253,BB,control,Phase 2,D,0.793
+254,BB,control,Phase 2,E,0.793
+255,BB,control,Phase 1,A,0.793
+256,BB,control,Phase 1,B,0.793
+257,BB,control,Phase 1,C,0.793
+258,BB,control,Phase 1,D,0.793
+259,BB,control,Phase 1,E,0.793
+260,BB,control,Phase 2,A,0.793
+261,BB,control,Phase 2,B,0.793
+262,BB,control,Phase 2,C,0.793
+263,BB,control,Phase 2,D,0.793
+264,BB,control,Phase 2,E,0.793
+265,BB,control,Phase 1,A,0.793
+266,BB,control,Phase 1,B,0.793
+267,BB,control,Phase 1,C,0.793
+268,BB,control,Phase 1,D,0.793
+269,BB,control,Phase 1,E,0.793
+270,BB,control,Phase 2,A,0.793
+271,BB,control,Phase 2,B,0.793
+272,BB,control,Phase 2,C,0.793
+273,BB,control,Phase 2,D,0.793
+274,BB,control,Phase 2,E,0.793
+275,BB,control,Phase 1,A,0.793
+276,BB,control,Phase 1,B,0.793
+277,BB,control,Phase 1,C,0.793
+278,BB,control,Phase 1,D,0.793
+279,BB,control,Phase 1,E,0.793
+280,BB,control,Phase 2,A,0.793
+281,BB,control,Phase 2,B,0.793
+282,BB,control,Phase 2,C,0.793
+283,BB,control,Phase 2,D,0.793
+284,BB,control,Phase 2,E,0.793
+285,BB,control,Phase 1,A,0.793
+286,BB,control,Phase 1,B,0.793
+287,BB,control,Phase 1,C,0.793
+288,BB,control,Phase 1,D,0.793
+289,BB,control,Phase 1,E,0.793
+290,BB,control,Phase 2,A,0.793
+291,BB,control,Phase 2,B,0.793
+292,BB,control,Phase 2,C,0.793
+293,BB,control,Phase 2,D,0.793
+294,BB,control,Phase 2,E,0.793
+295,BB,control,Phase 1,A,0.793
+296,BB,control,Phase 1,B,0.793
+297,BB,control,Phase 1,C,0.793
+298,BB,control,Phase 1,D,0.793
+299,BB,control,Phase 1,E,0.793
+300,BB,control,Phase 2,A,0.793
+301,BB,control,Phase 2,B,0.793
+302,BB,control,Phase 2,C,0.793
+303,BB,control,Phase 2,D,0.793
+304,BB,control,Phase 2,E,0.793
+305,BB,control,Phase 1,A,0.793
+306,BB,control,Phase 1,B,0.793
+307,BB,control,Phase 1,C,0.793
+308,BB,control,Phase 1,D,0.793
+309,BB,control,Phase 1,E,0.793
+310,BB,control,Phase 2,A,0.793
+311,BB,control,Phase 2,B,0.793
+312,BB,control,Phase 2,C,0.793
+313,BB,control,Phase 2,D,0.793
+314,BB,control,Phase 2,E,0.793
+315,BB,control,Phase 1,A,0.793
+316,BB,control,Phase 1,B,0.793
+317,BB,control,Phase 1,C,0.793
+318,BB,control,Phase 1,D,0.793
+319,BB,control,Phase 1,E,0.793
+320,BB,control,Phase 2,A,0.793
+321,BB,control,Phase 2,B,0.793
+322,BB,control,Phase 2,C,0.793
+323,BB,control,Phase 2,D,0.793
+324,BB,control,Phase 2,E,0.793
+325,BB,control,Phase 1,A,0.793
+326,BB,control,Phase 1,B,0.793
+327,BB,control,Phase 1,C,0.793
+328,BB,control,Phase 1,D,0.793
+329,BB,control,Phase 1,E,0.793
+330,BB,control,Phase 2,A,0.793
+331,BB,control,Phase 2,B,0.793
+332,BB,control,Phase 2,C,0.793
+333,BB,control,Phase 2,D,0.793
+334,BB,control,Phase 2,E,0.793
+335,BB,control,Phase 1,A,0.793
+336,BB,control,Phase 1,B,0.793
+337,BB,control,Phase 1,C,0.793
+338,BB,control,Phase 1,D,0.793
+339,BB,control,Phase 1,E,0.793
+340,BB,control,Phase 2,A,0.793
+341,BB,control,Phase 2,B,0.793
+342,BB,control,Phase 2,C,0.793
+343,BB,control,Phase 2,D,0.793
+344,BB,control,Phase 2,E,0.793
+345,BB,control,Phase 1,A,0.793
+346,BB,control,Phase 1,B,0.793
+347,BB,control,Phase 1,C,0.793
+348,BB,control,Phase 1,D,0.793
+349,BB,control,Phase 1,E,0.793
+350,BB,control,Phase 2,A,0.793
+351,BB,control,Phase 2,B,0.793
+352,BB,control,Phase 2,C,0.793
+353,BB,control,Phase 2,D,0.793
+354,BB,control,Phase 2,E,0.793
+355,BB,control,Phase 1,A,0.793
+356,BB,control,Phase 1,B,0.793
+357,BB,control,Phase 1,C,0.793
+358,BB,control,Phase 1,D,0.793
+359,BB,control,Phase 1,E,0.793
+360,BB,control,Phase 2,A,0.793
+361,BB,control,Phase 2,B,0.793
+362,BB,control,Phase 2,C,0.793
+363,BB,control,Phase 2,D,0.793
+364,BB,control,Phase 2,E,0.793
+365,BB,control,Phase 1,A,0.793
+366,BB,control,Phase 1,B,0.793
+367,BB,control,Phase 1,C,0.793
+368,BB,control,Phase 1,D,0.793
+369,BB,control,Phase 1,E,0.793
+370,BB,control,Phase 2,A,0.793
+371,BB,control,Phase 2,B,0.793
+372,BB,control,Phase 2,C,0.793
+373,BB,control,Phase 2,D,0.793
+374,BB,control,Phase 2,E,0.793
+375,BB,control,Phase 1,A,0.793
+376,BB,control,Phase 1,B,0.793
+377,BB,control,Phase 1,C,0.793
+378,BB,control,Phase 1,D,0.793
+379,BB,control,Phase 1,E,0.793
+380,BB,control,Phase 2,A,0.793
+381,BB,control,Phase 2,B,0.793
+382,BB,control,Phase 2,C,0.793
+383,BB,control,Phase 2,D,0.793
+384,BB,control,Phase 2,E,0.793
+385,ISO,main,Phase 1,A,0.369
+386,ISO,main,Phase 1,B,0.369
+387,ISO,main,Phase 1,C,0.793
+388,ISO,main,Phase 2,A,0.369
+389,ISO,main,Phase 2,B,0.369
+390,ISO,main,Phase 2,C,0.793
+391,ISO,main,Phase 1,A,0.369
+392,ISO,main,Phase 1,B,0.369
+393,ISO,main,Phase 1,C,0.793
+394,ISO,main,Phase 2,A,0.369
+395,ISO,main,Phase 2,B,0.369
+396,ISO,main,Phase 2,C,0.793
+397,ISO,main,Phase 1,A,0.369
+398,ISO,main,Phase 1,B,0.369
+399,ISO,main,Phase 1,C,0.793
+400,ISO,main,Phase 2,A,0.369
+401,ISO,main,Phase 2,B,0.369
+402,ISO,main,Phase 2,C,0.793
+403,ISO,main,Phase 1,A,0.369
+404,ISO,main,Phase 1,B,0.369
+405,ISO,main,Phase 1,C,0.793
+406,ISO,main,Phase 2,A,0.369
+407,ISO,main,Phase 2,B,0.369
+408,ISO,main,Phase 2,C,0.793
+409,ISO,main,Phase 1,A,0.369
+410,ISO,main,Phase 1,B,0.369
+411,ISO,main,Phase 1,C,0.793
+412,ISO,main,Phase 2,A,0.369
+413,ISO,main,Phase 2,B,0.369
+414,ISO,main,Phase 2,C,0.793
+415,ISO,main,Phase 1,A,0.369
+416,ISO,main,Phase 1,B,0.369
+417,ISO,main,Phase 1,C,0.793
+418,ISO,main,Phase 2,A,0.369
+419,ISO,main,Phase 2,B,0.369
+420,ISO,main,Phase 2,C,0.793
+421,ISO,main,Phase 1,A,0.369
+422,ISO,main,Phase 1,B,0.369
+423,ISO,main,Phase 1,C,0.793
+424,ISO,main,Phase 2,A,0.369
+425,ISO,main,Phase 2,B,0.369
+426,ISO,main,Phase 2,C,0.793
+427,ISO,main,Phase 1,A,0.369
+428,ISO,main,Phase 1,B,0.369
+429,ISO,main,Phase 1,C,0.793
+430,ISO,main,Phase 2,A,0.369
+431,ISO,main,Phase 2,B,0.369
+432,ISO,main,Phase 2,C,0.793
+433,ISO,main,Phase 1,A,0.285
+434,ISO,main,Phase 1,B,0.285
+435,ISO,main,Phase 1,C,0.793
+436,ISO,main,Phase 2,A,0.285
+437,ISO,main,Phase 2,B,0.285
+438,ISO,main,Phase 2,C,0.793
+439,ISO,main,Phase 1,A,0.285
+440,ISO,main,Phase 1,B,0.285
+441,ISO,main,Phase 1,C,0.793
+442,ISO,main,Phase 2,A,0.285
+443,ISO,main,Phase 2,B,0.285
+444,ISO,main,Phase 2,C,0.793
+445,ISO,main,Phase 1,A,0.285
+446,ISO,main,Phase 1,B,0.285
+447,ISO,main,Phase 1,C,0.793
+448,ISO,main,Phase 2,A,0.285
+449,ISO,main,Phase 2,B,0.285
+450,ISO,main,Phase 2,C,0.793
+451,ISO,main,Phase 1,A,0.285
+452,ISO,main,Phase 1,B,0.285
+453,ISO,main,Phase 1,C,0.793
+454,ISO,main,Phase 2,A,0.285
+455,ISO,main,Phase 2,B,0.285
+456,ISO,main,Phase 2,C,0.793
+457,ISO,main,Phase 1,A,0.285
+458,ISO,main,Phase 1,B,0.285
+459,ISO,main,Phase 1,C,0.793
+460,ISO,main,Phase 2,A,0.285
+461,ISO,main,Phase 2,B,0.285
+462,ISO,main,Phase 2,C,0.793
+463,ISO,main,Phase 1,A,0.285
+464,ISO,main,Phase 1,B,0.285
+465,ISO,main,Phase 1,C,0.793
+466,ISO,main,Phase 2,A,0.285
+467,ISO,main,Phase 2,B,0.285
+468,ISO,main,Phase 2,C,0.793
+469,ISO,main,Phase 1,A,0.285
+470,ISO,main,Phase 1,B,0.285
+471,ISO,main,Phase 1,C,0.793
+472,ISO,main,Phase 2,A,0.285
+473,ISO,main,Phase 2,B,0.285
+474,ISO,main,Phase 2,C,0.793
+475,ISO,main,Phase 1,A,0.285
+476,ISO,main,Phase 1,B,0.285
+477,ISO,main,Phase 1,C,0.793
+478,ISO,main,Phase 2,A,0.285
+479,ISO,main,Phase 2,B,0.285
+480,ISO,main,Phase 2,C,0.793
+481,ISO,main,Phase 1,A,0.285
+482,ISO,main,Phase 1,B,0.285
+483,ISO,main,Phase 1,C,0.793
+484,ISO,main,Phase 1,A,0.285
+485,ISO,main,Phase 2,B,0.285
+486,ISO,main,Phase 2,C,0.793
+487,ISO,main,Phase 2,A,0.285
+488,ISO,main,Phase 2,B,0.285
+489,ISO,main,Phase 1,C,0.793
+490,ISO,main,Phase 1,A,0.285
+491,ISO,main,Phase 1,B,0.285
+492,ISO,main,Phase 1,C,0.793
+493,ISO,main,Phase 2,A,0.285
+494,ISO,main,Phase 2,B,0.285
+495,ISO,main,Phase 2,C,0.793
+496,ISO,main,Phase 2,A,0.285
+497,ISO,main,Phase 1,B,0.285
+498,ISO,main,Phase 1,C,0.793
+499,ISO,main,Phase 1,A,0.285
+500,ISO,main,Phase 1,B,0.285
+501,ISO,main,Phase 2,C,0.793
+502,ISO,main,Phase 2,A,0.285
+503,ISO,main,Phase 2,B,0.285
+504,ISO,main,Phase 2,C,0.793
+505,ISO,main,Phase 1,A,0.285
+506,ISO,main,Phase 1,B,0.285
+507,ISO,main,Phase 1,C,0.793
+508,ISO,main,Phase 1,A,0.285
+509,ISO,main,Phase 2,B,0.285
+510,ISO,main,Phase 2,C,0.793
+511,ISO,main,Phase 2,A,0.285
+512,ISO,main,Phase 2,B,0.285
+513,ISO,main,Phase 1,C,0.793
+514,ISO,main,Phase 1,A,0.285
+515,ISO,main,Phase 1,B,0.285
+516,ISO,main,Phase 1,C,0.793
+517,ISO,main,Phase 2,A,0.285
+518,ISO,main,Phase 2,B,0.285
+519,ISO,main,Phase 2,C,0.793
+520,ISO,main,Phase 2,A,0.285
+521,ISO,main,Phase 1,B,0.285
+522,ISO,main,Phase 1,C,0.793
+523,ISO,main,Phase 1,A,0.285
+524,ISO,main,Phase 1,B,0.285
+525,ISO,main,Phase 2,C,0.793
+526,ISO,main,Phase 2,A,0.285
+527,ISO,main,Phase 2,B,0.285
+528,ISO,main,Phase 2,C,0.793
+529,ISO,control,Phase 1,A,0.793
+530,ISO,control,Phase 1,B,0.793
+531,ISO,control,Phase 1,C,0.793
+532,ISO,control,Phase 1,D,0.207
+533,ISO,control,Phase 1,E,0.207
+534,ISO,control,Phase 2,A,0.793
+535,ISO,control,Phase 2,B,0.793
+536,ISO,control,Phase 2,C,0.793
+537,ISO,control,Phase 2,D,0.207
+538,ISO,control,Phase 2,E,0.207
+539,ISO,control,Phase 1,A,0.793
+540,ISO,control,Phase 1,B,0.793
+541,ISO,control,Phase 1,C,0.793
+542,ISO,control,Phase 1,D,0.207
+543,ISO,control,Phase 1,E,0.207
+544,ISO,control,Phase 2,A,0.793
+545,ISO,control,Phase 2,B,0.793
+546,ISO,control,Phase 2,C,0.793
+547,ISO,control,Phase 2,D,0.207
+548,ISO,control,Phase 2,E,0.207
+549,ISO,control,Phase 1,A,0.793
+550,ISO,control,Phase 1,B,0.793
+551,ISO,control,Phase 1,C,0.793
+552,ISO,control,Phase 1,D,0.207
+553,ISO,control,Phase 1,E,0.207
+554,ISO,control,Phase 2,A,0.793
+555,ISO,control,Phase 2,B,0.793
+556,ISO,control,Phase 2,C,0.793
+557,ISO,control,Phase 2,D,0.207
+558,ISO,control,Phase 2,E,0.207
+559,ISO,control,Phase 1,A,0.793
+560,ISO,control,Phase 1,B,0.793
+561,ISO,control,Phase 1,C,0.793
+562,ISO,control,Phase 1,D,0.207
+563,ISO,control,Phase 1,E,0.207
+564,ISO,control,Phase 2,A,0.793
+565,ISO,control,Phase 2,B,0.793
+566,ISO,control,Phase 2,C,0.793
+567,ISO,control,Phase 2,D,0.207
+568,ISO,control,Phase 2,E,0.207
+569,ISO,control,Phase 1,A,0.793
+570,ISO,control,Phase 1,B,0.793
+571,ISO,control,Phase 1,C,0.793
+572,ISO,control,Phase 1,D,0.207
+573,ISO,control,Phase 1,E,0.207
+574,ISO,control,Phase 2,A,0.793
+575,ISO,control,Phase 2,B,0.793
+576,ISO,control,Phase 2,C,0.793
+577,ISO,control,Phase 2,D,0.207
+578,ISO,control,Phase 2,E,0.207
+579,ISO,control,Phase 1,A,0.793
+580,ISO,control,Phase 1,B,0.793
+581,ISO,control,Phase 1,C,0.793
+582,ISO,control,Phase 1,D,0.207
+583,ISO,control,Phase 1,E,0.207
+584,ISO,control,Phase 2,A,0.793
+585,ISO,control,Phase 2,B,0.793
+586,ISO,control,Phase 2,C,0.793
+587,ISO,control,Phase 2,D,0.207
+588,ISO,control,Phase 2,E,0.207
+589,ISO,control,Phase 1,A,0.793
+590,ISO,control,Phase 1,B,0.793
+591,ISO,control,Phase 1,C,0.793
+592,ISO,control,Phase 1,D,0.207
+593,ISO,control,Phase 1,E,0.207
+594,ISO,control,Phase 2,A,0.793
+595,ISO,control,Phase 2,B,0.793
+596,ISO,control,Phase 2,C,0.793
+597,ISO,control,Phase 2,D,0.207
+598,ISO,control,Phase 2,E,0.207
+599,ISO,control,Phase 1,A,0.793
+600,ISO,control,Phase 1,B,0.793
+601,ISO,control,Phase 1,C,0.793
+602,ISO,control,Phase 1,D,0.207
+603,ISO,control,Phase 1,E,0.207
+604,ISO,control,Phase 2,A,0.793
+605,ISO,control,Phase 2,B,0.793
+606,ISO,control,Phase 2,C,0.793
+607,ISO,control,Phase 2,D,0.207
+608,ISO,control,Phase 2,E,0.207
+609,ISO,control,Phase 1,A,0.793
+610,ISO,control,Phase 1,B,0.793
+611,ISO,control,Phase 1,C,0.793
+612,ISO,control,Phase 1,D,0.207
+613,ISO,control,Phase 1,E,0.207
+614,ISO,control,Phase 2,A,0.793
+615,ISO,control,Phase 2,B,0.793
+616,ISO,control,Phase 2,C,0.793
+617,ISO,control,Phase 2,D,0.207
+618,ISO,control,Phase 2,E,0.207
+619,ISO,control,Phase 1,A,0.793
+620,ISO,control,Phase 1,B,0.793
+621,ISO,control,Phase 1,C,0.793
+622,ISO,control,Phase 1,D,0.207
+623,ISO,control,Phase 1,E,0.207
+624,ISO,control,Phase 2,A,0.793
+625,ISO,control,Phase 2,B,0.793
+626,ISO,control,Phase 2,C,0.793
+627,ISO,control,Phase 2,D,0.207
+628,ISO,control,Phase 2,E,0.207
+629,ISO,control,Phase 1,A,0.793
+630,ISO,control,Phase 1,B,0.793
+631,ISO,control,Phase 1,C,0.793
+632,ISO,control,Phase 1,D,0.207
+633,ISO,control,Phase 1,E,0.207
+634,ISO,control,Phase 2,A,0.793
+635,ISO,control,Phase 2,B,0.793
+636,ISO,control,Phase 2,C,0.793
+637,ISO,control,Phase 2,D,0.207
+638,ISO,control,Phase 2,E,0.207
+639,ISO,control,Phase 1,A,0.793
+640,ISO,control,Phase 1,B,0.793
+641,ISO,control,Phase 1,C,0.793
+642,ISO,control,Phase 1,D,0.207
+643,ISO,control,Phase 1,E,0.207
+644,ISO,control,Phase 2,A,0.793
+645,ISO,control,Phase 2,B,0.793
+646,ISO,control,Phase 2,C,0.793
+647,ISO,control,Phase 2,D,0.207
+648,ISO,control,Phase 2,E,0.207
+649,ISO,control,Phase 1,A,0.793
+650,ISO,control,Phase 1,B,0.793
+651,ISO,control,Phase 1,C,0.793
+652,ISO,control,Phase 1,D,0.207
+653,ISO,control,Phase 1,E,0.207
+654,ISO,control,Phase 2,A,0.793
+655,ISO,control,Phase 2,B,0.793
+656,ISO,control,Phase 2,C,0.793
+657,ISO,control,Phase 2,D,0.207
+658,ISO,control,Phase 2,E,0.207
+659,ISO,control,Phase 1,A,0.793
+660,ISO,control,Phase 1,B,0.793
+661,ISO,control,Phase 1,C,0.793
+662,ISO,control,Phase 1,D,0.207
+663,ISO,control,Phase 1,E,0.207
+664,ISO,control,Phase 2,A,0.793
+665,ISO,control,Phase 2,B,0.793
+666,ISO,control,Phase 2,C,0.793
+667,ISO,control,Phase 2,D,0.207
+668,ISO,control,Phase 2,E,0.207
+669,ISO,control,Phase 1,A,0.793
+670,ISO,control,Phase 1,B,0.793
+671,ISO,control,Phase 1,C,0.793
+672,ISO,control,Phase 1,D,0.207
+673,ISO,control,Phase 1,E,0.207
+674,ISO,control,Phase 2,A,0.793
+675,ISO,control,Phase 2,B,0.793
+676,ISO,control,Phase 2,C,0.793
+677,ISO,control,Phase 2,D,0.207
+678,ISO,control,Phase 2,E,0.207
+679,ISO,control,Phase 1,A,0.793
+680,ISO,control,Phase 1,B,0.793
+681,ISO,control,Phase 1,C,0.793
+682,ISO,control,Phase 1,D,0.207
+683,ISO,control,Phase 1,E,0.207
+684,ISO,control,Phase 2,A,0.793
+685,ISO,control,Phase 2,B,0.793
+686,ISO,control,Phase 2,C,0.793
+687,ISO,control,Phase 2,D,0.207
+688,ISO,control,Phase 2,E,0.207
+689,ISO,control,Phase 1,A,0.793
+690,ISO,control,Phase 1,B,0.793
+691,ISO,control,Phase 1,C,0.793
+692,ISO,control,Phase 1,D,0.207
+693,ISO,control,Phase 1,E,0.207
+694,ISO,control,Phase 2,A,0.793
+695,ISO,control,Phase 2,B,0.793
+696,ISO,control,Phase 2,C,0.793
+697,ISO,control,Phase 2,D,0.207
+698,ISO,control,Phase 2,E,0.207
+699,ISO,control,Phase 1,A,0.793
+700,ISO,control,Phase 1,B,0.793
+701,ISO,control,Phase 1,C,0.793
+702,ISO,control,Phase 1,D,0.207
+703,ISO,control,Phase 1,E,0.207
+704,ISO,control,Phase 2,A,0.793
+705,ISO,control,Phase 2,B,0.793
+706,ISO,control,Phase 2,C,0.793
+707,ISO,control,Phase 2,D,0.207
+708,ISO,control,Phase 2,E,0.207
+709,ISO,control,Phase 1,A,0.793
+710,ISO,control,Phase 1,B,0.793
+711,ISO,control,Phase 1,C,0.793
+712,ISO,control,Phase 1,D,0.207
+713,ISO,control,Phase 1,E,0.207
+714,ISO,control,Phase 2,A,0.793
+715,ISO,control,Phase 2,B,0.793
+716,ISO,control,Phase 2,C,0.793
+717,ISO,control,Phase 2,D,0.207
+718,ISO,control,Phase 2,E,0.207
+719,ISO,control,Phase 1,A,0.793
+720,ISO,control,Phase 1,B,0.793
+721,ISO,control,Phase 1,C,0.793
+722,ISO,control,Phase 1,D,0.207
+723,ISO,control,Phase 1,E,0.207
+724,ISO,control,Phase 2,A,0.793
+725,ISO,control,Phase 2,B,0.793
+726,ISO,control,Phase 2,C,0.793
+727,ISO,control,Phase 2,D,0.207
+728,ISO,control,Phase 2,E,0.207
+729,ISO,control,Phase 1,A,0.793
+730,ISO,control,Phase 1,B,0.793
+731,ISO,control,Phase 1,C,0.793
+732,ISO,control,Phase 1,D,0.207
+733,ISO,control,Phase 1,E,0.207
+734,ISO,control,Phase 2,A,0.793
+735,ISO,control,Phase 2,B,0.793
+736,ISO,control,Phase 2,C,0.793
+737,ISO,control,Phase 2,D,0.207
+738,ISO,control,Phase 2,E,0.207
+739,ISO,control,Phase 1,A,0.793
+740,ISO,control,Phase 1,B,0.793
+741,ISO,control,Phase 1,C,0.793
+742,ISO,control,Phase 1,D,0.207
+743,ISO,control,Phase 1,E,0.207
+744,ISO,control,Phase 2,A,0.793
+745,ISO,control,Phase 2,B,0.793
+746,ISO,control,Phase 2,C,0.793
+747,ISO,control,Phase 2,D,0.207
+748,ISO,control,Phase 2,E,0.207
+749,ISO,control,Phase 1,A,0.793
+750,ISO,control,Phase 1,B,0.793
+751,ISO,control,Phase 1,C,0.793
+752,ISO,control,Phase 1,D,0.207
+753,ISO,control,Phase 1,E,0.207
+754,ISO,control,Phase 2,A,0.793
+755,ISO,control,Phase 2,B,0.793
+756,ISO,control,Phase 2,C,0.793
+757,ISO,control,Phase 2,D,0.207
+758,ISO,control,Phase 2,E,0.207
+759,ISO,control,Phase 1,A,0.793
+760,ISO,control,Phase 1,B,0.793
+761,ISO,control,Phase 1,C,0.793
+762,ISO,control,Phase 1,D,0.207
+763,ISO,control,Phase 1,E,0.207
+764,ISO,control,Phase 2,A,0.793
+765,ISO,control,Phase 2,B,0.793
+766,ISO,control,Phase 2,C,0.793
+767,ISO,control,Phase 2,D,0.207
+768,ISO,control,Phase 2,E,0.207

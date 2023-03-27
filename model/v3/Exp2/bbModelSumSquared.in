@@ -74,18 +74,22 @@ proc testAllFinalActs {fname groups} {
 }
 
 
-proc testNetwork {n train trainNum train2 trainNum2 train3 trainNum3 train4 trainNum4 test fname groups} {
+proc testNetwork {n train trainNum train2 trainNum2 test train3 trainNum3 train4 trainNum4 test2 fname groups} {
 	for {set i 0} {$i < $n} {incr i} {
 			resetNet
 			useTrainingSet $train
 			train $trainNum
 			useTrainingSet $train2
 			train $trainNum2
+			useTestingSet $test
+			testAllFinalActs $fname $groups
+			
+			resetNet
 			useTrainingSet $train3
 			train $trainNum3
 			useTrainingSet $train4
 			train $trainNum4
-			useTestingSet $test
+			useTestingSet $test2
 			testAllFinalActs $fname $groups
 	}
 }
@@ -94,16 +98,16 @@ proc testNetwork {n train trainNum train2 trainNum2 train3 trainNum3 train4 trai
 ### BB condition command: ##
 
 # BB experimental: 
-testNetwork 16 ABCplus 100 ABplus 100 ABCplus 100 ABplus 100 experimentalTest BBexperimentalExp2.txt Effect
+testNetwork 16 ABCplus 200 ABplus 200 experimentalTest ABCplus 200 ABplus 200 experimentalTest BBexperimentalExp2.txt Effect
 
 # BB control: 
-testNetwork 16 ABCplus 100 DEplus 100 ABCplus 100 DEplus 100 controlTest BBcontrolExp2.txt Effect
+testNetwork 16 ABCplus 200 DEplus 200 controlTest ABCplus 200 DEplus 200 controlTest BBcontrolExp2.txt Effect
 
 # ISO experimental: 
-testNetwork 16 ABCplus 100 ABminus 100 ABCplus 100 ABminus 100 experimentalTest ISOexperimentalExp2.txt Effect
+testNetwork 16 ABCplus 200 ABminus 200 experimentalTest ABCplus 200 ABminus 200 experimentalTest ISOexperimentalExp2.txt Effect
 
 # ISO control: 
-testNetwork 16 ABCplus 100 DEminus 100 ABCplus 100 DEminus 100 controlTest ISOcontrolExp2.txt Effect
+testNetwork 16 ABCplus 200 DEminus 200 controlTest ABCplus 200 DEminus 200 controlTest ISOcontrolExp2.txt Effect
 
 
 #testNetwork 1000 ABCplus 50 Aplus 50 experimentalTest BBexperimental.txt Effect
