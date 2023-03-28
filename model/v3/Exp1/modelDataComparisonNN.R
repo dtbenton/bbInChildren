@@ -697,11 +697,12 @@ behavioral_predictions = c(mean(A.BB.MAIN.SUM, na.rm=TRUE), mean(B.BB.MAIN.SUM, 
                            mean(B.ISO.CONTROL.SUM, na.rm =TRUE), mean(C.ISO.CONTROL.SUM, na.rm =TRUE), mean(D.ISO.CONTROL.SUM, na.rm =TRUE))
 
 
-# create variables for model predictions and behavioral data
-model_measure = D_tall$measure
-behavioral_measure = D.DF.5s.and.6s_tall$measure
 
+#####################
+# model fit indices #
+#####################
 # compute rmse
-rmse(model_measure,na.omit(behavioral_measure))
+rmse(model_predictions,
+     behavioral_predictions)
 
 
