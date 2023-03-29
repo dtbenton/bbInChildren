@@ -499,36 +499,61 @@ D.DF.5s.and.6s_tall  = D.DF.5s.and.6s_tall[order(D.DF.5s.and.6s_tall$eventType),
 #########################
 # p = 0.5
 BB.A.main = rep("2",16)
+BB.A.main = as.numeric(BB.A.main)
+
 BB.B.main = rep("1",16) # 0.5+0.5
+BB.B.main = as.numeric(BB.B.main)
+
 BB.C.main = rep("1",16) # 0.5+0.5
+BB.C.main = as.numeric(BB.C.main)
 
 
 # control
 BB.A.control = rep("1",16) # 0.5+0.5
+BB.A.control = as.numeric(BB.A.control)
+
+
 BB.B.control = rep("1",16) # 0.5+0.5
+BB.B.control = as.numeric(BB.B.control)
+
 BB.C.control = rep("1",16) # 0.5+0.5
+BB.C.control = as.numeric(BB.C.control)
+
 BB.D.control = rep("2",16) # 0.5+0.5
+BB.D.control = as.numeric(BB.D.control)
 
 
 # ISO
-#main
 ISO.A.main = rep("0",16)
+ISO.A.main = as.numeric(ISO.A.main)
+
 ISO.B.main = rep("1",16) # 0.5+0.5
+ISO.B.main = as.numeric(ISO.B.main)
+
 ISO.C.main = rep("1",16) # 0.5+0.5
+ISO.C.main = as.numeric(ISO.C.main)
 
 
 # control
 ISO.A.control = rep("1",16) # 0.5+0.5
+ISO.A.control = as.numeric(ISO.A.control)
+
+
 ISO.B.control = rep("1",16) # 0.5+0.5
+ISO.B.control = as.numeric(ISO.B.control)
+
 ISO.C.control = rep("1",16) # 0.5+0.5
+ISO.C.control = as.numeric(ISO.C.control)
+
 ISO.D.control = rep("0",16) # 0.5+0.5
+ISO.D.control = as.numeric(ISO.D.control)
 
 
 
 # create a dataframe that combines the variables
-D.new.main = data.frame(BB.A.main = BB.A.main, BB.B.main = BB.B.main,
-                        BB.C.main = BB.C.main, ISO.A.main = ISO.A.main, 
-                        ISO.B.main = ISO.B.main, ISO.C.main = ISO.C.main)
+D.new.main = data.frame(BB.A.main = as.numeric(BB.A.main), BB.B.main = as.numeric(BB.B.main),
+                        BB.C.main = as.numeric(BB.C.main), ISO.A.main = as.numeric(ISO.A.main), 
+                        ISO.B.main = as.numeric(ISO.B.main), ISO.C.main = as.numeric(ISO.C.main))
 
 D_main_tall =  reshape(D.new.main, varying = c(1:6), v.names = "measure", 
                        timevar = "condition",   direction = "long")
@@ -558,11 +583,11 @@ D_main_tall = D_main_tall[,c(3,4,1,5,2)]
 #############
 ## control ##
 #############
-D.new.control = data.frame(BB.A.control = BB.A.control,
-                           BB.B.control = BB.B.control, BB.C.control = BB.C.control,
-                           BB.D.control = BB.D.control, ISO.A.control = ISO.A.control,
-                           ISO.B.control = ISO.B.control, ISO.C.control = ISO.C.control,
-                           ISO.D.control = ISO.D.control)
+D.new.control = data.frame(BB.A.control = as.numeric(BB.A.control),
+                           BB.B.control = as.numeric(BB.B.control), BB.C.control = as.numeric(BB.C.control),
+                           BB.D.control = as.numeric(BB.D.control), ISO.A.control = as.numeric(ISO.A.control),
+                           ISO.B.control = as.numeric(ISO.B.control), ISO.C.control = as.numeric(ISO.C.control),
+                           ISO.D.control = as.numeric(ISO.D.control))
 
 D_control_tall =  reshape(D.new.control, varying = c(1:8), v.names = "measure", 
                           timevar = "condition",   direction = "long")
@@ -606,15 +631,73 @@ D_tall = D_tall[order(D_tall$trial),]
 # load relevant library
 library(Metrics)
 
-# create variables for model predictions and behavioral data
-model_measure = as.numeric(D_tall$measure)
-behavioral_measure = D.DF.5s.and.6s_tall$measure
+
+# model predictions
+model_predictions = c(mean(BB.A.main), mean(BB.B.main), mean(BB.C.main), mean(BB.A.control), mean(BB.B.control), mean(BB.C.control), mean(BB.D.control),
+                      mean(ISO.A.main), mean(ISO.B.main), mean(ISO.C.main), mean(ISO.A.control), mean(ISO.B.control), mean(ISO.C.control), mean(ISO.D.control))
+
+# behavioral predictions 
+#BB
+A.BB.MAIN.SUM = as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="BB" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="main" & D_tall_Exp1_5and6yos$objectType=="A"])+
+  as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="BB" & D_tall_Exp1_5and6yos$phaseOrder=="Phase 2" & D_tall_Exp1_5and6yos$trialType=="main" & D_tall_Exp1_5and6yos$objectType=="A"])-2
+
+B.BB.MAIN.SUM = as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="BB" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="main" & D_tall_Exp1_5and6yos$objectType=="B"])+
+  as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="BB" & D_tall_Exp1_5and6yos$phaseOrder=="Phase 2" & D_tall_Exp1_5and6yos$trialType=="main" & D_tall_Exp1_5and6yos$objectType=="B"])-2
+
+C.BB.MAIN.SUM = as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="BB" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="main" & D_tall_Exp1_5and6yos$objectType=="C"])+
+  as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="BB" & D_tall_Exp1_5and6yos$phaseOrder=="Phase 2" & D_tall_Exp1_5and6yos$trialType=="main" & D_tall_Exp1_5and6yos$objectType=="C"])-2
 
 
-# compute rmse
-sqrt(mean((model_measure-na.omit(behavioral_measure))^2))
+A.BB.CONTROL.SUM = as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="BB" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="A"])+
+  as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="BB" & D_tall_Exp1_5and6yos$phaseOrder=="Phase 2" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="A"])-2
 
-# RMSE: 1.07
+B.BB.CONTROL.SUM = as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="BB" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="B"])+
+  as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="BB" & D_tall_Exp1_5and6yos$phaseOrder=="Phase 2" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="B"])-2
+
+C.BB.CONTROL.SUM = as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="BB" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="C"])+
+  as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="BB" & D_tall_Exp1_5and6yos$phaseOrder=="Phase 2" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="C"])-2
+
+D.BB.CONTROL.SUM = as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="BB" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="D"])+
+  as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="BB" & D_tall_Exp1_5and6yos$phaseOrder=="Phase 2" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="D"])-2
+
+#ISO
+A.ISO.MAIN.SUM = as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="ISO" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="main" & D_tall_Exp1_5and6yos$objectType=="A"])+
+  as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="ISO" & D_tall_Exp1_5and6yos$phaseOrder=="Phase 2" & D_tall_Exp1_5and6yos$trialType=="main" & D_tall_Exp1_5and6yos$objectType=="A"])-2
+
+B.ISO.MAIN.SUM = as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="ISO" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="main" & D_tall_Exp1_5and6yos$objectType=="B"])+
+  as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="ISO" & D_tall_Exp1_5and6yos$phaseOrder=="Phase 2" & D_tall_Exp1_5and6yos$trialType=="main" & D_tall_Exp1_5and6yos$objectType=="B"])-2
+
+C.ISO.MAIN.SUM = as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="ISO" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="main" & D_tall_Exp1_5and6yos$objectType=="C"])+
+  as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="ISO" & D_tall_Exp1_5and6yos$phaseOrder=="Phase 2" & D_tall_Exp1_5and6yos$trialType=="main" & D_tall_Exp1_5and6yos$objectType=="C"])-2
+
+
+A.ISO.CONTROL.SUM = as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="ISO" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="A"])+
+  as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="ISO" & D_tall_Exp1_5and6yos$phaseOrder=="Phase 2" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="A"])-2
+
+B.ISO.CONTROL.SUM = as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="ISO" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="B"])+
+  as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="ISO" & D_tall_Exp1_5and6yos$phaseOrder=="Phase 2" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="B"])-2
+
+C.ISO.CONTROL.SUM = as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="ISO" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="C"])+
+  as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="ISO" & D_tall_Exp1_5and6yos$phaseOrder=="Phase 2" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="C"])-2
+
+D.ISO.CONTROL.SUM = as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="ISO" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="D"])+
+  as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="ISO" & D_tall_Exp1_5and6yos$phaseOrder=="Phase 2" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="D"])-2
+
+# behavioral predictions
+behavioral_predictions = c(mean(A.BB.MAIN.SUM, na.rm=TRUE), mean(B.BB.MAIN.SUM, na.rm=TRUE), mean(C.BB.MAIN.SUM, na.rm=TRUE), mean(A.BB.CONTROL.SUM, na.rm =TRUE), 
+                           mean(B.BB.CONTROL.SUM, na.rm =TRUE), mean(C.BB.CONTROL.SUM, na.rm =TRUE), mean(D.BB.CONTROL.SUM, na.rm =TRUE),
+                           mean(A.ISO.MAIN.SUM, na.rm=TRUE), mean(B.ISO.MAIN.SUM, na.rm=TRUE), mean(C.ISO.MAIN.SUM, na.rm=TRUE), mean(A.ISO.CONTROL.SUM, na.rm =TRUE), 
+                           mean(B.ISO.CONTROL.SUM, na.rm =TRUE), mean(C.ISO.CONTROL.SUM, na.rm =TRUE), mean(D.ISO.CONTROL.SUM, na.rm =TRUE))
+
+
+
+#####################
+# model fit indices #
+#####################
+caret::postResample(model_predictions, behavioral_predictions)
+
+#   RMSE  Rsquared       MAE 
+# 0.5845204 0.6609857 0.5396651
 
 
 ######################
@@ -622,44 +705,63 @@ sqrt(mean((model_measure-na.omit(behavioral_measure))^2))
 ###### P = 0.65 ######
 ######################
 ######################
-
-#########################
-#########################
-### UPLOAD MODEL DATA ###
-#########################
-#########################
 # p = 0.65
 BB.A.main = rep("2",16)
-BB.B.main = rep("1.3",16) # 0.5+0.5
-BB.C.main = rep("1.3",16) # 0.5+0.5
+BB.A.main = as.numeric(BB.A.main)
+
+BB.B.main = rep("1.3",16) 
+BB.B.main = as.numeric(BB.B.main)
+
+BB.C.main = rep("1.3",16) 
+BB.C.main = as.numeric(BB.C.main)
 
 
 # control
-BB.A.control = rep("1.3",16) # 0.5+0.5
-BB.B.control = rep("1.3",16) # 0.5+0.5
-BB.C.control = rep("1.3",16) # 0.5+0.5
-BB.D.control = rep("2",16) # 0.5+0.5
+BB.A.control = rep("1.3",16) 
+BB.A.control = as.numeric(BB.A.control)
+
+
+BB.B.control = rep("1.3",16) 
+BB.B.control = as.numeric(BB.B.control)
+
+BB.C.control = rep("1.3",16) 
+BB.C.control = as.numeric(BB.C.control)
+
+BB.D.control = rep("2",16)
+BB.D.control = as.numeric(BB.D.control)
 
 
 # ISO
-#main
 ISO.A.main = rep("0",16)
-ISO.B.main = rep("1.3",16) # 0.5+0.5
-ISO.C.main = rep("1.3",16) # 0.5+0.5
+ISO.A.main = as.numeric(ISO.A.main)
+
+ISO.B.main = rep("1.3",16) 
+ISO.B.main = as.numeric(ISO.B.main)
+
+ISO.C.main = rep("1.3",16) 
+ISO.C.main = as.numeric(ISO.C.main)
 
 
 # control
-ISO.A.control = rep("1.3",16) # 0.5+0.5
-ISO.B.control = rep("1.3",16) # 0.5+0.5
-ISO.C.control = rep("1.3",16) # 0.5+0.5
-ISO.D.control = rep("0",16) # 0.5+0.5
+ISO.A.control = rep("1.3",16) 
+ISO.A.control = as.numeric(ISO.A.control)
+
+
+ISO.B.control = rep("1.3",16) 
+ISO.B.control = as.numeric(ISO.B.control)
+
+ISO.C.control = rep("1.3",16) 
+ISO.C.control = as.numeric(ISO.C.control)
+
+ISO.D.control = rep("0",16) 
+ISO.D.control = as.numeric(ISO.D.control)
 
 
 
 # create a dataframe that combines the variables
-D.new.main = data.frame(BB.A.main = BB.A.main, BB.B.main = BB.B.main,
-                        BB.C.main = BB.C.main, ISO.A.main = ISO.A.main, 
-                        ISO.B.main = ISO.B.main, ISO.C.main = ISO.C.main)
+D.new.main = data.frame(BB.A.main = as.numeric(BB.A.main), BB.B.main = as.numeric(BB.B.main),
+                        BB.C.main = as.numeric(BB.C.main), ISO.A.main = as.numeric(ISO.A.main), 
+                        ISO.B.main = as.numeric(ISO.B.main), ISO.C.main = as.numeric(ISO.C.main))
 
 D_main_tall =  reshape(D.new.main, varying = c(1:6), v.names = "measure", 
                        timevar = "condition",   direction = "long")
@@ -689,11 +791,11 @@ D_main_tall = D_main_tall[,c(3,4,1,5,2)]
 #############
 ## control ##
 #############
-D.new.control = data.frame(BB.A.control = BB.A.control,
-                           BB.B.control = BB.B.control, BB.C.control = BB.C.control,
-                           BB.D.control = BB.D.control, ISO.A.control = ISO.A.control,
-                           ISO.B.control = ISO.B.control, ISO.C.control = ISO.C.control,
-                           ISO.D.control = ISO.D.control)
+D.new.control = data.frame(BB.A.control = as.numeric(BB.A.control),
+                           BB.B.control = as.numeric(BB.B.control), BB.C.control = as.numeric(BB.C.control),
+                           BB.D.control = as.numeric(BB.D.control), ISO.A.control = as.numeric(ISO.A.control),
+                           ISO.B.control = as.numeric(ISO.B.control), ISO.C.control = as.numeric(ISO.C.control),
+                           ISO.D.control = as.numeric(ISO.D.control))
 
 D_control_tall =  reshape(D.new.control, varying = c(1:8), v.names = "measure", 
                           timevar = "condition",   direction = "long")
@@ -734,18 +836,20 @@ D_tall = D_tall[order(D_tall$trial),]
 #### MODEL-DATA COMPARISONS ####
 ################################
 ################################
-# load relevant library
-library(Metrics)
 
-# create variables for model predictions and behavioral data
-model_measure = as.numeric(D_tall$measure)
-behavioral_measure = D.DF.5s.and.6s_tall$measure
+# model predictions
+model_predictions = c(mean(BB.A.main), mean(BB.B.main), mean(BB.C.main), mean(BB.A.control), mean(BB.B.control), mean(BB.C.control), mean(BB.D.control),
+                      mean(ISO.A.main), mean(ISO.B.main), mean(ISO.C.main), mean(ISO.A.control), mean(ISO.B.control), mean(ISO.C.control), mean(ISO.D.control))
 
 
-# compute rmse
-sqrt(mean((model_measure-na.omit(behavioral_measure))^2))
 
-# RMSE: 1.02
+#####################
+# model fit indices #
+#####################
+caret::postResample(model_predictions, behavioral_predictions)
+
+#     RMSE  Rsquared       MAE 
+# 0.3862931 0.7929145 0.3376243
 
 
 
@@ -755,44 +859,63 @@ sqrt(mean((model_measure-na.omit(behavioral_measure))^2))
 ###### P = 0.80 ######
 ######################
 ######################
-
-#########################
-#########################
-### UPLOAD MODEL DATA ###
-#########################
-#########################
 # p = 0.80
 BB.A.main = rep("2",16)
-BB.B.main = rep("1.6",16) # 0.5+0.5
-BB.C.main = rep("1.6",16) # 0.5+0.5
+BB.A.main = as.numeric(BB.A.main)
+
+BB.B.main = rep("1.6",16) 
+BB.B.main = as.numeric(BB.B.main)
+
+BB.C.main = rep("1.6",16) 
+BB.C.main = as.numeric(BB.C.main)
 
 
 # control
-BB.A.control = rep("1.6",16) # 0.5+0.5
-BB.B.control = rep("1.6",16) # 0.5+0.5
-BB.C.control = rep("1.6",16) # 0.5+0.5
-BB.D.control = rep("2",16) # 0.5+0.5
+BB.A.control = rep("1.6",16) 
+BB.A.control = as.numeric(BB.A.control)
+
+
+BB.B.control = rep("1.6",16) 
+BB.B.control = as.numeric(BB.B.control)
+
+BB.C.control = rep("1.6",16) 
+BB.C.control = as.numeric(BB.C.control)
+
+BB.D.control = rep("2",16)
+BB.D.control = as.numeric(BB.D.control)
 
 
 # ISO
-#main
 ISO.A.main = rep("0",16)
-ISO.B.main = rep("1.6",16) # 0.5+0.5
-ISO.C.main = rep("1.6",16) # 0.5+0.5
+ISO.A.main = as.numeric(ISO.A.main)
+
+ISO.B.main = rep("1.6",16) 
+ISO.B.main = as.numeric(ISO.B.main)
+
+ISO.C.main = rep("1.6",16) 
+ISO.C.main = as.numeric(ISO.C.main)
 
 
 # control
-ISO.A.control = rep("1.6",16) # 0.5+0.5
-ISO.B.control = rep("1.6",16) # 0.5+0.5
-ISO.C.control = rep("1.6",16) # 0.5+0.5
-ISO.D.control = rep("0",16) # 0.5+0.5
+ISO.A.control = rep("1.6",16) 
+ISO.A.control = as.numeric(ISO.A.control)
+
+
+ISO.B.control = rep("1.6",16) 
+ISO.B.control = as.numeric(ISO.B.control)
+
+ISO.C.control = rep("1.6",16) 
+ISO.C.control = as.numeric(ISO.C.control)
+
+ISO.D.control = rep("0",16) 
+ISO.D.control = as.numeric(ISO.D.control)
 
 
 
 # create a dataframe that combines the variables
-D.new.main = data.frame(BB.A.main = BB.A.main, BB.B.main = BB.B.main,
-                        BB.C.main = BB.C.main, ISO.A.main = ISO.A.main, 
-                        ISO.B.main = ISO.B.main, ISO.C.main = ISO.C.main)
+D.new.main = data.frame(BB.A.main = as.numeric(BB.A.main), BB.B.main = as.numeric(BB.B.main),
+                        BB.C.main = as.numeric(BB.C.main), ISO.A.main = as.numeric(ISO.A.main), 
+                        ISO.B.main = as.numeric(ISO.B.main), ISO.C.main = as.numeric(ISO.C.main))
 
 D_main_tall =  reshape(D.new.main, varying = c(1:6), v.names = "measure", 
                        timevar = "condition",   direction = "long")
@@ -822,11 +945,11 @@ D_main_tall = D_main_tall[,c(3,4,1,5,2)]
 #############
 ## control ##
 #############
-D.new.control = data.frame(BB.A.control = BB.A.control,
-                           BB.B.control = BB.B.control, BB.C.control = BB.C.control,
-                           BB.D.control = BB.D.control, ISO.A.control = ISO.A.control,
-                           ISO.B.control = ISO.B.control, ISO.C.control = ISO.C.control,
-                           ISO.D.control = ISO.D.control)
+D.new.control = data.frame(BB.A.control = as.numeric(BB.A.control),
+                           BB.B.control = as.numeric(BB.B.control), BB.C.control = as.numeric(BB.C.control),
+                           BB.D.control = as.numeric(BB.D.control), ISO.A.control = as.numeric(ISO.A.control),
+                           ISO.B.control = as.numeric(ISO.B.control), ISO.C.control = as.numeric(ISO.C.control),
+                           ISO.D.control = as.numeric(ISO.D.control))
 
 D_control_tall =  reshape(D.new.control, varying = c(1:8), v.names = "measure", 
                           timevar = "condition",   direction = "long")
@@ -867,19 +990,20 @@ D_tall = D_tall[order(D_tall$trial),]
 #### MODEL-DATA COMPARISONS ####
 ################################
 ################################
-# load relevant library
-library(Metrics)
 
-# create variables for model predictions and behavioral data
-model_measure = as.numeric(D_tall$measure)
-behavioral_measure = D.DF.5s.and.6s_tall$measure
+# model predictions
+model_predictions = c(mean(BB.A.main), mean(BB.B.main), mean(BB.C.main), mean(BB.A.control), mean(BB.B.control), mean(BB.C.control), mean(BB.D.control),
+                      mean(ISO.A.main), mean(ISO.B.main), mean(ISO.C.main), mean(ISO.A.control), mean(ISO.B.control), mean(ISO.C.control), mean(ISO.D.control))
 
 
-# compute rmse
-sqrt(mean((model_measure-na.omit(behavioral_measure))^2))
 
-# RMSE: 1.02
+#####################
+# model fit indices #
+#####################
+caret::postResample(model_predictions, behavioral_predictions)
 
+#      RMSE  Rsquared       MAE 
+# 0.2921508 0.8345130 0.2087566
 
 
 
@@ -889,44 +1013,63 @@ sqrt(mean((model_measure-na.omit(behavioral_measure))^2))
 ###### P = 0.95 ######
 ######################
 ######################
-
-#########################
-#########################
-### UPLOAD MODEL DATA ###
-#########################
-#########################
 # p = 0.95
 BB.A.main = rep("2",16)
-BB.B.main = rep("1.9",16) # 0.5+0.5
-BB.C.main = rep("1.9",16) # 0.5+0.5
+BB.A.main = as.numeric(BB.A.main)
+
+BB.B.main = rep("1.9",16) 
+BB.B.main = as.numeric(BB.B.main)
+
+BB.C.main = rep("1.9",16) 
+BB.C.main = as.numeric(BB.C.main)
 
 
 # control
-BB.A.control = rep("1.9",16) # 0.5+0.5
-BB.B.control = rep("1.9",16) # 0.5+0.5
-BB.C.control = rep("1.9",16) # 0.5+0.5
-BB.D.control = rep("2",16) # 0.5+0.5
+BB.A.control = rep("1.9",16) 
+BB.A.control = as.numeric(BB.A.control)
+
+
+BB.B.control = rep("1.9",16) 
+BB.B.control = as.numeric(BB.B.control)
+
+BB.C.control = rep("1.9",16) 
+BB.C.control = as.numeric(BB.C.control)
+
+BB.D.control = rep("2",16)
+BB.D.control = as.numeric(BB.D.control)
 
 
 # ISO
-#main
 ISO.A.main = rep("0",16)
-ISO.B.main = rep("1.9",16) # 0.5+0.5
-ISO.C.main = rep("1.9",16) # 0.5+0.5
+ISO.A.main = as.numeric(ISO.A.main)
+
+ISO.B.main = rep("1.9",16) 
+ISO.B.main = as.numeric(ISO.B.main)
+
+ISO.C.main = rep("1.9",16) 
+ISO.C.main = as.numeric(ISO.C.main)
 
 
 # control
-ISO.A.control = rep("1.9",16) # 0.5+0.5
-ISO.B.control = rep("1.9",16) # 0.5+0.5
-ISO.C.control = rep("1.9",16) # 0.5+0.5
-ISO.D.control = rep("0",16) # 0.5+0.5
+ISO.A.control = rep("1.9",16) 
+ISO.A.control = as.numeric(ISO.A.control)
+
+
+ISO.B.control = rep("1.9",16) 
+ISO.B.control = as.numeric(ISO.B.control)
+
+ISO.C.control = rep("1.9",16) 
+ISO.C.control = as.numeric(ISO.C.control)
+
+ISO.D.control = rep("0",16) 
+ISO.D.control = as.numeric(ISO.D.control)
 
 
 
 # create a dataframe that combines the variables
-D.new.main = data.frame(BB.A.main = BB.A.main, BB.B.main = BB.B.main,
-                        BB.C.main = BB.C.main, ISO.A.main = ISO.A.main, 
-                        ISO.B.main = ISO.B.main, ISO.C.main = ISO.C.main)
+D.new.main = data.frame(BB.A.main = as.numeric(BB.A.main), BB.B.main = as.numeric(BB.B.main),
+                        BB.C.main = as.numeric(BB.C.main), ISO.A.main = as.numeric(ISO.A.main), 
+                        ISO.B.main = as.numeric(ISO.B.main), ISO.C.main = as.numeric(ISO.C.main))
 
 D_main_tall =  reshape(D.new.main, varying = c(1:6), v.names = "measure", 
                        timevar = "condition",   direction = "long")
@@ -956,11 +1099,11 @@ D_main_tall = D_main_tall[,c(3,4,1,5,2)]
 #############
 ## control ##
 #############
-D.new.control = data.frame(BB.A.control = BB.A.control,
-                           BB.B.control = BB.B.control, BB.C.control = BB.C.control,
-                           BB.D.control = BB.D.control, ISO.A.control = ISO.A.control,
-                           ISO.B.control = ISO.B.control, ISO.C.control = ISO.C.control,
-                           ISO.D.control = ISO.D.control)
+D.new.control = data.frame(BB.A.control = as.numeric(BB.A.control),
+                           BB.B.control = as.numeric(BB.B.control), BB.C.control = as.numeric(BB.C.control),
+                           BB.D.control = as.numeric(BB.D.control), ISO.A.control = as.numeric(ISO.A.control),
+                           ISO.B.control = as.numeric(ISO.B.control), ISO.C.control = as.numeric(ISO.C.control),
+                           ISO.D.control = as.numeric(ISO.D.control))
 
 D_control_tall =  reshape(D.new.control, varying = c(1:8), v.names = "measure", 
                           timevar = "condition",   direction = "long")
@@ -1001,15 +1144,170 @@ D_tall = D_tall[order(D_tall$trial),]
 #### MODEL-DATA COMPARISONS ####
 ################################
 ################################
-# load relevant library
-library(Metrics)
 
-# create variables for model predictions and behavioral data
-model_measure = as.numeric(D_tall$measure)
-behavioral_measure = D.DF.5s.and.6s_tall$measure
+# model predictions
+model_predictions = c(mean(BB.A.main), mean(BB.B.main), mean(BB.C.main), mean(BB.A.control), mean(BB.B.control), mean(BB.C.control), mean(BB.D.control),
+                      mean(ISO.A.main), mean(ISO.B.main), mean(ISO.C.main), mean(ISO.A.control), mean(ISO.B.control), mean(ISO.C.control), mean(ISO.D.control))
 
 
-# compute rmse
-sqrt(mean((model_measure-na.omit(behavioral_measure))^2))
 
-# RMSE: 1.08
+#####################
+# model fit indices #
+#####################
+
+caret::postResample(model_predictions, behavioral_predictions)
+
+#       RMSE  Rsquared       MAE 
+# 0.3873670 0.8087243 0.3267641 
+
+
+
+######################
+######################
+###### P = 1 ######
+######################
+######################
+# p = 1
+BB.A.main = rep("2",16)
+BB.A.main = as.numeric(BB.A.main)
+
+BB.B.main = rep("2",16) 
+BB.B.main = as.numeric(BB.B.main)
+
+BB.C.main = rep("2",16) 
+BB.C.main = as.numeric(BB.C.main)
+
+
+# control
+BB.A.control = rep("2",16) 
+BB.A.control = as.numeric(BB.A.control)
+
+
+BB.B.control = rep("2",16) 
+BB.B.control = as.numeric(BB.B.control)
+
+BB.C.control = rep("2",16) 
+BB.C.control = as.numeric(BB.C.control)
+
+BB.D.control = rep("2",16)
+BB.D.control = as.numeric(BB.D.control)
+
+
+# ISO
+ISO.A.main = rep("0",16)
+ISO.A.main = as.numeric(ISO.A.main)
+
+ISO.B.main = rep("2",16) 
+ISO.B.main = as.numeric(ISO.B.main)
+
+ISO.C.main = rep("2",16) 
+ISO.C.main = as.numeric(ISO.C.main)
+
+
+# control
+ISO.A.control = rep("2",16) 
+ISO.A.control = as.numeric(ISO.A.control)
+
+
+ISO.B.control = rep("2",16) 
+ISO.B.control = as.numeric(ISO.B.control)
+
+ISO.C.control = rep("2",16) 
+ISO.C.control = as.numeric(ISO.C.control)
+
+ISO.D.control = rep("0",16) 
+ISO.D.control = as.numeric(ISO.D.control)
+
+
+
+# create a dataframe that combines the variables
+D.new.main = data.frame(BB.A.main = as.numeric(BB.A.main), BB.B.main = as.numeric(BB.B.main),
+                        BB.C.main = as.numeric(BB.C.main), ISO.A.main = as.numeric(ISO.A.main), 
+                        ISO.B.main = as.numeric(ISO.B.main), ISO.C.main = as.numeric(ISO.C.main))
+
+D_main_tall =  reshape(D.new.main, varying = c(1:6), v.names = "measure", 
+                       timevar = "condition",   direction = "long")
+D_main_tall$ID = rep(c(1:16), times = 6)
+
+# remove 'id' column from the reshape() function
+D_main_tall$id = NULL
+
+# organize the dataframe by ID
+D_main_tall = D_main_tall[order(D_main_tall$ID),] 
+
+# replace the 'condition' column with a more appropriate one
+D_main_tall$condition = rep(c("BB","ISO"), each = 3, times = 16)
+
+# create a 'trial' column
+D_main_tall$trial = rep(c("main"), times = 96)
+
+# create 'object' column
+D_main_tall$objects = rep(c("A","B","C"), times = 32)
+
+# remove 'row.names' column 
+D_main_tall$row.names = NULL
+
+# reorder columns 
+D_main_tall = D_main_tall[,c(3,4,1,5,2)]
+
+#############
+## control ##
+#############
+D.new.control = data.frame(BB.A.control = as.numeric(BB.A.control),
+                           BB.B.control = as.numeric(BB.B.control), BB.C.control = as.numeric(BB.C.control),
+                           BB.D.control = as.numeric(BB.D.control), ISO.A.control = as.numeric(ISO.A.control),
+                           ISO.B.control = as.numeric(ISO.B.control), ISO.C.control = as.numeric(ISO.C.control),
+                           ISO.D.control = as.numeric(ISO.D.control))
+
+D_control_tall =  reshape(D.new.control, varying = c(1:8), v.names = "measure", 
+                          timevar = "condition",   direction = "long")
+D_control_tall$ID = rep(c(1:16), times = 8)
+
+# remove 'id' column from the reshape() function
+D_control_tall$id = NULL
+
+# organize the dataframe by ID
+D_control_tall = D_control_tall[order(D_control_tall$ID),] 
+
+# replace the 'condition' column with a more appropriate one
+D_control_tall$condition = rep(c("BB","ISO"), each = 4, times = 16)
+
+# create a 'trial' column
+D_control_tall$trial = rep(c("control"), times = 128)
+
+# create 'object' column
+D_control_tall$objects = rep(c("A","B","C","D"), times = 32)
+
+# remove 'row.names' column 
+D_control_tall$row.names = NULL
+
+# reorder columns 
+D_control_tall = D_control_tall[,c(3,4,1,5,2)]
+
+
+# combine the dataframes
+D_tall = rbind(D_main_tall,D_main_tall,
+               D_control_tall, D_control_tall)
+
+D_tall = D_tall[order(D_tall$condition),]
+D_tall = D_tall[order(D_tall$trial),]
+
+
+################################
+################################
+#### MODEL-DATA COMPARISONS ####
+################################
+################################
+
+# model predictions
+model_predictions = c(mean(BB.A.main), mean(BB.B.main), mean(BB.C.main), mean(BB.A.control), mean(BB.B.control), mean(BB.C.control), mean(BB.D.control),
+                      mean(ISO.A.main), mean(ISO.B.main), mean(ISO.C.main), mean(ISO.A.control), mean(ISO.B.control), mean(ISO.C.control), mean(ISO.D.control))
+
+
+#####################
+# model fit indices #
+#####################
+caret::postResample(model_predictions, behavioral_predictions)
+#     RMSE  Rsquared       MAE 
+# 0.4474278 0.7918340 0.3981927
+

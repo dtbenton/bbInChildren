@@ -95,16 +95,16 @@ proc testNetwork {n train trainNum train2 trainNum2 test train3 trainNum3 train4
 }
 
 # BB experimental: 
-testNetwork 16 ABCplus 200 Aplus 200 experimentalTest ABCplus 200 Aplus 200 experimentalTest BBexperimentalExp1.txt Effect
+testNetwork 16 ABCplus 500 Aplus 500 experimentalTest ABCplus 500 Aplus 500 experimentalTest BBexperimentalExp1OneThoussandepochs.txt Effect
 
 # BB control: 
-testNetwork 16 ABCplus 200 Dplus 200 controlTest ABCplus 200 Dplus 200 controlTest BBcontrolExp1.txt Effect
+testNetwork 16 ABCplus 500 Dplus 500 controlTest ABCplus 500 Dplus 500 controlTest BBcontrolExp1OneThoussandepochs.txt Effect
 
 # ISO experimental: 
-testNetwork 16 ABCplus 200 Aminus 200 experimentalTest ABCplus 200 Aminus 200 experimentalTest ISOexperimentalExp1.txt Effect
+testNetwork 16 ABCplus 500 Aminus 500 experimentalTest ABCplus 500 Aminus 500 experimentalTest ISOexperimentalExp1OneThoussandepochs.txt Effect
 
 # ISO control: 
-testNetwork 16 ABCplus 200 Dminus 200 controlTest ABCplus 100 Dminus 100 controlTest ISOcontrolExp1.txt Effect
+testNetwork 16 ABCplus 500 Dminus 500 controlTest ABCplus 500 Dminus 500 controlTest ISOcontrolExp1OneThoussandepochs.txt Effect
 
 
 #testNetwork 1000 ABCplus 50 Aplus 50 experimentalTest BBexperimental.txt Effect
