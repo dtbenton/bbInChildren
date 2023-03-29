@@ -701,8 +701,13 @@ behavioral_predictions = c(mean(A.BB.MAIN.SUM, na.rm=TRUE), mean(B.BB.MAIN.SUM, 
 #####################
 # model fit indices #
 #####################
+
 # compute rmse
 rmse(model_predictions,
      behavioral_predictions)
+
+# compute correlation
+cor(model_predictions,
+  behavioral_predictions)
 
 
