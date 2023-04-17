@@ -108,22 +108,5 @@ foreach epoch $trainingEpochs totalEpoch $totalEpochs {
 	}
 }
 
-
-
-# BB experimental: 
-testNetwork 16 ABCplus 200 Aplus 200 experimentalTest ABCplus 200 Aplus 200 experimentalTest BBexperimentalExp400epochs.txt Effect
-
-# BB control: 
-testNetwork 16 ABCplus 200 Dplus 200 controlTest ABCplus 200 Dplus 200 controlTest BBcontrolExp400epochs.txt Effect
-
-# ISO experimental: 
-testNetwork 16 ABCplus 200 Aminus 200 experimentalTest ABCplus 200 Aminus 200 experimentalTest ISOexperimentalExp400epochs.txt Effect
-
-# ISO control: 
-testNetwork 16 ABCplus 200 Dminus 200 controlTest ABCplus 200 Dminus 200 controlTest ISOcontrolExp400epochs.txt Effect
-
-
-#testNetwork 1000 ABCplus 50 Aplus 50 experimentalTest BBexperimental.txt Effect
-#testNetwork 1000 ABCplus 50 Dplus 50 controlTest BBcontrol.txt Effect
-#testNetwork 1000 ABCplus 50 Aminus 50 experimentalTest ISOexperimental.txt Effect
-#testNetwork 1000 ABCplus 50 Dminus 50 controlTest ISOcontrol.txt Effect
+# Example command, corresponding to the above:
+# testNetwork 16 ABCplus 200 Dplus 200 controlTest ABCplus 200 Dplus 200 controlTest BBcontrolExp400epochs.txt Effect

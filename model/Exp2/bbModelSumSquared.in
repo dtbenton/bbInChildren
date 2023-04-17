@@ -107,22 +107,6 @@ foreach epoch $trainingEpochs totalEpoch $totalEpochs {
 	}
 }
 
-### BB condition command: ##
+# Example command, corresponding to the above: 
+# testNetwork 16 ABCplus 200 ABplus 200 experimentalTest ABCplus 200 ABplus 200 experimentalTest BBexperimentalExp2.txt Effect
 
-# BB experimental: 
-#testNetwork 16 ABCplus 200 ABplus 200 experimentalTest ABCplus 200 ABplus 200 experimentalTest BBexperimentalExp2.txt Effect
-
-# BB control: 
-#testNetwork 16 ABCplus 200 DEplus 200 controlTest ABCplus 200 DEplus 200 controlTest BBcontrolExp2.txt Effect
-
-# ISO experimental: 
-#testNetwork 16 ABCplus 200 ABminus 200 experimentalTest ABCplus 200 ABminus 200 experimentalTest ISOexperimentalExp2.txt Effect
-
-# ISO control: 
-#testNetwork 16 ABCplus 200 DEminus 200 controlTest ABCplus 200 DEminus 200 controlTest ISOcontrolExp2.txt Effect
-
-
-#testNetwork 1000 ABCplus 50 Aplus 50 experimentalTest BBexperimental.txt Effect
-#testNetwork 1000 ABCplus 50 Dplus 50 controlTest BBcontrol.txt Effect
-#testNetwork 1000 ABCplus 50 Aminus 50 experimentalTest ISOexperimental.txt Effect
-#testNetwork 1000 ABCplus 50 Dminus 50 controlTest ISOcontrol.txt Effect
