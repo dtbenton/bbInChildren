@@ -1,0 +1,93 @@
+---
+title: "Bayes_Blickets"
+output: html_document
+---
+
+# Note:
+
+  This code will work the same as it does in the python file (i.e. all calls are the same), except for the fact that the model list L is now an R list (i.e. it is a list of vectors), while everything else that would have been a 'list' in python is now just a vector in this code. 
+
+```{r}
+get_init_priors = function(L, p) {
+  mod_priors = c()
+  for (model in L) {
+    prior_prob = 1
+    for (spec in model) {
+      prior_prob = prior_prob*((1-p)^(1-spec))*(p^spec)
+    }
+    mod_priors = c(mod_priors, prior_prob)
+  }
+  return(mod_priors)
+}
+
+get_likelihoods = function(L, event) {
+  placements = event[1:length(event)-1]
+  outcome = event[length(event)]
+  likelihoods = c()
+  for (model in L) {
+    activation = 0
+    for (i in 1:length(placements)) {
+      if (placements[i]==1 & model[i]==1) {
+        activation = 1
+      }
+    }
+    likelihoods = c(likelihoods, activation==outcome)
+  }
+  return(likelihoods)
+}
+
+compute_posts = function(L, priors, event) {
+  likelihoods = get_likelihoods(L, event)
+  numerators = likelihoods*priors
+  norm_term = sum(numerators)
+  return(numerators/norm_term)
+}
+
+get_blicket_probs = function(L, posts) {
+  blicket_probs = c()
+  for (i in 1:length(L[[1]])) {
+    prob = 0
+    for (j in 1:length(L)) {
+      prob = prob + L[[j]][i]*posts[j]
+    }
+    blicket_probs = c(blicket_probs, prob)
+  }
+  return(blicket_probs)
+}
+
+MyIntToBit = function(x, dig) {
+    i <- 0L
+    string <- numeric(dig)
+    while (x > 0) {
+        string[dig - i] <- x %% 2L
+        x <- x %/% 2L
+        i <- i + 1L
+    }
+    string
+}
+
+get_model_list = function(num_blickets) {
+  return(lapply(0:(2^num_blickets - 1), function(x) MyIntToBit(x, num_blickets)))
+}
+```
+
+```{r}
+print("Model List:")
+L = get_model_list(5)
+print(L)
+print("Priors on Models (with 0.4 prior for individual objects):")
+init_priors = get_init_priors(L, 0.65)
+print(init_priors)
+print("Initial priors on each individual object:")
+print(get_blicket_probs(L, init_priors))
+print("Posteriors after seeing ABC+ :")
+AB_posts = compute_posts(L, init_priors, c(1,1,1,0,0, 1))
+print(AB_posts)
+print("Current posteriors on each object:")
+print(get_blicket_probs(L, AB_posts))
+print("Posteriors after seeing A+ :")
+A_posts = compute_posts(L, AB_posts, c(1,0,0,0,0,1))
+print(A_posts)
+print("Current posteriors on each object:")
+print(get_blicket_probs(L, A_posts))
+```

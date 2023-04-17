@@ -93,21 +93,33 @@ proc testNetwork {n train trainNum train2 trainNum2 test train3 trainNum3 train4
 			testAllFinalActs $fname $groups
 	}
 }
+# define lists for looping
+set condition [list BBexperimental BBcontrol ISOexperimental ISOcontrol]
+set trainingEpochs [list 200 400 500 750]
+set totalEpochs [list 400 800 1000 1500]
+set elementalPhase [list ABplus DEplus ABminus DEminus]
+set testPhase [list experimentalTest controlTest experimentalTest controlTest]
 
+# define loop
+foreach epoch $trainingEpochs totalEpoch $totalEpochs { 
+	foreach elemPhase $elementalPhase conLevel $condition testEvent $testPhase {
+	testNetwork 16 ABCplus $epoch $elemPhase $epoch $testEvent ABCplus $epoch $elemPhase $epoch $testEvent $conLevel$totalEpoch.txt Effect
+	}
+}
 
 ### BB condition command: ##
 
 # BB experimental: 
-testNetwork 16 ABCplus 200 ABplus 200 experimentalTest ABCplus 200 ABplus 200 experimentalTest BBexperimentalExp2.txt Effect
+#testNetwork 16 ABCplus 200 ABplus 200 experimentalTest ABCplus 200 ABplus 200 experimentalTest BBexperimentalExp2.txt Effect
 
 # BB control: 
-testNetwork 16 ABCplus 200 DEplus 200 controlTest ABCplus 200 DEplus 200 controlTest BBcontrolExp2.txt Effect
+#testNetwork 16 ABCplus 200 DEplus 200 controlTest ABCplus 200 DEplus 200 controlTest BBcontrolExp2.txt Effect
 
 # ISO experimental: 
-testNetwork 16 ABCplus 200 ABminus 200 experimentalTest ABCplus 200 ABminus 200 experimentalTest ISOexperimentalExp2.txt Effect
+#testNetwork 16 ABCplus 200 ABminus 200 experimentalTest ABCplus 200 ABminus 200 experimentalTest ISOexperimentalExp2.txt Effect
 
 # ISO control: 
-testNetwork 16 ABCplus 200 DEminus 200 controlTest ABCplus 200 DEminus 200 controlTest ISOcontrolExp2.txt Effect
+#testNetwork 16 ABCplus 200 DEminus 200 controlTest ABCplus 200 DEminus 200 controlTest ISOcontrolExp2.txt Effect
 
 
 #testNetwork 1000 ABCplus 50 Aplus 50 experimentalTest BBexperimental.txt Effect
