@@ -509,14 +509,14 @@ BB.C.main = as.numeric(BB.C.main)
 
 
 # control
-BB.A.control = rep("1",16) # 0.5+0.5
+BB.A.control = rep("1.14",16) # 0.5+0.5
 BB.A.control = as.numeric(BB.A.control)
 
 
-BB.B.control = rep("1",16) # 0.5+0.5
+BB.B.control = rep("1.14",16) # 0.5+0.5
 BB.B.control = as.numeric(BB.B.control)
 
-BB.C.control = rep("1",16) # 0.5+0.5
+BB.C.control = rep("1.14",16) # 0.5+0.5
 BB.C.control = as.numeric(BB.C.control)
 
 BB.D.control = rep("2",16) # 0.5+0.5
@@ -527,22 +527,22 @@ BB.D.control = as.numeric(BB.D.control)
 ISO.A.main = rep("0",16)
 ISO.A.main = as.numeric(ISO.A.main)
 
-ISO.B.main = rep("1",16) # 0.5+0.5
+ISO.B.main = rep("1.33",16) # 0.5+0.5
 ISO.B.main = as.numeric(ISO.B.main)
 
-ISO.C.main = rep("1",16) # 0.5+0.5
+ISO.C.main = rep("1.33",16) # 0.5+0.5
 ISO.C.main = as.numeric(ISO.C.main)
 
 
 # control
-ISO.A.control = rep("1",16) # 0.5+0.5
+ISO.A.control = rep("1.14",16) # 0.5+0.5
 ISO.A.control = as.numeric(ISO.A.control)
 
 
-ISO.B.control = rep("1",16) # 0.5+0.5
+ISO.B.control = rep("1.14",16) # 0.5+0.5
 ISO.B.control = as.numeric(ISO.B.control)
 
-ISO.C.control = rep("1",16) # 0.5+0.5
+ISO.C.control = rep("1.14",16) # 0.5+0.5
 ISO.C.control = as.numeric(ISO.C.control)
 
 ISO.D.control = rep("0",16) # 0.5+0.5
