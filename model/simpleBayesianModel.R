@@ -74,6 +74,6 @@ bayes_model_func = function(x,prob,event1,event2){
 }
 
 # Example use of the command:
-bayes_model_func(x=5,0.5,event1=c(1,1,1,0,0,1),event2=c(1,1,0,0,0,1)) 
+bayes_model_func(x=3,0.5,event1=c(1,1,1,1),event2=c(1,0,0,1)) 
 
 # event 1 corresponds to the ABC+ event. Event 2 corresponds to the AB+ event
