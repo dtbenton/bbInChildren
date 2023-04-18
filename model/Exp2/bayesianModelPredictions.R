@@ -24,34 +24,48 @@ library(BFpack)
 options(scipen=9999)
 
 ## p = 0.5 ##
-# create variables
+
+# get blicket probs for p = 0.5 for BB main
+# note that the function comes from the file "simpleBayesianModel.R"
+bayes_model_func(x=3,0.5,event1=c(1,1,1,1),event2=c(1,1,0,1))*2
+
 # BB
 #main
-BB.A.main = rep("2",16)
-BB.B.main = rep("1",16) # 0.5+0.5
+BB.A.main = rep("1.3",16)
+BB.B.main = rep("1.3",16) # 0.5+0.5
 BB.C.main = rep("1",16) # 0.5+0.5
 
 
+# get blicket probs for p = 0.5 for BB control
+bayes_model_func(x=5,0.5,event1=c(1,1,1,0,0,1),event2=c(0,0,0,1,1,1))*2
+
 # control
-BB.A.control = rep("1",16) # 0.5+0.5
-BB.B.control = rep("1",16) # 0.5+0.5
-BB.C.control = rep("1",16) # 0.5+0.5
-BB.D.control = rep("2",16) # 0.5+0.5
+BB.A.control = rep("1.14",16) 
+BB.B.control = rep("1.14",16) 
+BB.C.control = rep("1.14",16) 
+BB.D.control = rep("1.3",16) 
+BB.E.control = rep("1.3",16) 
 
 
 # ISO
 #main
+# get blicket probs for p = 0.5 for ISO main
+bayes_model_func(x=3,0.5,event1=c(1,1,1,1),event2=c(1,1,0,0))*2
+
 ISO.A.main = rep("0",16)
-ISO.B.main = rep("1",16) # 0.5+0.5
-ISO.C.main = rep("1",16) # 0.5+0.5
+ISO.B.main = rep("0",16) 
+ISO.C.main = rep("2",16) 
 
 
 # control
-ISO.A.control = rep("1",16) # 0.5+0.5
-ISO.B.control = rep("1",16) # 0.5+0.5
-ISO.C.control = rep("1",16) # 0.5+0.5
-ISO.D.control = rep("0",16) # 0.5+0.5
+# get blicket probs for p = 0.5 for ISO main
+bayes_model_func(x=5,0.5,event1=c(1,1,1,0,0,1),event2=c(0,0,0,1,1,0))*2
 
+ISO.A.control = rep("1.14",16) 
+ISO.B.control = rep("1.14",16) 
+ISO.C.control = rep("1.14",16) 
+ISO.D.control = rep("0",16) 
+ISO.E.control = rep("0",16) 
 
 
 # create a dataframe that combines the variables
@@ -147,7 +161,7 @@ condition_barplot + stat_summary(fun = mean, geom = "bar", position = "dodge") +
                              "#C8C8C8",
                              "#696969")) +
   
-  coord_cartesian(ylim=c(0, 2.5)) +
+  coord_cartesian(ylim=c(0, 2.2)) +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_blank(), axis.line = element_line(colour = "black"))
 
@@ -160,33 +174,49 @@ condition_barplot + stat_summary(fun = mean, geom = "bar", position = "dodge") +
 ###### P = 0.65 ######
 ######################
 ######################
+## p = 0.65 ##
+
+# get blicket probs for p = 0.5 for BB main
+# note that the function comes from the file "simpleBayesianModel.R"
+bayes_model_func(x=3,0.65,event1=c(1,1,1,1),event2=c(1,1,0,1))*2
+
 # BB
 #main
-BB.A.main = rep("2",16)
-BB.B.main = rep("1.3",16) # 0.5+0.5
+BB.A.main = rep("1.48",16)
+BB.B.main = rep("1.48",16) # 0.5+0.5
 BB.C.main = rep("1.3",16) # 0.5+0.5
 
 
+# get blicket probs for p = 0.5 for BB control
+bayes_model_func(x=5,0.65,event1=c(1,1,1,0,0,1),event2=c(0,0,0,1,1,1))*2
+
 # control
-BB.A.control = rep("1.3",16) # 0.5+0.5
-BB.B.control = rep("1.3",16) # 0.5+0.5
-BB.C.control = rep("1.3",16) # 0.5+0.5
-BB.D.control = rep("2",16) # 0.5+0.5
+BB.A.control = rep("1.36",16) 
+BB.B.control = rep("1.36",16) 
+BB.C.control = rep("1.36",16) 
+BB.D.control = rep("1.48",16) 
+BB.E.control = rep("1.48",16) 
 
 
 # ISO
 #main
+# get blicket probs for p = 0.5 for ISO main
+bayes_model_func(x=3,0.65,event1=c(1,1,1,1),event2=c(1,1,0,0))*2
+
 ISO.A.main = rep("0",16)
-ISO.B.main = rep("1.3",16) # 0.5+0.5
-ISO.C.main = rep("1.3",16) # 0.5+0.5
+ISO.B.main = rep("0",16) 
+ISO.C.main = rep("2",16) 
 
 
 # control
-ISO.A.control = rep("1.3",16) # 0.5+0.5
-ISO.B.control = rep("1.3",16) # 0.5+0.5
-ISO.C.control = rep("1.3",16) # 0.5+0.5
-ISO.D.control = rep("0",16) # 0.5+0.5
+# get blicket probs for p = 0.5 for ISO main
+bayes_model_func(x=5,0.5,event1=c(1,1,1,0,0,1),event2=c(0,0,0,1,1,0))*2
 
+ISO.A.control = rep("1.14",16) 
+ISO.B.control = rep("1.14",16) 
+ISO.C.control = rep("1.14",16) 
+ISO.D.control = rep("0",16) 
+ISO.E.control = rep("0",16) 
 
 
 # create a dataframe that combines the variables
@@ -257,8 +287,8 @@ D_control_tall = D_control_tall[,c(3,4,1,5,2)]
 # combine the dataframes
 D_tall = rbind(D_main_tall,
                D_control_tall)
+fix(D_tall)
 names(D_tall)
-
 
 # convert variables to their proper type
 names(D_tall)
@@ -269,8 +299,8 @@ D_tall$trial = factor(D_tall$trial)
 D_tall$objects = factor(D_tall$objects)
 str(D_tall)
 
+
 # plot data
-# figures
 condition_barplot = ggplot(D_tall, aes(trial, measure, fill=objects)) # create the bar graph with test.trial.2 on the x-axis and measure on the y-axis
 condition_barplot + stat_summary(fun = mean, geom = "bar", position = "dodge") + # add the bars, which represent the means and the place them side-by-side with 'dodge'
   stat_summary(fun.data=mean_cl_boot, geom = "errorbar", position = position_dodge(width=0.90), width = 0.2) + # add errors bars
@@ -282,7 +312,7 @@ condition_barplot + stat_summary(fun = mean, geom = "bar", position = "dodge") +
                              "#C8C8C8",
                              "#696969")) +
   
-  coord_cartesian(ylim=c(0, 2.5)) +
+  coord_cartesian(ylim=c(0, 2.2)) +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_blank(), axis.line = element_line(colour = "black"))
 
@@ -294,33 +324,49 @@ condition_barplot + stat_summary(fun = mean, geom = "bar", position = "dodge") +
 ###### P = 0.80 ######
 ######################
 ######################
+# p = 0.80 ##
+
+# get blicket probs for p = 0.80 for BB main
+# note that the function comes from the file "simpleBayesianModel.R"
+bayes_model_func(x=3,0.80,event1=c(1,1,1,1),event2=c(1,1,0,1))*2
+
 # BB
 #main
-BB.A.main = rep("2",16)
-BB.B.main = rep("1.6",16) # 0.5+0.5
-BB.C.main = rep("1.6",16) # 0.5+0.5
+BB.A.main = rep("1.67",16)
+BB.B.main = rep("1.67",16) # 
+BB.C.main = rep("1.6",16) 
 
+
+# get blicket probs for p = 0.80 for BB control
+bayes_model_func(x=5,0.80,event1=c(1,1,1,0,0,1),event2=c(0,0,0,1,1,1))*2
 
 # control
-BB.A.control = rep("1.6",16) # 0.5+0.5
-BB.B.control = rep("1.6",16) # 0.5+0.5
-BB.C.control = rep("1.6",16) # 0.5+0.5
-BB.D.control = rep("2",16) # 0.5+0.5
+BB.A.control = rep("1.61",16) 
+BB.B.control = rep("1.61",16) 
+BB.C.control = rep("1.61",16) 
+BB.D.control = rep("1.67",16) 
+BB.E.control = rep("1.67",16) 
 
 
 # ISO
 #main
+# get blicket probs for p = 0.80 for ISO main
+bayes_model_func(x=3,0.80,event1=c(1,1,1,1),event2=c(1,1,0,0))*2
+
 ISO.A.main = rep("0",16)
-ISO.B.main = rep("1.6",16) # 0.5+0.5
-ISO.C.main = rep("1.6",16) # 0.5+0.5
+ISO.B.main = rep("0",16) 
+ISO.C.main = rep("2",16) 
 
 
 # control
-ISO.A.control = rep("1.6",16) # 0.5+0.5
-ISO.B.control = rep("1.6",16) # 0.5+0.5
-ISO.C.control = rep("1.6",16) # 0.5+0.5
-ISO.D.control = rep("0",16) # 0.5+0.5
+# get blicket probs for p = 0.5 for ISO main
+bayes_model_func(x=5,0.80,event1=c(1,1,1,0,0,1),event2=c(0,0,0,1,1,0))*2
 
+ISO.A.control = rep("1.61",16) 
+ISO.B.control = rep("1.61",16) 
+ISO.C.control = rep("1.61",16) 
+ISO.D.control = rep("0",16) 
+ISO.E.control = rep("0",16) 
 
 
 # create a dataframe that combines the variables
@@ -391,6 +437,7 @@ D_control_tall = D_control_tall[,c(3,4,1,5,2)]
 # combine the dataframes
 D_tall = rbind(D_main_tall,
                D_control_tall)
+fix(D_tall)
 names(D_tall)
 
 # convert variables to their proper type
@@ -402,7 +449,8 @@ D_tall$trial = factor(D_tall$trial)
 D_tall$objects = factor(D_tall$objects)
 str(D_tall)
 
-# figures
+
+# plot data
 condition_barplot = ggplot(D_tall, aes(trial, measure, fill=objects)) # create the bar graph with test.trial.2 on the x-axis and measure on the y-axis
 condition_barplot + stat_summary(fun = mean, geom = "bar", position = "dodge") + # add the bars, which represent the means and the place them side-by-side with 'dodge'
   stat_summary(fun.data=mean_cl_boot, geom = "errorbar", position = position_dodge(width=0.90), width = 0.2) + # add errors bars
@@ -414,7 +462,7 @@ condition_barplot + stat_summary(fun = mean, geom = "bar", position = "dodge") +
                              "#C8C8C8",
                              "#696969")) +
   
-  coord_cartesian(ylim=c(0, 2.5)) +
+  coord_cartesian(ylim=c(0, 2.2)) +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_blank(), axis.line = element_line(colour = "black"))
 
@@ -427,33 +475,45 @@ condition_barplot + stat_summary(fun = mean, geom = "bar", position = "dodge") +
 ###### P = 0.95 ######
 ######################
 ######################
+bayes_model_func(x=3,0.95,event1=c(1,1,1,1),event2=c(1,1,0,1))*2
+
 # BB
 #main
-BB.A.main = rep("2",16)
-BB.B.main = rep("1.9",16) # 0.5+0.5
-BB.C.main = rep("1.9",16) # 0.5+0.5
+BB.A.main = rep("1.904762",16)
+BB.B.main = rep("1.904762",16) # 
+BB.C.main = rep("1.90",16) 
 
+
+# get blicket probs for p = 0.95 for BB control
+bayes_model_func(x=5,0.95,event1=c(1,1,1,0,0,1),event2=c(0,0,0,1,1,1))*2
 
 # control
-BB.A.control = rep("1.9",16) # 0.5+0.5
-BB.B.control = rep("1.9",16) # 0.5+0.5
-BB.C.control = rep("1.9",16) # 0.5+0.5
-BB.D.control = rep("2",16) # 0.5+0.5
+BB.A.control = rep("1.900238",16) 
+BB.B.control = rep("1.900238",16) 
+BB.C.control = rep("1.900238",16) 
+BB.D.control = rep("1.904762",16) 
+BB.E.control = rep("1.904762",16) 
 
 
 # ISO
 #main
+# get blicket probs for p = 0.95 for ISO main
+bayes_model_func(x=3,0.95,event1=c(1,1,1,1),event2=c(1,1,0,0))*2
+
 ISO.A.main = rep("0",16)
-ISO.B.main = rep("1.9",16) # 0.5+0.5
-ISO.C.main = rep("1.9",16) # 0.5+0.5
+ISO.B.main = rep("0",16) 
+ISO.C.main = rep("2",16) 
 
 
 # control
-ISO.A.control = rep("1.9",16) # 0.5+0.5
-ISO.B.control = rep("1.9",16) # 0.5+0.5
-ISO.C.control = rep("1.9",16) # 0.5+0.5
-ISO.D.control = rep("0",16) # 0.5+0.5
+# get blicket probs for p = 0.95 for ISO main
+bayes_model_func(x=5,0.95,event1=c(1,1,1,0,0,1),event2=c(0,0,0,1,1,0))*2
 
+ISO.A.control = rep("1.900238",16) 
+ISO.B.control = rep("1.900238",16) 
+ISO.C.control = rep("1.900238",16) 
+ISO.D.control = rep("0",16) 
+ISO.E.control = rep("0",16) 
 
 
 # create a dataframe that combines the variables
@@ -524,6 +584,7 @@ D_control_tall = D_control_tall[,c(3,4,1,5,2)]
 # combine the dataframes
 D_tall = rbind(D_main_tall,
                D_control_tall)
+fix(D_tall)
 names(D_tall)
 
 # convert variables to their proper type
@@ -535,7 +596,8 @@ D_tall$trial = factor(D_tall$trial)
 D_tall$objects = factor(D_tall$objects)
 str(D_tall)
 
-# figures
+
+# plot data
 condition_barplot = ggplot(D_tall, aes(trial, measure, fill=objects)) # create the bar graph with test.trial.2 on the x-axis and measure on the y-axis
 condition_barplot + stat_summary(fun = mean, geom = "bar", position = "dodge") + # add the bars, which represent the means and the place them side-by-side with 'dodge'
   stat_summary(fun.data=mean_cl_boot, geom = "errorbar", position = position_dodge(width=0.90), width = 0.2) + # add errors bars
@@ -547,7 +609,7 @@ condition_barplot + stat_summary(fun = mean, geom = "bar", position = "dodge") +
                              "#C8C8C8",
                              "#696969")) +
   
-  coord_cartesian(ylim=c(0, 2.5)) +
+  coord_cartesian(ylim=c(0, 2.2)) +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_blank(), axis.line = element_line(colour = "black"))
 
@@ -558,33 +620,45 @@ condition_barplot + stat_summary(fun = mean, geom = "bar", position = "dodge") +
 ###### P = 1    ######
 ######################
 ######################
+bayes_model_func(x=3,1,event1=c(1,1,1,1),event2=c(1,1,0,1))*2
+
 # BB
 #main
 BB.A.main = rep("2",16)
-BB.B.main = rep("2",16) # 0.5+0.5
-BB.C.main = rep("2",16) # 0.5+0.5
+BB.B.main = rep("2",16) # 
+BB.C.main = rep("2",16) 
 
+
+# get blicket probs for p = 1 for BB control
+bayes_model_func(x=5,1,event1=c(1,1,1,0,0,1),event2=c(0,0,0,1,1,1))*2
 
 # control
-BB.A.control = rep("2",16) # 0.5+0.5
-BB.B.control = rep("2",16) # 0.5+0.5
-BB.C.control = rep("2",16) # 0.5+0.5
-BB.D.control = rep("2",16) # 0.5+0.5
+BB.A.control = rep("2",16) 
+BB.B.control = rep("2",16) 
+BB.C.control = rep("2",16) 
+BB.D.control = rep("2",16) 
+BB.E.control = rep("2",16) 
 
 
 # ISO
 #main
+# get blicket probs for p = 0.1 for ISO main
+bayes_model_func(x=3,1,event1=c(1,1,1,1),event2=c(1,1,0,0))*2
+
 ISO.A.main = rep("0",16)
-ISO.B.main = rep("2",16) # 0.5+0.5
-ISO.C.main = rep("2",16) # 0.5+0.5
+ISO.B.main = rep("0",16) 
+ISO.C.main = rep("2",16) 
 
 
 # control
-ISO.A.control = rep("2",16) # 0.5+0.5
-ISO.B.control = rep("2",16) # 0.5+0.5
-ISO.C.control = rep("2",16) # 0.5+0.5
-ISO.D.control = rep("0",16) # 0.5+0.5
+# get blicket probs for p = 0.95 for ISO main
+bayes_model_func(x=5,1,event1=c(1,1,1,0,0,1),event2=c(0,0,0,1,1,0))*2
 
+ISO.A.control = rep("2",16) 
+ISO.B.control = rep("2",16) 
+ISO.C.control = rep("2",16) 
+ISO.D.control = rep("0",16) 
+ISO.E.control = rep("0",16) 
 
 
 # create a dataframe that combines the variables
@@ -655,6 +729,7 @@ D_control_tall = D_control_tall[,c(3,4,1,5,2)]
 # combine the dataframes
 D_tall = rbind(D_main_tall,
                D_control_tall)
+fix(D_tall)
 names(D_tall)
 
 # convert variables to their proper type
@@ -666,7 +741,8 @@ D_tall$trial = factor(D_tall$trial)
 D_tall$objects = factor(D_tall$objects)
 str(D_tall)
 
-# figures
+
+# plot data
 condition_barplot = ggplot(D_tall, aes(trial, measure, fill=objects)) # create the bar graph with test.trial.2 on the x-axis and measure on the y-axis
 condition_barplot + stat_summary(fun = mean, geom = "bar", position = "dodge") + # add the bars, which represent the means and the place them side-by-side with 'dodge'
   stat_summary(fun.data=mean_cl_boot, geom = "errorbar", position = position_dodge(width=0.90), width = 0.2) + # add errors bars
@@ -678,7 +754,7 @@ condition_barplot + stat_summary(fun = mean, geom = "bar", position = "dodge") +
                              "#C8C8C8",
                              "#696969")) +
   
-  coord_cartesian(ylim=c(0, 2.5)) +
+  coord_cartesian(ylim=c(0, 2.2)) +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_blank(), axis.line = element_line(colour = "black"))
 

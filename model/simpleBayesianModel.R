@@ -1,5 +1,3 @@
-# Simple Bayesian Model #
-
 get_init_priors = function(L, p) {
   mod_priors = c()
   for (model in L) {
@@ -28,9 +26,10 @@ get_likelihoods = function(L, event) {
   return(likelihoods)
 }
 
-compute_posts = function(L, priors, event) {
-  likelihoods = get_likelihoods(L, event)
-  numerators = likelihoods*priors
+compute_two_posts = function(L, priors, event1, event2) {
+  likelihoods1 = get_likelihoods(L, event1)
+  likelihoods2 = get_likelihoods(L, event2)
+  numerators = likelihoods1*likelihoods2*priors
   norm_term = sum(numerators)
   return(numerators/norm_term)
 }
@@ -48,14 +47,14 @@ get_blicket_probs = function(L, posts) {
 }
 
 MyIntToBit = function(x, dig) {
-    i <- 0L
-    string <- numeric(dig)
-    while (x > 0) {
-        string[dig - i] <- x %% 2L
-        x <- x %/% 2L
-        i <- i + 1L
-    }
-    string
+  i <- 0L
+  string <- numeric(dig)
+  while (x > 0) {
+    string[dig - i] <- x %% 2L
+    x <- x %/% 2L
+    i <- i + 1L
+  }
+  string
 }
 
 get_model_list = function(num_blickets) {
@@ -63,23 +62,18 @@ get_model_list = function(num_blickets) {
 }
 
 
+bayes_model_func = function(x,prob,event1,event2){
+  L = get_model_list(x) # x is the number of candidate causes
+  priors = get_init_priors(L, prob) # prob = probability that an object is a blicket
+  event1 = event1 #event1/event2 are lists, in which the first n elements correspond to the # of candidate causes and teh last element corresponds to
+                  # whether the machine activates
+  event2 = event2
+  posts = compute_two_posts(L, priors, event1, event2)
+  blicket_probs = get_blicket_probs(L, posts)
+  print(blicket_probs)
+}
 
-print("Model List:")
-L = get_model_list(5)
-print(L)
-print("Priors on Models (with 0.4 prior for individual objects):")
-init_priors = get_init_priors(L, 0.65)
-print(init_priors)
-print("Initial priors on each individual object:")
-print(get_blicket_probs(L, init_priors))
-print("Posteriors after seeing ABC+ :")
-AB_posts = compute_posts(L, init_priors, c(1,1,1,0,0, 1))
-print(AB_posts)
-print("Current posteriors on each object:")
-print(get_blicket_probs(L, AB_posts))
-print("Posteriors after seeing A+ :")
-A_posts = compute_posts(L, AB_posts, c(1,0,0,0,0,1))
-print(A_posts)
-print("Current posteriors on each object:")
-print(get_blicket_probs(L, A_posts))
+# Example use of the command:
+bayes_model_func(x=5,0.5,event1=c(1,1,1,0,0,1),event2=c(1,1,0,0,0,1)) 
 
+# event 1 corresponds to the ABC+ event. Event 2 corresponds to the AB+ event
