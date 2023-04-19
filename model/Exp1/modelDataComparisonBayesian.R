@@ -144,213 +144,72 @@ D_tall$condition = NULL
 names(D_tall)
 dim(D_tall)
 D_tall = as.data.frame(D_tall[,c(1:4,6:7,5,10:13,8:9)])
-fix(D_tall)
-
-
-
-##########################################################
-##########################################################
-###                                                    ###
-### ANALYSIS FOR CHILDREN ASSIGNED TO THE BB CONDITION ###
-###                                                    ###
-##########################################################
-##########################################################
-
-# BB MAIN 
-A.BB.MAIN.SUM = as.numeric(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$phaseOrder == "Phase 1" & D_tall$trialType=="main" & D_tall$objectType=="A"])+
-  as.numeric(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$phaseOrder == "Phase 2" & D_tall$trialType=="main" & D_tall$objectType=="A"])
-length(A.BB.MAIN.SUM)
-mean(A.BB.MAIN.SUM, na.rm=TRUE)
-
-B.BB.MAIN.SUM = as.numeric(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$phaseOrder == "Phase 1" & D_tall$trialType=="main" & D_tall$objectType=="B"])+
-  as.numeric(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$phaseOrder == "Phase 2" & D_tall$trialType=="main" & D_tall$objectType=="B"])
-length(B.BB.MAIN.SUM)
-mean(B.BB.MAIN.SUM, na.rm=TRUE)
-
-C.BB.MAIN.SUM = as.numeric(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$phaseOrder == "Phase 1" & D_tall$trialType=="main" & D_tall$objectType=="C"])+
-  as.numeric(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$phaseOrder == "Phase 2" & D_tall$trialType=="main" & D_tall$objectType=="C"])
-length(C.BB.MAIN.SUM)
-mean(C.BB.MAIN.SUM, na.rm=TRUE)
-
-
-# BB CONTROL
-A.BB.CONTROL.SUM = as.numeric(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$phaseOrder == "Phase 1" & D_tall$trialType=="control" & D_tall$objectType=="A"])+
-  as.numeric(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$phaseOrder == "Phase 2" & D_tall$trialType=="control" & D_tall$objectType=="A"])
-length(A.BB.CONTROL.SUM)
-mean(A.BB.CONTROL.SUM, na.rm=TRUE)
-
-B.BB.CONTROL.SUM = as.numeric(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$phaseOrder == "Phase 1" & D_tall$trialType=="control" & D_tall$objectType=="B"])+
-  as.numeric(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$phaseOrder == "Phase 2" & D_tall$trialType=="control" & D_tall$objectType=="B"])
-length(B.BB.CONTROL.SUM)
-mean(B.BB.CONTROL.SUM, na.rm=TRUE)
-
-C.BB.CONTROL.SUM = as.numeric(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$phaseOrder == "Phase 1" & D_tall$trialType=="control" & D_tall$objectType=="C"])+
-  as.numeric(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$phaseOrder == "Phase 2" & D_tall$trialType=="control" & D_tall$objectType=="C"])
-length(C.BB.CONTROL.SUM)
-mean(C.BB.CONTROL.SUM, na.rm=TRUE)
-
-D.BB.CONTROL.SUM = as.numeric(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$phaseOrder == "Phase 1" & D_tall$trialType=="control" & D_tall$objectType=="D"])+
-  as.numeric(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$phaseOrder == "Phase 2" & D_tall$trialType=="control" & D_tall$objectType=="D"])
-length(D.BB.CONTROL.SUM)
-mean(D.BB.CONTROL.SUM, na.rm=TRUE)
-
-
-# Combined dataframe
-D.BB.DF = data.frame(ID = c(1:31), Condition = rep(c("Backwards Blocking"),31),
-                     A.BB.MAIN.SUM = A.BB.MAIN.SUM, 
-                     B.BB.MAIN.SUM = B.BB.MAIN.SUM,
-                     C.BB.MAIN.SUM = C.BB.MAIN.SUM,
-                     A.BB.CONTROL.SUM = A.BB.CONTROL.SUM,
-                     B.BB.CONTROL.SUM = B.BB.CONTROL.SUM,
-                     C.BB.CONTROL.SUM = C.BB.CONTROL.SUM,
-                     D.BB.CONTROL.SUM = D.BB.CONTROL.SUM)
-names(D.BB.DF)
-dim(D.BB.DF)
-
-D.BB.DF_tall = reshape(D.BB.DF, varying = c(3:9), v.names = "measure", 
-                       timevar = "condition",   direction = "long")
-D.BB.DF_tall = D.BB.DF_tall[order(D.BB.DF_tall$ID),] 
-
-D.BB.DF_tall$objects = rep(c("A","B","C","A","B","C","D"), times = 31)
-D.BB.DF_tall$eventType = rep(c("main","main","main",
-                               "control","control","control","control"), times = 31)
-
-names(D.BB.DF_tall)
-D.BB.DF_tall$id = NULL
-D.BB.DF_tall$condition = NULL
-names(D.BB.DF_tall)
-dim(D.BB.DF_tall)
-D.BB.DF_tall = D.BB.DF_tall[,c(1:2,5,4,3)]
-names(D.BB.DF_tall)
-
-
-D.BB.DF_tall$objects = factor(D.BB.DF_tall$objects)
-D.BB.DF_tall$eventType = factor(D.BB.DF_tall$eventType)
-D.BB.DF_tall$Condition = factor(D.BB.DF_tall$Condition)
-
-fix(D.BB.DF_tall)
-
-
-# ISO MAIN 
-A.ISO.MAIN.SUM = as.numeric(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$phaseOrder == "Phase 1" & D_tall$trialType=="main" & D_tall$objectType=="A"])+
-  as.numeric(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$phaseOrder == "Phase 2" & D_tall$trialType=="main" & D_tall$objectType=="A"])
-length(A.ISO.MAIN.SUM)
-mean(A.ISO.MAIN.SUM, na.rm=TRUE)
-
-B.ISO.MAIN.SUM = as.numeric(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$phaseOrder == "Phase 1" & D_tall$trialType=="main" & D_tall$objectType=="B"])+
-  as.numeric(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$phaseOrder == "Phase 2" & D_tall$trialType=="main" & D_tall$objectType=="B"])
-length(B.ISO.MAIN.SUM)
-mean(B.ISO.MAIN.SUM, na.rm=TRUE)
-
-C.ISO.MAIN.SUM = as.numeric(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$phaseOrder == "Phase 1" & D_tall$trialType=="main" & D_tall$objectType=="C"])+
-  as.numeric(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$phaseOrder == "Phase 2" & D_tall$trialType=="main" & D_tall$objectType=="C"])
-length(C.ISO.MAIN.SUM)
-mean(C.ISO.MAIN.SUM, na.rm=TRUE)
-
-
-# ISO CONTROL
-A.ISO.CONTROL.SUM = as.numeric(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$phaseOrder == "Phase 1" & D_tall$trialType=="control" & D_tall$objectType=="A"])+
-  as.numeric(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$phaseOrder == "Phase 2" & D_tall$trialType=="control" & D_tall$objectType=="A"])
-length(A.ISO.CONTROL.SUM)
-mean(A.ISO.CONTROL.SUM, na.rm=TRUE)
-
-B.ISO.CONTROL.SUM = as.numeric(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$phaseOrder == "Phase 1" & D_tall$trialType=="control" & D_tall$objectType=="B"])+
-  as.numeric(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$phaseOrder == "Phase 2" & D_tall$trialType=="control" & D_tall$objectType=="B"])
-length(B.ISO.CONTROL.SUM)
-mean(B.ISO.CONTROL.SUM, na.rm=TRUE)
-
-C.ISO.CONTROL.SUM = as.numeric(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$phaseOrder == "Phase 1" & D_tall$trialType=="control" & D_tall$objectType=="C"])+
-  as.numeric(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$phaseOrder == "Phase 2" & D_tall$trialType=="control" & D_tall$objectType=="C"])
-length(C.ISO.CONTROL.SUM)
-mean(C.ISO.CONTROL.SUM, na.rm=TRUE)
-
-D.ISO.CONTROL.SUM = as.numeric(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$phaseOrder == "Phase 1" & D_tall$trialType=="control" & D_tall$objectType=="D"])+
-  as.numeric(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$phaseOrder == "Phase 2" & D_tall$trialType=="control" & D_tall$objectType=="D"])
-length(D.ISO.CONTROL.SUM)
-mean(D.ISO.CONTROL.SUM, na.rm=TRUE)
-
-
-# Combined dataframe
-D.ISO.DF = data.frame(ID = c(1:33), Condition = rep(c("Indirect Screening-Off"),33),
-                      A.ISO.MAIN.SUM = A.ISO.MAIN.SUM, 
-                      B.ISO.MAIN.SUM = B.ISO.MAIN.SUM,
-                      C.ISO.MAIN.SUM = C.ISO.MAIN.SUM,
-                      A.ISO.CONTROL.SUM = A.ISO.CONTROL.SUM,
-                      B.ISO.CONTROL.SUM = B.ISO.CONTROL.SUM,
-                      C.ISO.CONTROL.SUM = C.ISO.CONTROL.SUM,
-                      D.ISO.CONTROL.SUM = D.ISO.CONTROL.SUM)
-names(D.ISO.DF)
-dim(D.ISO.DF)
-
-D.ISO.DF_tall = reshape(D.ISO.DF, varying = c(3:9), v.names = "measure", 
-                        timevar = "condition",   direction = "long")
-D.ISO.DF_tall = D.ISO.DF_tall[order(D.ISO.DF_tall$ID),] 
-
-D.ISO.DF_tall$objects = rep(c("A","B","C","A","B","C","D"), times = 33)
-D.ISO.DF_tall$eventType = rep(c("main","main","main",
-                                "control","control","control","control"), times = 33)
-
-names(D.ISO.DF_tall)
-D.ISO.DF_tall$id = NULL
-D.ISO.DF_tall$condition = NULL
-names(D.ISO.DF_tall)
-dim(D.ISO.DF_tall)
-D.ISO.DF_tall = D.ISO.DF_tall[,c(1:2,5,4,3)]
-names(D.ISO.DF_tall)
-
-
-D.ISO.DF_tall$objects = factor(D.ISO.DF_tall$objects)
-D.ISO.DF_tall$eventType = factor(D.ISO.DF_tall$eventType)
-D.ISO.DF_tall$Condition = factor(D.ISO.DF_tall$Condition)
-
-fix(D.ISO.DF_tall)
-
-
-
-##################################################################
-##################################################################
-###                                                            ###
-### COMBINE THE DATA FOR CHILDREN IN THE BB AND ISO CONDITIONS ###
-###                                                            ###
-##################################################################
-##################################################################
-
-
-# Combine the BB and ISO dataframes
-D_tall_new = rbind(D.BB.DF_tall, D.ISO.DF_tall)
-D_tall_new$ID = rep(c(1:64),each=7) 
 
 
 
 # behavioral predictions 
 #BB
-A.BB.MAIN.SUM = mean(D_tall_new$measure[D_tall_new$Condition=="Backwards Blocking" & D_tall_new$eventType=="main" & D_tall_new$objects=="A"], na.rm=TRUE)
-B.BB.MAIN.SUM = mean(D_tall_new$measure[D_tall_new$Condition=="Backwards Blocking" & D_tall_new$eventType=="main" & D_tall_new$objects=="B"], na.rm=TRUE)
-C.BB.MAIN.SUM = mean(D_tall_new$measure[D_tall_new$Condition=="Backwards Blocking" & D_tall_new$eventType=="main" & D_tall_new$objects=="C"], na.rm=TRUE)
+A.BB.MAIN.SUM = mean(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="main" & D_tall$objectType=="A" & D_tall$phaseOrder=="Phase 1"]+
+                       D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="main" & D_tall$objectType=="A" & D_tall$phaseOrder=="Phase 2"],
+                     na.rm=TRUE)
+
+B.BB.MAIN.SUM = mean(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="main" & D_tall$objectType=="B" & D_tall$phaseOrder=="Phase 1"]+
+                       D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="main" & D_tall$objectType=="B" & D_tall$phaseOrder=="Phase 2"],
+                     na.rm=TRUE)
+
+C.BB.MAIN.SUM = mean(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="main" & D_tall$objectType=="C" & D_tall$phaseOrder=="Phase 1"]+
+                       D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="main" & D_tall$objectType=="C" & D_tall$phaseOrder=="Phase 2"],
+                     na.rm=TRUE)
 
 
-A.BB.CONTROL.SUM = mean(D_tall_new$measure[D_tall_new$Condition=="Backwards Blocking" & D_tall_new$eventType=="control" & D_tall_new$objects=="A"], na.rm=TRUE)
-B.BB.CONTROL.SUM = mean(D_tall_new$measure[D_tall_new$Condition=="Backwards Blocking" & D_tall_new$eventType=="control" & D_tall_new$objects=="B"], na.rm=TRUE)
-C.BB.CONTROL.SUM = mean(D_tall_new$measure[D_tall_new$Condition=="Backwards Blocking" & D_tall_new$eventType=="control" & D_tall_new$objects=="C"], na.rm=TRUE)
-D.BB.CONTROL.SUM = mean(D_tall_new$measure[D_tall_new$Condition=="Backwards Blocking" & D_tall_new$eventType=="control" & D_tall_new$objects=="D"], na.rm=TRUE)
+A.BB.CONTROL.SUM = mean(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="control" & D_tall$objectType=="A" & D_tall$phaseOrder=="Phase 1"]+
+                          D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="control" & D_tall$objectType=="A" & D_tall$phaseOrder=="Phase 2"],
+                        na.rm=TRUE)
+
+B.BB.CONTROL.SUM = mean(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="control" & D_tall$objectType=="B" & D_tall$phaseOrder=="Phase 1"]+
+                          D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="control" & D_tall$objectType=="B" & D_tall$phaseOrder=="Phase 2"],
+                        na.rm=TRUE)
+
+C.BB.CONTROL.SUM = mean(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="control" & D_tall$objectType=="C" & D_tall$phaseOrder=="Phase 1"]+
+                          D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="control" & D_tall$objectType=="C" & D_tall$phaseOrder=="Phase 2"],
+                        na.rm=TRUE)
+D.BB.CONTROL.SUM = mean(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="control" & D_tall$objectType=="D" & D_tall$phaseOrder=="Phase 1"]+
+                          D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="control" & D_tall$objectType=="D" & D_tall$phaseOrder=="Phase 2"],
+                        na.rm=TRUE)
+
 
 #ISO
-A.ISO.MAIN.SUM = mean(D_tall_new$measure[D_tall_new$Condition=="Indirect Screening-Off" & D_tall_new$eventType=="main" & D_tall_new$objects=="A"], na.rm=TRUE)
-B.ISO.MAIN.SUM = mean(D_tall_new$measure[D_tall_new$Condition=="Indirect Screening-Off" & D_tall_new$eventType=="main" & D_tall_new$objects=="B"], na.rm=TRUE)
-C.ISO.MAIN.SUM = mean(D_tall_new$measure[D_tall_new$Condition=="Indirect Screening-Off" & D_tall_new$eventType=="main" & D_tall_new$objects=="C"], na.rm=TRUE)
+A.ISO.MAIN.SUM = mean(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="main" & D_tall$objectType=="A" & D_tall$phaseOrder=="Phase 1"]+
+                        D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="main" & D_tall$objectType=="A" & D_tall$phaseOrder=="Phase 2"],
+                      na.rm=TRUE)
+
+B.ISO.MAIN.SUM = mean(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="main" & D_tall$objectType=="B" & D_tall$phaseOrder=="Phase 1"]+
+                        D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="main" & D_tall$objectType=="B" & D_tall$phaseOrder=="Phase 2"],
+                      na.rm=TRUE)
+
+C.ISO.MAIN.SUM = mean(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="main" & D_tall$objectType=="C" & D_tall$phaseOrder=="Phase 1"]+
+                        D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="main" & D_tall$objectType=="C" & D_tall$phaseOrder=="Phase 2"],
+                      na.rm=TRUE)
 
 
-A.ISO.CONTROL.SUM = mean(D_tall_new$measure[D_tall_new$Condition=="Indirect Screening-Off" & D_tall_new$eventType=="control" & D_tall_new$objects=="A"], na.rm=TRUE)
-B.ISO.CONTROL.SUM = mean(D_tall_new$measure[D_tall_new$Condition=="Indirect Screening-Off" & D_tall_new$eventType=="control" & D_tall_new$objects=="B"], na.rm=TRUE)
-C.ISO.CONTROL.SUM = mean(D_tall_new$measure[D_tall_new$Condition=="Indirect Screening-Off" & D_tall_new$eventType=="control" & D_tall_new$objects=="C"], na.rm=TRUE)
-D.ISO.CONTROL.SUM = mean(D_tall_new$measure[D_tall_new$Condition=="Indirect Screening-Off" & D_tall_new$eventType=="control" & D_tall_new$objects=="D"], na.rm=TRUE)
+A.ISO.CONTROL.SUM = mean(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="control" & D_tall$objectType=="A" & D_tall$phaseOrder=="Phase 1"]+
+                           D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="control" & D_tall$objectType=="A" & D_tall$phaseOrder=="Phase 2"],
+                         na.rm=TRUE)
+
+B.ISO.CONTROL.SUM = mean(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="control" & D_tall$objectType=="B" & D_tall$phaseOrder=="Phase 1"]+
+                           D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="control" & D_tall$objectType=="B" & D_tall$phaseOrder=="Phase 2"],
+                         na.rm=TRUE)
+
+C.ISO.CONTROL.SUM = mean(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="control" & D_tall$objectType=="C" & D_tall$phaseOrder=="Phase 1"]+
+                           D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="control" & D_tall$objectType=="C" & D_tall$phaseOrder=="Phase 2"],
+                         na.rm=TRUE)
+D.ISO.CONTROL.SUM = mean(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="control" & D_tall$objectType=="D" & D_tall$phaseOrder=="Phase 1"]+
+                           D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="control" & D_tall$objectType=="D" & D_tall$phaseOrder=="Phase 2"],
+                         na.rm=TRUE)
 
 # behavioral predictions
 behavioral_predictions = c(A.BB.MAIN.SUM, B.BB.MAIN.SUM, C.BB.MAIN.SUM, A.BB.CONTROL.SUM, B.BB.CONTROL.SUM, C.BB.CONTROL.SUM, D.BB.CONTROL.SUM,
                            A.ISO.MAIN.SUM, B.ISO.MAIN.SUM, C.ISO.MAIN.SUM, A.ISO.CONTROL.SUM, B.ISO.CONTROL.SUM, C.ISO.CONTROL.SUM, D.ISO.CONTROL.SUM)
-
-
-
 
 
 
@@ -370,28 +229,44 @@ behavioral_predictions = c(A.BB.MAIN.SUM, B.BB.MAIN.SUM, C.BB.MAIN.SUM, A.BB.CON
 # .5
 model_predictions = c(1, 0.5, 0.5, 0.57, 0.57, 0.57, 1,
                       0, 0.67, 0.67, 0.57, 0.57, 0.57, 0)*2
+model_predictions
+
+# model fit: 
+caret::postResample(model_predictions, behavioral_predictions)
+
 
 # .65
 model_predictions = c(1, 0.65, 0.65, 0.68, 0.68, 0.68, 1,
                       0, 0.74, 0.74, 0.68, 0.68, 0.68, 0)*2
 
+model_predictions
+
+# model fit: 
+caret::postResample(model_predictions, behavioral_predictions)
+
 # .80
 model_predictions = c(1, 0.80, 0.80, 0.81, 0.81, 0.81, 1,
                       0, 0.83, 0.83, 0.81, 0.81, 0.81, 0)*2
 
+model_predictions
+
+# model fit: 
+caret::postResample(model_predictions, behavioral_predictions)
+
 # .95
 model_predictions = c(1, 0.95, 0.95, 0.95, 0.95, 0.95, 1,
                       0, 0.95, 0.95, 0.95, 0.95, 0.95, 0)*2
+model_predictions
+
+# model fit: 
+caret::postResample(model_predictions, behavioral_predictions)
 
 # 1
 model_predictions = c(1, 1, 1, 1, 1, 1, 1,
                       0, 1, 1, 1, 1, 1, 0)*2
 
+model_predictions
 
-#####################
-# model fit indices #
-#####################
+# model fit: 
 caret::postResample(model_predictions, behavioral_predictions)
 
-#     RMSE  Rsquared       MAE 
-# 0.3862931 0.7929145 0.3376243
