@@ -80,11 +80,11 @@ ISO.D.control = D$choice[D$object=="D" & D$phase=="Phase 1" & D$trial=="control"
 
 # create new data frame from new columns 
 D.new.main = data.frame(BB.A.main = BB.A.main, BB.B.main = BB.B.main,
-                   BB.C.main = BB.C.main, ISO.A.main = ISO.A.main, 
-                   ISO.B.main = ISO.B.main, ISO.C.main = ISO.C.main)
+                        BB.C.main = BB.C.main, ISO.A.main = ISO.A.main, 
+                        ISO.B.main = ISO.B.main, ISO.C.main = ISO.C.main)
 
 D_main_tall =  reshape(D.new.main, varying = c(1:6), v.names = "measure", 
-                  timevar = "condition",   direction = "long")
+                       timevar = "condition",   direction = "long")
 D_main_tall$ID = rep(c(1:16), times = 6)
 
 # remove 'id' column from the reshape() function
@@ -117,7 +117,7 @@ D.new.control = data.frame(BB.A.control = BB.A.control,
                            ISO.D.control = ISO.D.control)
 
 D_control_tall =  reshape(D.new.control, varying = c(1:8), v.names = "measure", 
-                       timevar = "condition",   direction = "long")
+                          timevar = "condition",   direction = "long")
 D_control_tall$ID = rep(c(1:16), times = 8)
 
 # remove 'id' column from the reshape() function
@@ -160,6 +160,6 @@ condition_barplot + stat_summary(fun = mean, geom = "bar", position = "dodge") +
                              "#696969",
                              "#548548")) +
   
-  coord_cartesian(ylim=c(0, 1.8)) +
+  coord_cartesian(ylim=c(0, 2.2)) +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_blank(), axis.line = element_line(colour = "black"))
