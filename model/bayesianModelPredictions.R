@@ -33,23 +33,23 @@ BB.C.main = rep("1",16) # 0.5+0.5
 
 
 # control
-BB.A.control = rep("1",16) # 0.5+0.5
-BB.B.control = rep("1",16) # 0.5+0.5
-BB.C.control = rep("1",16) # 0.5+0.5
+BB.A.control = rep("1.14",16) # 0.5+0.5
+BB.B.control = rep("1.14",16) # 0.5+0.5
+BB.C.control = rep("1.14",16) # 0.5+0.5
 BB.D.control = rep("2",16) # 0.5+0.5
 
 
 # ISO
 #main
 ISO.A.main = rep("0",16)
-ISO.B.main = rep("1",16) # 0.5+0.5
-ISO.C.main = rep("1",16) # 0.5+0.5
+ISO.B.main = rep("1.34",16) # 0.5+0.5
+ISO.C.main = rep("1.34",16) # 0.5+0.5
 
 
 # control
-ISO.A.control = rep("1",16) # 0.5+0.5
-ISO.B.control = rep("1",16) # 0.5+0.5
-ISO.C.control = rep("1",16) # 0.5+0.5
+ISO.A.control = rep("1.14",16) # 0.5+0.5
+ISO.B.control = rep("1.14",16) # 0.5+0.5
+ISO.C.control = rep("1.14",16) # 0.5+0.5
 ISO.D.control = rep("0",16) # 0.5+0.5
 
 
@@ -168,23 +168,23 @@ BB.C.main = rep("1.3",16) # 0.5+0.5
 
 
 # control
-BB.A.control = rep("1.3",16) # 0.5+0.5
-BB.B.control = rep("1.3",16) # 0.5+0.5
-BB.C.control = rep("1.3",16) # 0.5+0.5
+BB.A.control = rep("1.36",16) # 0.5+0.5
+BB.B.control = rep("1.36",16) # 0.5+0.5
+BB.C.control = rep("1.36",16) # 0.5+0.5
 BB.D.control = rep("2",16) # 0.5+0.5
 
 
 # ISO
 #main
 ISO.A.main = rep("0",16)
-ISO.B.main = rep("1.3",16) # 0.5+0.5
-ISO.C.main = rep("1.3",16) # 0.5+0.5
+ISO.B.main = rep("1.48",16) # 0.5+0.5
+ISO.C.main = rep("1.48",16) # 0.5+0.5
 
 
 # control
-ISO.A.control = rep("1.3",16) # 0.5+0.5
-ISO.B.control = rep("1.3",16) # 0.5+0.5
-ISO.C.control = rep("1.3",16) # 0.5+0.5
+ISO.A.control = rep("1.36",16) # 0.5+0.5
+ISO.B.control = rep("1.36",16) # 0.5+0.5
+ISO.C.control = rep("1.36",16) # 0.5+0.5
 ISO.D.control = rep("0",16) # 0.5+0.5
 
 
@@ -302,23 +302,23 @@ BB.C.main = rep("1.6",16) # 0.5+0.5
 
 
 # control
-BB.A.control = rep("1.6",16) # 0.5+0.5
-BB.B.control = rep("1.6",16) # 0.5+0.5
-BB.C.control = rep("1.6",16) # 0.5+0.5
+BB.A.control = rep("1.62",16) # 0.5+0.5
+BB.B.control = rep("1.62",16) # 0.5+0.5
+BB.C.control = rep("1.62",16) # 0.5+0.5
 BB.D.control = rep("2",16) # 0.5+0.5
 
 
 # ISO
 #main
 ISO.A.main = rep("0",16)
-ISO.B.main = rep("1.6",16) # 0.5+0.5
-ISO.C.main = rep("1.6",16) # 0.5+0.5
+ISO.B.main = rep("1.66",16) # 0.5+0.5
+ISO.C.main = rep("1.66",16) # 0.5+0.5
 
 
 # control
-ISO.A.control = rep("1.6",16) # 0.5+0.5
-ISO.B.control = rep("1.6",16) # 0.5+0.5
-ISO.C.control = rep("1.6",16) # 0.5+0.5
+ISO.A.control = rep("1.62",16) # 0.5+0.5
+ISO.B.control = rep("1.62",16) # 0.5+0.5
+ISO.C.control = rep("1.62",16) # 0.5+0.5
 ISO.D.control = rep("0",16) # 0.5+0.5
 
 
