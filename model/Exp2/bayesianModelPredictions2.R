@@ -24,48 +24,36 @@ library(BFpack)
 options(scipen=9999)
 
 ## p = 0.5 ##
-
-# get blicket probs for p = 0.5 for BB main
-# note that the function comes from the file "simpleBayesianModel.R"
-bayes_model_func(x=3,0.5,event1=c(1,1,1,1),event2=c(1,1,0,1))*2
-
+# create variables
 # BB
-#main
+# main
 BB.A.main = rep("1.3",16)
 BB.B.main = rep("1.3",16) # 0.5+0.5
 BB.C.main = rep("1",16) # 0.5+0.5
 
 
-# get blicket probs for p = 0.5 for BB control
-bayes_model_func(x=5,0.5,event1=c(1,1,1,0,0,1),event2=c(0,0,0,1,1,1))*2
-
 # control
-BB.A.control = rep("1.14",16) 
-BB.B.control = rep("1.14",16) 
-BB.C.control = rep("1.14",16) 
-BB.D.control = rep("1.3",16) 
-BB.E.control = rep("1.3",16) 
+BB.A.control = rep("1.14",16) # 0.5+0.5
+BB.B.control = rep("1.14",16) # 0.5+0.5
+BB.C.control = rep("1.14",16) # 0.5+0.5
+BB.D.control = rep("1.3",16) # 0.5+0.5
+BB.E.control = rep("1.3",16) # 0.5+0.5
 
 
 # ISO
 #main
-# get blicket probs for p = 0.5 for ISO main
-bayes_model_func(x=3,0.5,event1=c(1,1,1,1),event2=c(1,1,0,0))*2
-
 ISO.A.main = rep("0",16)
-ISO.B.main = rep("0",16) 
-ISO.C.main = rep("2",16) 
+ISO.B.main = rep("0",16) # 0.5+0.5
+ISO.C.main = rep("2",16) # 0.5+0.5
 
 
 # control
-# get blicket probs for p = 0.5 for ISO main
-bayes_model_func(x=5,0.5,event1=c(1,1,1,0,0,1),event2=c(0,0,0,1,1,0))*2
+ISO.A.control = rep("1.14",16) # 0.5+0.5
+ISO.B.control = rep("1.14",16) # 0.5+0.5
+ISO.C.control = rep("1.14",16) # 0.5+0.5
+ISO.D.control = rep("0",16) # 0.5+0.5
+ISO.E.control = rep("0",16) # 0.5+0.5
 
-ISO.A.control = rep("1.14",16) 
-ISO.B.control = rep("1.14",16) 
-ISO.C.control = rep("1.14",16) 
-ISO.D.control = rep("0",16) 
-ISO.E.control = rep("0",16) 
 
 
 # create a dataframe that combines the variables
@@ -103,13 +91,14 @@ D_main_tall = D_main_tall[,c(3,4,1,5,2)]
 #############
 D.new.control = data.frame(BB.A.control = BB.A.control,
                            BB.B.control = BB.B.control, BB.C.control = BB.C.control,
-                           BB.D.control = BB.D.control, ISO.A.control = ISO.A.control,
+                           BB.D.control = BB.D.control, BB.E.control = BB.E.control,
+                           ISO.A.control = ISO.A.control,
                            ISO.B.control = ISO.B.control, ISO.C.control = ISO.C.control,
-                           ISO.D.control = ISO.D.control)
+                           ISO.D.control = ISO.D.control, ISO.E.control = ISO.E.control)
 
-D_control_tall =  reshape(D.new.control, varying = c(1:8), v.names = "measure", 
+D_control_tall =  reshape(D.new.control, varying = c(1:10), v.names = "measure", 
                           timevar = "condition",   direction = "long")
-D_control_tall$ID = rep(c(1:16), times = 8)
+D_control_tall$ID = rep(c(1:16), times = 10)
 
 # remove 'id' column from the reshape() function
 D_control_tall$id = NULL
@@ -118,13 +107,13 @@ D_control_tall$id = NULL
 D_control_tall = D_control_tall[order(D_control_tall$ID),] 
 
 # replace the 'condition' column with a more appropriate one
-D_control_tall$condition = rep(c("BB","ISO"), each = 4, times = 16)
+D_control_tall$condition = rep(c("BB","ISO"), each = 5, times = 16)
 
 # create a 'trial' column
-D_control_tall$trial = rep(c("control"), times = 128)
+D_control_tall$trial = rep(c("control"), times = 160)
 
 # create 'object' column
-D_control_tall$objects = rep(c("A","B","C","D"), times = 32)
+D_control_tall$objects = rep(c("A","B","C","D", "E"), times = 32)
 
 # remove 'row.names' column 
 D_control_tall$row.names = NULL
@@ -159,7 +148,8 @@ condition_barplot + stat_summary(fun = mean, geom = "bar", position = "dodge") +
   scale_fill_manual(values=c("#000000",
                              "#888888",
                              "#C8C8C8",
-                             "#696969")) +
+                             "#696969",
+                             "#333333")) +
   
   coord_cartesian(ylim=c(0, 2.2)) +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
@@ -174,49 +164,36 @@ condition_barplot + stat_summary(fun = mean, geom = "bar", position = "dodge") +
 ###### P = 0.65 ######
 ######################
 ######################
-## p = 0.65 ##
-
-# get blicket probs for p = 0.5 for BB main
-# note that the function comes from the file "simpleBayesianModel.R"
-bayes_model_func(x=3,0.65,event1=c(1,1,1,1),event2=c(1,1,0,1))*2
-
+# create variables
 # BB
-#main
+# main
 BB.A.main = rep("1.48",16)
 BB.B.main = rep("1.48",16) # 0.5+0.5
 BB.C.main = rep("1.3",16) # 0.5+0.5
 
 
-# get blicket probs for p = 0.5 for BB control
-bayes_model_func(x=5,0.65,event1=c(1,1,1,0,0,1),event2=c(0,0,0,1,1,1))*2
-
 # control
-BB.A.control = rep("1.36",16) 
-BB.B.control = rep("1.36",16) 
-BB.C.control = rep("1.36",16) 
-BB.D.control = rep("1.48",16) 
-BB.E.control = rep("1.48",16) 
+BB.A.control = rep("1.36",16) # 0.5+0.5
+BB.B.control = rep("1.36",16) # 0.5+0.5
+BB.C.control = rep("1.36",16) # 0.5+0.5
+BB.D.control = rep("1.48",16) # 0.5+0.5
+BB.E.control = rep("1.48",16) # 0.5+0.5
 
 
 # ISO
 #main
-# get blicket probs for p = 0.5 for ISO main
-bayes_model_func(x=3,0.65,event1=c(1,1,1,1),event2=c(1,1,0,0))*2
-
 ISO.A.main = rep("0",16)
-ISO.B.main = rep("0",16) 
-ISO.C.main = rep("2",16) 
+ISO.B.main = rep("0",16) # 0.5+0.5
+ISO.C.main = rep("2",16) # 0.5+0.5
 
 
 # control
-# get blicket probs for p = 0.5 for ISO main
-bayes_model_func(x=5,0.5,event1=c(1,1,1,0,0,1),event2=c(0,0,0,1,1,0))*2
+ISO.A.control = rep("1.36",16) # 0.5+0.5
+ISO.B.control = rep("1.36",16) # 0.5+0.5
+ISO.C.control = rep("1.36",16) # 0.5+0.5
+ISO.D.control = rep("0",16) # 0.5+0.5
+ISO.E.control = rep("0",16) # 0.5+0.5
 
-ISO.A.control = rep("1.14",16) 
-ISO.B.control = rep("1.14",16) 
-ISO.C.control = rep("1.14",16) 
-ISO.D.control = rep("0",16) 
-ISO.E.control = rep("0",16) 
 
 
 # create a dataframe that combines the variables
@@ -254,13 +231,14 @@ D_main_tall = D_main_tall[,c(3,4,1,5,2)]
 #############
 D.new.control = data.frame(BB.A.control = BB.A.control,
                            BB.B.control = BB.B.control, BB.C.control = BB.C.control,
-                           BB.D.control = BB.D.control, ISO.A.control = ISO.A.control,
+                           BB.D.control = BB.D.control, BB.E.control = BB.E.control,
+                           ISO.A.control = ISO.A.control,
                            ISO.B.control = ISO.B.control, ISO.C.control = ISO.C.control,
-                           ISO.D.control = ISO.D.control)
+                           ISO.D.control = ISO.D.control, ISO.E.control = ISO.E.control)
 
-D_control_tall =  reshape(D.new.control, varying = c(1:8), v.names = "measure", 
+D_control_tall =  reshape(D.new.control, varying = c(1:10), v.names = "measure", 
                           timevar = "condition",   direction = "long")
-D_control_tall$ID = rep(c(1:16), times = 8)
+D_control_tall$ID = rep(c(1:16), times = 10)
 
 # remove 'id' column from the reshape() function
 D_control_tall$id = NULL
@@ -269,13 +247,13 @@ D_control_tall$id = NULL
 D_control_tall = D_control_tall[order(D_control_tall$ID),] 
 
 # replace the 'condition' column with a more appropriate one
-D_control_tall$condition = rep(c("BB","ISO"), each = 4, times = 16)
+D_control_tall$condition = rep(c("BB","ISO"), each = 5, times = 16)
 
 # create a 'trial' column
-D_control_tall$trial = rep(c("control"), times = 128)
+D_control_tall$trial = rep(c("control"), times = 160)
 
 # create 'object' column
-D_control_tall$objects = rep(c("A","B","C","D"), times = 32)
+D_control_tall$objects = rep(c("A","B","C","D", "E"), times = 32)
 
 # remove 'row.names' column 
 D_control_tall$row.names = NULL
@@ -310,7 +288,8 @@ condition_barplot + stat_summary(fun = mean, geom = "bar", position = "dodge") +
   scale_fill_manual(values=c("#000000",
                              "#888888",
                              "#C8C8C8",
-                             "#696969")) +
+                             "#696969",
+                             "#333333")) +
   
   coord_cartesian(ylim=c(0, 2.2)) +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
@@ -324,49 +303,36 @@ condition_barplot + stat_summary(fun = mean, geom = "bar", position = "dodge") +
 ###### P = 0.80 ######
 ######################
 ######################
-# p = 0.80 ##
-
-# get blicket probs for p = 0.80 for BB main
-# note that the function comes from the file "simpleBayesianModel.R"
-bayes_model_func(x=3,0.80,event1=c(1,1,1,1),event2=c(1,1,0,1))*2
-
+# create variables
 # BB
-#main
+# main
 BB.A.main = rep("1.67",16)
-BB.B.main = rep("1.67",16) # 
-BB.C.main = rep("1.6",16) 
+BB.B.main = rep("1.67",16) # 0.5+0.5
+BB.C.main = rep("1.6",16) # 0.5+0.5
 
-
-# get blicket probs for p = 0.80 for BB control
-bayes_model_func(x=5,0.80,event1=c(1,1,1,0,0,1),event2=c(0,0,0,1,1,1))*2
 
 # control
-BB.A.control = rep("1.61",16) 
-BB.B.control = rep("1.61",16) 
-BB.C.control = rep("1.61",16) 
-BB.D.control = rep("1.67",16) 
-BB.E.control = rep("1.67",16) 
+BB.A.control = rep("1.61",16) # 0.5+0.5
+BB.B.control = rep("1.61",16) # 0.5+0.5
+BB.C.control = rep("1.61",16) # 0.5+0.5
+BB.D.control = rep("1.67",16) # 0.5+0.5
+BB.E.control = rep("1.67",16) # 0.5+0.5
 
 
 # ISO
 #main
-# get blicket probs for p = 0.80 for ISO main
-bayes_model_func(x=3,0.80,event1=c(1,1,1,1),event2=c(1,1,0,0))*2
-
 ISO.A.main = rep("0",16)
-ISO.B.main = rep("0",16) 
-ISO.C.main = rep("2",16) 
+ISO.B.main = rep("0",16) # 0.5+0.5
+ISO.C.main = rep("2",16) # 0.5+0.5
 
 
 # control
-# get blicket probs for p = 0.5 for ISO main
-bayes_model_func(x=5,0.80,event1=c(1,1,1,0,0,1),event2=c(0,0,0,1,1,0))*2
+ISO.A.control = rep("1.61",16) # 0.5+0.5
+ISO.B.control = rep("1.61",16) # 0.5+0.5
+ISO.C.control = rep("1.61",16) # 0.5+0.5
+ISO.D.control = rep("0",16) # 0.5+0.5
+ISO.E.control = rep("0",16) # 0.5+0.5
 
-ISO.A.control = rep("1.61",16) 
-ISO.B.control = rep("1.61",16) 
-ISO.C.control = rep("1.61",16) 
-ISO.D.control = rep("0",16) 
-ISO.E.control = rep("0",16) 
 
 
 # create a dataframe that combines the variables
@@ -404,13 +370,14 @@ D_main_tall = D_main_tall[,c(3,4,1,5,2)]
 #############
 D.new.control = data.frame(BB.A.control = BB.A.control,
                            BB.B.control = BB.B.control, BB.C.control = BB.C.control,
-                           BB.D.control = BB.D.control, ISO.A.control = ISO.A.control,
+                           BB.D.control = BB.D.control, BB.E.control = BB.E.control,
+                           ISO.A.control = ISO.A.control,
                            ISO.B.control = ISO.B.control, ISO.C.control = ISO.C.control,
-                           ISO.D.control = ISO.D.control)
+                           ISO.D.control = ISO.D.control, ISO.E.control = ISO.E.control)
 
-D_control_tall =  reshape(D.new.control, varying = c(1:8), v.names = "measure", 
+D_control_tall =  reshape(D.new.control, varying = c(1:10), v.names = "measure", 
                           timevar = "condition",   direction = "long")
-D_control_tall$ID = rep(c(1:16), times = 8)
+D_control_tall$ID = rep(c(1:16), times = 10)
 
 # remove 'id' column from the reshape() function
 D_control_tall$id = NULL
@@ -419,13 +386,13 @@ D_control_tall$id = NULL
 D_control_tall = D_control_tall[order(D_control_tall$ID),] 
 
 # replace the 'condition' column with a more appropriate one
-D_control_tall$condition = rep(c("BB","ISO"), each = 4, times = 16)
+D_control_tall$condition = rep(c("BB","ISO"), each = 5, times = 16)
 
 # create a 'trial' column
-D_control_tall$trial = rep(c("control"), times = 128)
+D_control_tall$trial = rep(c("control"), times = 160)
 
 # create 'object' column
-D_control_tall$objects = rep(c("A","B","C","D"), times = 32)
+D_control_tall$objects = rep(c("A","B","C","D", "E"), times = 32)
 
 # remove 'row.names' column 
 D_control_tall$row.names = NULL
@@ -460,7 +427,8 @@ condition_barplot + stat_summary(fun = mean, geom = "bar", position = "dodge") +
   scale_fill_manual(values=c("#000000",
                              "#888888",
                              "#C8C8C8",
-                             "#696969")) +
+                             "#696969",
+                             "#333333")) +
   
   coord_cartesian(ylim=c(0, 2.2)) +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
@@ -475,45 +443,36 @@ condition_barplot + stat_summary(fun = mean, geom = "bar", position = "dodge") +
 ###### P = 0.95 ######
 ######################
 ######################
-bayes_model_func(x=3,0.95,event1=c(1,1,1,1),event2=c(1,1,0,1))*2
-
+# create variables
 # BB
-#main
-BB.A.main = rep("1.904762",16)
-BB.B.main = rep("1.904762",16) # 
-BB.C.main = rep("1.90",16) 
+# main
+BB.A.main = rep("1.90",16)
+BB.B.main = rep("1.90",16) # 0.5+0.5
+BB.C.main = rep("1.90",16) # 0.5+0.5
 
-
-# get blicket probs for p = 0.95 for BB control
-bayes_model_func(x=5,0.95,event1=c(1,1,1,0,0,1),event2=c(0,0,0,1,1,1))*2
 
 # control
-BB.A.control = rep("1.900238",16) 
-BB.B.control = rep("1.900238",16) 
-BB.C.control = rep("1.900238",16) 
-BB.D.control = rep("1.904762",16) 
-BB.E.control = rep("1.904762",16) 
+BB.A.control = rep("1.90",16) # 0.5+0.5
+BB.B.control = rep("1.90",16) # 0.5+0.5
+BB.C.control = rep("1.90",16) # 0.5+0.5
+BB.D.control = rep("1.90",16) # 0.5+0.5
+BB.E.control = rep("1.90",16) # 0.5+0.5
 
 
 # ISO
 #main
-# get blicket probs for p = 0.95 for ISO main
-bayes_model_func(x=3,0.95,event1=c(1,1,1,1),event2=c(1,1,0,0))*2
-
 ISO.A.main = rep("0",16)
-ISO.B.main = rep("0",16) 
-ISO.C.main = rep("2",16) 
+ISO.B.main = rep("0",16) # 0.5+0.5
+ISO.C.main = rep("2",16) # 0.5+0.5
 
 
 # control
-# get blicket probs for p = 0.95 for ISO main
-bayes_model_func(x=5,0.95,event1=c(1,1,1,0,0,1),event2=c(0,0,0,1,1,0))*2
+ISO.A.control = rep("1.90",16) # 0.5+0.5
+ISO.B.control = rep("1.90",16) # 0.5+0.5
+ISO.C.control = rep("1.90",16) # 0.5+0.5
+ISO.D.control = rep("0",16) # 0.5+0.5
+ISO.E.control = rep("0",16) # 0.5+0.5
 
-ISO.A.control = rep("1.900238",16) 
-ISO.B.control = rep("1.900238",16) 
-ISO.C.control = rep("1.900238",16) 
-ISO.D.control = rep("0",16) 
-ISO.E.control = rep("0",16) 
 
 
 # create a dataframe that combines the variables
@@ -551,13 +510,14 @@ D_main_tall = D_main_tall[,c(3,4,1,5,2)]
 #############
 D.new.control = data.frame(BB.A.control = BB.A.control,
                            BB.B.control = BB.B.control, BB.C.control = BB.C.control,
-                           BB.D.control = BB.D.control, ISO.A.control = ISO.A.control,
+                           BB.D.control = BB.D.control, BB.E.control = BB.E.control,
+                           ISO.A.control = ISO.A.control,
                            ISO.B.control = ISO.B.control, ISO.C.control = ISO.C.control,
-                           ISO.D.control = ISO.D.control)
+                           ISO.D.control = ISO.D.control, ISO.E.control = ISO.E.control)
 
-D_control_tall =  reshape(D.new.control, varying = c(1:8), v.names = "measure", 
+D_control_tall =  reshape(D.new.control, varying = c(1:10), v.names = "measure", 
                           timevar = "condition",   direction = "long")
-D_control_tall$ID = rep(c(1:16), times = 8)
+D_control_tall$ID = rep(c(1:16), times = 10)
 
 # remove 'id' column from the reshape() function
 D_control_tall$id = NULL
@@ -566,13 +526,13 @@ D_control_tall$id = NULL
 D_control_tall = D_control_tall[order(D_control_tall$ID),] 
 
 # replace the 'condition' column with a more appropriate one
-D_control_tall$condition = rep(c("BB","ISO"), each = 4, times = 16)
+D_control_tall$condition = rep(c("BB","ISO"), each = 5, times = 16)
 
 # create a 'trial' column
-D_control_tall$trial = rep(c("control"), times = 128)
+D_control_tall$trial = rep(c("control"), times = 160)
 
 # create 'object' column
-D_control_tall$objects = rep(c("A","B","C","D"), times = 32)
+D_control_tall$objects = rep(c("A","B","C","D", "E"), times = 32)
 
 # remove 'row.names' column 
 D_control_tall$row.names = NULL
@@ -607,7 +567,8 @@ condition_barplot + stat_summary(fun = mean, geom = "bar", position = "dodge") +
   scale_fill_manual(values=c("#000000",
                              "#888888",
                              "#C8C8C8",
-                             "#696969")) +
+                             "#696969",
+                             "#333333")) +
   
   coord_cartesian(ylim=c(0, 2.2)) +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
@@ -620,45 +581,34 @@ condition_barplot + stat_summary(fun = mean, geom = "bar", position = "dodge") +
 ###### P = 1    ######
 ######################
 ######################
-bayes_model_func(x=3,1,event1=c(1,1,1,1),event2=c(1,1,0,1))*2
-
-# BB
-#main
+# main
 BB.A.main = rep("2",16)
-BB.B.main = rep("2",16) # 
-BB.C.main = rep("2",16) 
+BB.B.main = rep("2",16) # 0.5+0.5
+BB.C.main = rep("2",16) # 0.5+0.5
 
-
-# get blicket probs for p = 1 for BB control
-bayes_model_func(x=5,1,event1=c(1,1,1,0,0,1),event2=c(0,0,0,1,1,1))*2
 
 # control
-BB.A.control = rep("2",16) 
-BB.B.control = rep("2",16) 
-BB.C.control = rep("2",16) 
-BB.D.control = rep("2",16) 
-BB.E.control = rep("2",16) 
+BB.A.control = rep("2",16) # 0.5+0.5
+BB.B.control = rep("2",16) # 0.5+0.5
+BB.C.control = rep("2",16) # 0.5+0.5
+BB.D.control = rep("2",16) # 0.5+0.5
+BB.E.control = rep("2",16) # 0.5+0.5
 
 
 # ISO
 #main
-# get blicket probs for p = 0.1 for ISO main
-bayes_model_func(x=3,1,event1=c(1,1,1,1),event2=c(1,1,0,0))*2
-
 ISO.A.main = rep("0",16)
-ISO.B.main = rep("0",16) 
-ISO.C.main = rep("2",16) 
+ISO.B.main = rep("0",16) # 0.5+0.5
+ISO.C.main = rep("2",16) # 0.5+0.5
 
 
 # control
-# get blicket probs for p = 0.95 for ISO main
-bayes_model_func(x=5,1,event1=c(1,1,1,0,0,1),event2=c(0,0,0,1,1,0))*2
+ISO.A.control = rep("2",16) # 0.5+0.5
+ISO.B.control = rep("2",16) # 0.5+0.5
+ISO.C.control = rep("2",16) # 0.5+0.5
+ISO.D.control = rep("0",16) # 0.5+0.5
+ISO.E.control = rep("0",16) # 0.5+0.5
 
-ISO.A.control = rep("2",16) 
-ISO.B.control = rep("2",16) 
-ISO.C.control = rep("2",16) 
-ISO.D.control = rep("0",16) 
-ISO.E.control = rep("0",16) 
 
 
 # create a dataframe that combines the variables
@@ -696,13 +646,14 @@ D_main_tall = D_main_tall[,c(3,4,1,5,2)]
 #############
 D.new.control = data.frame(BB.A.control = BB.A.control,
                            BB.B.control = BB.B.control, BB.C.control = BB.C.control,
-                           BB.D.control = BB.D.control, ISO.A.control = ISO.A.control,
+                           BB.D.control = BB.D.control, BB.E.control = BB.E.control,
+                           ISO.A.control = ISO.A.control,
                            ISO.B.control = ISO.B.control, ISO.C.control = ISO.C.control,
-                           ISO.D.control = ISO.D.control)
+                           ISO.D.control = ISO.D.control, ISO.E.control = ISO.E.control)
 
-D_control_tall =  reshape(D.new.control, varying = c(1:8), v.names = "measure", 
+D_control_tall =  reshape(D.new.control, varying = c(1:10), v.names = "measure", 
                           timevar = "condition",   direction = "long")
-D_control_tall$ID = rep(c(1:16), times = 8)
+D_control_tall$ID = rep(c(1:16), times = 10)
 
 # remove 'id' column from the reshape() function
 D_control_tall$id = NULL
@@ -711,13 +662,13 @@ D_control_tall$id = NULL
 D_control_tall = D_control_tall[order(D_control_tall$ID),] 
 
 # replace the 'condition' column with a more appropriate one
-D_control_tall$condition = rep(c("BB","ISO"), each = 4, times = 16)
+D_control_tall$condition = rep(c("BB","ISO"), each = 5, times = 16)
 
 # create a 'trial' column
-D_control_tall$trial = rep(c("control"), times = 128)
+D_control_tall$trial = rep(c("control"), times = 160)
 
 # create 'object' column
-D_control_tall$objects = rep(c("A","B","C","D"), times = 32)
+D_control_tall$objects = rep(c("A","B","C","D", "E"), times = 32)
 
 # remove 'row.names' column 
 D_control_tall$row.names = NULL
@@ -752,7 +703,8 @@ condition_barplot + stat_summary(fun = mean, geom = "bar", position = "dodge") +
   scale_fill_manual(values=c("#000000",
                              "#888888",
                              "#C8C8C8",
-                             "#696969")) +
+                             "#696969",
+                             "#333333")) +
   
   coord_cartesian(ylim=c(0, 2.2)) +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
