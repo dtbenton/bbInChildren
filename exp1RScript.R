@@ -1,5 +1,6 @@
 # load all relevant libraries
 library(nlme)
+library(lme4)
 library(boot)
 library(car) 
 library(reshape2)
@@ -30,7 +31,7 @@ names(D)
 dim(D)
 
 
-D_tall =  reshape(D, varying = c(9:22), v.names = "measure", 
+D_tall =  reshape(D, varying = c(10:23), v.names = "measure", 
                   timevar = "condition",   direction = "long")
 
 D_tall = D_tall[order(D_tall$ID),] # order the data frame in terms of participant ID;
@@ -101,7 +102,7 @@ for(i in 1:nrow(D_tall)){
 
 D_tall$choice = D_tall$choices
 D_tall$choices = NULL
-D_tall$choice = as.factor(D_tall$choice)
+D_tall$choice = as.numeric(D_tall$choice)
 
 # get counts for choice 
 table(D_tall$choice)
@@ -136,35 +137,61 @@ D_tall$trialType = as.factor(D_tall$trialType)
 D_tall$condition = NULL
 names(D_tall)
 dim(D_tall)
-D_tall = as.data.frame(D_tall[,c(1:3,5:6,4,9:12,7:8)])
+D_tall = as.data.frame(D_tall[,c(1:4,6:7,5,10:13,8:9)])
 fix(D_tall)
 
 
-# subset dataframes by experiments
-table(D_tall$Age)
-D_tall_Exp1_5and6yos = D_tall
-D_tall_Exp1_5and6yos$Age = factor(D_tall_Exp1_5and6yos$Age)
-D_tall_Exp1_5and6yos$Condition = factor(D_tall_Exp1_5and6yos$Condition)
-
-dim(D_tall_Exp1_5and6yos)
-
-
-# get the number of participants in each condition
-table(D_tall_Exp1_5and6yos$Condition)/14
-
 ###################################
-# Participant section information #
 ###################################
-# 5 yos #
-# number of males and females
-table(D_tall$Sex[D_tall$Age=="5"])/14
+###                             ###                     
+### PARTICIPANT CHARACTERISTICS ###
+###                             ###
+###################################
+###################################
 
-# 6 yos #
-# number of males and females
-table(D_tall$Sex[D_tall$Age=="6"])/14
+# mean age and range for the 5-year-olds
+mean(D_tall$AgeNum[D_tall$Age=="5"])
+sd(D_tall$AgeNum[D_tall$Age=="5"])
+range(D_tall$AgeNum[D_tall$Age=="5"])
 
 
-# power analysis for sample size
+# mean age and range for the 6-year-olds
+mean(D_tall$AgeNum[D_tall$Age=="6"])
+range(D_tall$AgeNum[D_tall$Age=="6"])
+
+
+########################
+########################
+###                  ###                     
+### MODEL COMPARISON ###
+###                  ###
+########################
+########################
+# define linear and linear mixed-effects models
+lm.fit = lm(choice~(AgeNum+Condition+trialType+phaseOrder+objectType)^5, 
+            data=D_tall)
+lmer.fit = lmer(choice~(AgeNum+Condition+trialType+phaseOrder+objectType)^5+(1|ID), 
+                data=D_tall)
+
+# compare the models via a log-likelihood test
+anova(lmer.fit,lm.fit)
+
+
+# Conclusion: The linear mixed-effects model wins
+
+#####################
+#####################
+###               ###                     
+### MAIN ANALYSIS ###
+###               ###
+#####################
+#####################
+# this is just the model from above
+lmer.fit = lmer(choice~(AgeNum+Condition+trialType+phaseOrder+objectType)^5+(1|ID), 
+                data=D_tall)
+Anova(lmer.fit)
+
+
 ##########################################################
 ##########################################################
 ###                                                    ###
@@ -174,155 +201,78 @@ table(D_tall$Sex[D_tall$Age=="6"])/14
 ##########################################################
 
 # BB MAIN 
-A.BB.MAIN.SUM.5s = as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="Backwards Blocking" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="main" & D_tall_Exp1_5and6yos$objectType=="A" & D_tall_Exp1_5and6yos$Age=="5"])+
-  as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="Backwards Blocking" & D_tall_Exp1_5and6yos$phaseOrder=="Phase 2" & D_tall_Exp1_5and6yos$trialType=="main" & D_tall_Exp1_5and6yos$objectType=="A" & D_tall_Exp1_5and6yos$Age=="5"])-2
-length(A.BB.MAIN.SUM.5s)
-mean(A.BB.MAIN.SUM.5s, na.rm=TRUE)
+A.BB.MAIN.SUM = as.numeric(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$phaseOrder == "Phase 1" & D_tall$trialType=="main" & D_tall$objectType=="A"])+
+  as.numeric(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$phaseOrder == "Phase 2" & D_tall$trialType=="main" & D_tall$objectType=="A"])-2
+length(A.BB.MAIN.SUM)
+mean(A.BB.MAIN.SUM, na.rm=TRUE)
 
+B.BB.MAIN.SUM = as.numeric(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$phaseOrder == "Phase 1" & D_tall$trialType=="main" & D_tall$objectType=="B"])+
+  as.numeric(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$phaseOrder == "Phase 2" & D_tall$trialType=="main" & D_tall$objectType=="B"])-2
+length(B.BB.MAIN.SUM)
+mean(B.BB.MAIN.SUM, na.rm=TRUE)
 
-A.BB.MAIN.SUM.6s = as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="Backwards Blocking" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="main" & D_tall_Exp1_5and6yos$objectType=="A" & D_tall_Exp1_5and6yos$Age=="6"])+
-  as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="Backwards Blocking" & D_tall_Exp1_5and6yos$phaseOrder=="Phase 2" & D_tall_Exp1_5and6yos$trialType=="main" & D_tall_Exp1_5and6yos$objectType=="A" & D_tall_Exp1_5and6yos$Age=="6"])-2
-length(A.BB.MAIN.SUM.6s)
-mean(A.BB.MAIN.SUM.6s, na.rm=TRUE)
-
-
-B.BB.MAIN.SUM.5s = as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="Backwards Blocking" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="main" & D_tall_Exp1_5and6yos$objectType=="B" & D_tall_Exp1_5and6yos$Age=="5"])+
-  as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="Backwards Blocking" & D_tall_Exp1_5and6yos$phaseOrder=="Phase 2" & D_tall_Exp1_5and6yos$trialType=="main" & D_tall_Exp1_5and6yos$objectType=="B" & D_tall_Exp1_5and6yos$Age=="5"])-2
-length(B.BB.MAIN.SUM.5s)
-mean(B.BB.MAIN.SUM.5s, na.rm=TRUE)
-
-
-B.BB.MAIN.SUM.6s = as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="Backwards Blocking" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="main" & D_tall_Exp1_5and6yos$objectType=="B" & D_tall_Exp1_5and6yos$Age=="6"])+
-  as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="Backwards Blocking" & D_tall_Exp1_5and6yos$phaseOrder=="Phase 2" & D_tall_Exp1_5and6yos$trialType=="main" & D_tall_Exp1_5and6yos$objectType=="B" & D_tall_Exp1_5and6yos$Age=="6"])-2
-length(B.BB.MAIN.SUM.6s)
-mean(B.BB.MAIN.SUM.6s, na.rm=TRUE)
-
-
-C.BB.MAIN.SUM.5s = as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="Backwards Blocking" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="main" & D_tall_Exp1_5and6yos$objectType=="C" & D_tall_Exp1_5and6yos$Age=="5"])+
-  as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="Backwards Blocking" & D_tall_Exp1_5and6yos$phaseOrder=="Phase 2" & D_tall_Exp1_5and6yos$trialType=="main" & D_tall_Exp1_5and6yos$objectType=="C" & D_tall_Exp1_5and6yos$Age=="5"])-2
-length(C.BB.MAIN.SUM.5s)
-mean(C.BB.MAIN.SUM.5s, na.rm=TRUE)
-
-
-C.BB.MAIN.SUM.6s = as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="Backwards Blocking" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="main" & D_tall_Exp1_5and6yos$objectType=="C" & D_tall_Exp1_5and6yos$Age=="6"])+
-  as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="Backwards Blocking" & D_tall_Exp1_5and6yos$phaseOrder=="Phase 2" & D_tall_Exp1_5and6yos$trialType=="main" & D_tall_Exp1_5and6yos$objectType=="C" & D_tall_Exp1_5and6yos$Age=="6"])-2
-length(C.BB.MAIN.SUM.6s)
-mean(C.BB.MAIN.SUM.6s, na.rm=TRUE)
+C.BB.MAIN.SUM = as.numeric(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$phaseOrder == "Phase 1" & D_tall$trialType=="main" & D_tall$objectType=="C"])+
+  as.numeric(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$phaseOrder == "Phase 2" & D_tall$trialType=="main" & D_tall$objectType=="C"])-2
+length(C.BB.MAIN.SUM)
+mean(C.BB.MAIN.SUM, na.rm=TRUE)
 
 
 # BB CONTROL
-A.BB.CONTROL.SUM.5s = as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="Backwards Blocking" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="A" & D_tall_Exp1_5and6yos$Age=="5"])+
-  as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="Backwards Blocking" & D_tall_Exp1_5and6yos$phaseOrder=="Phase 2" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="A" & D_tall_Exp1_5and6yos$Age=="5"])-2
-length(A.BB.CONTROL.SUM.5s)
-mean(A.BB.CONTROL.SUM.5s, na.rm=TRUE)
+A.BB.CONTROL.SUM = as.numeric(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$phaseOrder == "Phase 1" & D_tall$trialType=="control" & D_tall$objectType=="A"])+
+  as.numeric(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$phaseOrder == "Phase 2" & D_tall$trialType=="control" & D_tall$objectType=="A"])-2
+length(A.BB.CONTROL.SUM)
+mean(A.BB.CONTROL.SUM, na.rm=TRUE)
+
+B.BB.CONTROL.SUM = as.numeric(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$phaseOrder == "Phase 1" & D_tall$trialType=="control" & D_tall$objectType=="B"])+
+  as.numeric(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$phaseOrder == "Phase 2" & D_tall$trialType=="control" & D_tall$objectType=="B"])-2
+length(B.BB.CONTROL.SUM)
+mean(B.BB.CONTROL.SUM, na.rm=TRUE)
+
+C.BB.CONTROL.SUM = as.numeric(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$phaseOrder == "Phase 1" & D_tall$trialType=="control" & D_tall$objectType=="C"])+
+  as.numeric(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$phaseOrder == "Phase 2" & D_tall$trialType=="control" & D_tall$objectType=="C"])-2
+length(C.BB.CONTROL.SUM)
+mean(C.BB.CONTROL.SUM, na.rm=TRUE)
+
+D.BB.CONTROL.SUM = as.numeric(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$phaseOrder == "Phase 1" & D_tall$trialType=="control" & D_tall$objectType=="D"])+
+  as.numeric(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$phaseOrder == "Phase 2" & D_tall$trialType=="control" & D_tall$objectType=="D"])-2
+length(D.BB.CONTROL.SUM)
+mean(D.BB.CONTROL.SUM, na.rm=TRUE)
 
 
-A.BB.CONTROL.SUM.6s = as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="Backwards Blocking" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="A" & D_tall_Exp1_5and6yos$Age=="6"])+
-  as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="Backwards Blocking" & D_tall_Exp1_5and6yos$phaseOrder=="Phase 2" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="A" & D_tall_Exp1_5and6yos$Age=="6"])-2
-length(A.BB.CONTROL.SUM.6s)
-mean(A.BB.CONTROL.SUM.6s, na.rm=TRUE)
+# Combined dataframe
+D.BB.DF = data.frame(ID = c(1:31), Condition = rep(c("Backwards Blocking"),31),
+                     A.BB.MAIN.SUM = A.BB.MAIN.SUM, 
+                     B.BB.MAIN.SUM = B.BB.MAIN.SUM,
+                     C.BB.MAIN.SUM = C.BB.MAIN.SUM,
+                     A.BB.CONTROL.SUM = A.BB.CONTROL.SUM,
+                     B.BB.CONTROL.SUM = B.BB.CONTROL.SUM,
+                     C.BB.CONTROL.SUM = C.BB.CONTROL.SUM,
+                     D.BB.CONTROL.SUM = D.BB.CONTROL.SUM)
+names(D.BB.DF)
+dim(D.BB.DF)
+
+D.BB.DF_tall = reshape(D.BB.DF, varying = c(3:9), v.names = "measure", 
+                       timevar = "condition",   direction = "long")
+D.BB.DF_tall = D.BB.DF_tall[order(D.BB.DF_tall$ID),] 
+
+D.BB.DF_tall$objects = rep(c("A","B","C","A","B","C","D"), times = 31)
+D.BB.DF_tall$eventType = rep(c("main","main","main",
+                               "control","control","control","control"), times = 31)
+
+names(D.BB.DF_tall)
+D.BB.DF_tall$id = NULL
+D.BB.DF_tall$condition = NULL
+names(D.BB.DF_tall)
+dim(D.BB.DF_tall)
+D.BB.DF_tall = D.BB.DF_tall[,c(1:2,5,4,3)]
+names(D.BB.DF_tall)
 
 
-B.BB.CONTROL.SUM.5s = as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="Backwards Blocking" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="B" & D_tall_Exp1_5and6yos$Age=="5"])+
-  as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="Backwards Blocking" & D_tall_Exp1_5and6yos$phaseOrder=="Phase 2" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="B" & D_tall_Exp1_5and6yos$Age=="5"])-2
-length(B.BB.CONTROL.SUM.5s)
-mean(B.BB.CONTROL.SUM.5s, na.rm=TRUE)
+D.BB.DF_tall$objects = factor(D.BB.DF_tall$objects)
+D.BB.DF_tall$eventType = factor(D.BB.DF_tall$eventType)
+D.BB.DF_tall$Condition = factor(D.BB.DF_tall$Condition)
 
-
-B.BB.CONTROL.SUM.6s = as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="Backwards Blocking" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="B" & D_tall_Exp1_5and6yos$Age=="6"])+
-  as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="Backwards Blocking" & D_tall_Exp1_5and6yos$phaseOrder=="Phase 2" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="B" & D_tall_Exp1_5and6yos$Age=="6"])-2
-length(B.BB.CONTROL.SUM.6s)
-mean(B.BB.CONTROL.SUM.6s, na.rm=TRUE)
-
-
-C.BB.CONTROL.SUM.5s = as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="Backwards Blocking" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="C" & D_tall_Exp1_5and6yos$Age=="5"])+
-  as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="Backwards Blocking" & D_tall_Exp1_5and6yos$phaseOrder=="Phase 2" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="C" & D_tall_Exp1_5and6yos$Age=="5"])-2
-length(C.BB.CONTROL.SUM.5s)
-mean(C.BB.CONTROL.SUM.5s, na.rm=TRUE)
-
-
-C.BB.CONTROL.SUM.6s = as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="Backwards Blocking" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="C" & D_tall_Exp1_5and6yos$Age=="6"])+
-  as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="Backwards Blocking" & D_tall_Exp1_5and6yos$phaseOrder=="Phase 2" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="C" & D_tall_Exp1_5and6yos$Age=="6"])-2
-length(C.BB.CONTROL.SUM.6s)
-mean(C.BB.CONTROL.SUM.6s, na.rm=TRUE)
-
-D.BB.CONTROL.SUM.5s = as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="Backwards Blocking" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="D" & D_tall_Exp1_5and6yos$Age=="5"])+
-  as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="Backwards Blocking" & D_tall_Exp1_5and6yos$phaseOrder=="Phase 2" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="D" & D_tall_Exp1_5and6yos$Age=="5"])-2
-length(D.BB.CONTROL.SUM.5s)
-mean(D.BB.CONTROL.SUM.5s, na.rm=TRUE)
-
-
-D.BB.CONTROL.SUM.6s = as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="Backwards Blocking" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="D" & D_tall_Exp1_5and6yos$Age=="6"])+
-  as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="Backwards Blocking" & D_tall_Exp1_5and6yos$phaseOrder=="Phase 2" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="D" & D_tall_Exp1_5and6yos$Age=="6"])-2
-length(D.BB.CONTROL.SUM.6s)
-mean(D.BB.CONTROL.SUM.6s, na.rm=TRUE)
-
-
-# 5s data frame
-D.BB.DF.5s = data.frame(ID = c(1:15), Age = rep(c("5"),15), Condition = rep(c("Backwards Blocking"),15),
-                        A.BB.MAIN.SUM.5s = A.BB.MAIN.SUM.5s, 
-                        B.BB.MAIN.SUM.5s = B.BB.MAIN.SUM.5s,
-                        C.BB.MAIN.SUM.5s = C.BB.MAIN.SUM.5s,
-                        A.BB.CONTROL.SUM.5s = A.BB.CONTROL.SUM.5s,
-                        B.BB.CONTROL.SUM.5s = B.BB.CONTROL.SUM.5s,
-                        C.BB.CONTROL.SUM.5s = C.BB.CONTROL.SUM.5s,
-                        D.BB.CONTROL.SUM.5s = D.BB.CONTROL.SUM.5s)
-names(D.BB.DF.5s)
-dim(D.BB.DF.5s)
-
-D.BB.DF.5s_tall = reshape(D.BB.DF.5s, varying = c(4:10), v.names = "measure", 
-                          timevar = "condition",   direction = "long")
-D.BB.DF.5s_tall = D.BB.DF.5s_tall[order(D.BB.DF.5s_tall$ID),] 
-
-D.BB.DF.5s_tall$objects = rep(c("A","B","C","A","B","C","D"), times = 15)
-D.BB.DF.5s_tall$eventType = rep(c("main","main","main",
-                                  "control","control","control","control"), times = 15)
-
-names(D.BB.DF.5s_tall)
-D.BB.DF.5s_tall$id = NULL
-D.BB.DF.5s_tall$condition = NULL
-names(D.BB.DF.5s_tall)
-dim(D.BB.DF.5s_tall)
-D.BB.DF.5s_tall = D.BB.DF.5s_tall[,c(1:3,5:6,4)]
-names(D.BB.DF.5s_tall)
-
-D.BB.DF.5s_tall$Age = factor(D.BB.DF.5s_tall$Age)
-D.BB.DF.5s_tall$objects = factor(D.BB.DF.5s_tall$objects)
-D.BB.DF.5s_tall$eventType = factor(D.BB.DF.5s_tall$eventType)
-D.BB.DF.5s_tall$Condition = factor(D.BB.DF.5s_tall$Condition)
-
-
-# 6s data frame
-D.BB.DF.6s = data.frame(ID = c(1:16), Age = rep(c("6"),16), Condition = rep(c("Backwards Blocking"),16),
-                        A.BB.MAIN.SUM.6s = A.BB.MAIN.SUM.6s, 
-                        B.BB.MAIN.SUM.6s = B.BB.MAIN.SUM.6s,
-                        C.BB.MAIN.SUM.6s = C.BB.MAIN.SUM.6s,
-                        A.BB.CONTROL.SUM.6s = A.BB.CONTROL.SUM.6s,
-                        B.BB.CONTROL.SUM.6s = B.BB.CONTROL.SUM.6s,
-                        C.BB.CONTROL.SUM.6s = C.BB.CONTROL.SUM.6s,
-                        D.BB.CONTROL.SUM.6s = D.BB.CONTROL.SUM.6s)
-names(D.BB.DF.6s)
-
-D.BB.DF.6s_tall = reshape(D.BB.DF.6s, varying = c(4:10), v.names = "measure", 
-                          timevar = "condition",   direction = "long")
-D.BB.DF.6s_tall = D.BB.DF.6s_tall[order(D.BB.DF.6s_tall$ID),] 
-
-D.BB.DF.6s_tall$objects = rep(c("A","B","C","A","B","C","D"), times = 16)
-D.BB.DF.6s_tall$eventType = rep(c("main","main","main",
-                                  "control","control","control","control"), times = 16)
-
-names(D.BB.DF.6s_tall)
-D.BB.DF.6s_tall$id = NULL
-D.BB.DF.6s_tall$condition = NULL
-names(D.BB.DF.6s_tall)
-dim(D.BB.DF.6s_tall)
-D.BB.DF.6s_tall = D.BB.DF.6s_tall[,c(1:3,5:6,4)]
-names(D.BB.DF.6s_tall)
-
-D.BB.DF.6s_tall$Age = factor(D.BB.DF.6s_tall$Age)
-D.BB.DF.6s_tall$objects = factor(D.BB.DF.6s_tall$objects)
-D.BB.DF.6s_tall$eventType = factor(D.BB.DF.6s_tall$eventType)
-D.BB.DF.6s_tall$Condition = factor(D.BB.DF.6s_tall$Condition)
+fix(D.BB.DF_tall)
 
 ###########################################################
 ###########################################################
@@ -331,160 +281,80 @@ D.BB.DF.6s_tall$Condition = factor(D.BB.DF.6s_tall$Condition)
 ###                                                     ###
 ###########################################################
 ###########################################################
-# ISO MAIN
 
-A.ISO.MAIN.SUM.5s = as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="Indirect Screening-Off" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="main" & D_tall_Exp1_5and6yos$objectType=="A" & D_tall_Exp1_5and6yos$Age=="5"])+
-  as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="Indirect Screening-Off" & D_tall_Exp1_5and6yos$phaseOrder=="Phase 2" & D_tall_Exp1_5and6yos$trialType=="main" & D_tall_Exp1_5and6yos$objectType=="A" & D_tall_Exp1_5and6yos$Age=="5"])-2
-length(A.ISO.MAIN.SUM.5s)
-mean(A.ISO.MAIN.SUM.5s, na.rm=TRUE)
+# ISO MAIN 
+A.ISO.MAIN.SUM = as.numeric(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$phaseOrder == "Phase 1" & D_tall$trialType=="main" & D_tall$objectType=="A"])+
+  as.numeric(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$phaseOrder == "Phase 2" & D_tall$trialType=="main" & D_tall$objectType=="A"])-2
+length(A.ISO.MAIN.SUM)
+mean(A.ISO.MAIN.SUM, na.rm=TRUE)
 
+B.ISO.MAIN.SUM = as.numeric(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$phaseOrder == "Phase 1" & D_tall$trialType=="main" & D_tall$objectType=="B"])+
+  as.numeric(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$phaseOrder == "Phase 2" & D_tall$trialType=="main" & D_tall$objectType=="B"])-2
+length(B.ISO.MAIN.SUM)
+mean(B.ISO.MAIN.SUM, na.rm=TRUE)
 
-A.ISO.MAIN.SUM.6s = as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="Indirect Screening-Off" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="main" & D_tall_Exp1_5and6yos$objectType=="A" & D_tall_Exp1_5and6yos$Age=="6"])+
-  as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="Indirect Screening-Off" & D_tall_Exp1_5and6yos$phaseOrder=="Phase 2" & D_tall_Exp1_5and6yos$trialType=="main" & D_tall_Exp1_5and6yos$objectType=="A" & D_tall_Exp1_5and6yos$Age=="6"])-2
-length(A.ISO.MAIN.SUM.6s)
-mean(A.ISO.MAIN.SUM.6s, na.rm=TRUE)
-
-
-B.ISO.MAIN.SUM.5s = as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="Indirect Screening-Off" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="main" & D_tall_Exp1_5and6yos$objectType=="B" & D_tall_Exp1_5and6yos$Age=="5"])+
-  as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="Indirect Screening-Off" & D_tall_Exp1_5and6yos$phaseOrder=="Phase 2" & D_tall_Exp1_5and6yos$trialType=="main" & D_tall_Exp1_5and6yos$objectType=="B" & D_tall_Exp1_5and6yos$Age=="5"])-2
-length(B.ISO.MAIN.SUM.5s)
-mean(B.ISO.MAIN.SUM.5s, na.rm=TRUE)
-
-
-B.ISO.MAIN.SUM.6s = as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="Indirect Screening-Off" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="main" & D_tall_Exp1_5and6yos$objectType=="B" & D_tall_Exp1_5and6yos$Age=="6"])+
-  as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="Indirect Screening-Off" & D_tall_Exp1_5and6yos$phaseOrder=="Phase 2" & D_tall_Exp1_5and6yos$trialType=="main" & D_tall_Exp1_5and6yos$objectType=="B" & D_tall_Exp1_5and6yos$Age=="6"])-2
-length(B.ISO.MAIN.SUM.6s)
-mean(B.ISO.MAIN.SUM.6s, na.rm=TRUE)
-
-
-C.ISO.MAIN.SUM.5s = as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="Indirect Screening-Off" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="main" & D_tall_Exp1_5and6yos$objectType=="C" & D_tall_Exp1_5and6yos$Age=="5"])+
-  as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="Indirect Screening-Off" & D_tall_Exp1_5and6yos$phaseOrder=="Phase 2" & D_tall_Exp1_5and6yos$trialType=="main" & D_tall_Exp1_5and6yos$objectType=="C" & D_tall_Exp1_5and6yos$Age=="5"])-2
-length(C.ISO.MAIN.SUM.5s)
-mean(C.ISO.MAIN.SUM.5s, na.rm=TRUE)
-
-
-C.ISO.MAIN.SUM.6s = as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="Indirect Screening-Off" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="main" & D_tall_Exp1_5and6yos$objectType=="C" & D_tall_Exp1_5and6yos$Age=="6"])+
-  as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="Indirect Screening-Off" & D_tall_Exp1_5and6yos$phaseOrder=="Phase 2" & D_tall_Exp1_5and6yos$trialType=="main" & D_tall_Exp1_5and6yos$objectType=="C" & D_tall_Exp1_5and6yos$Age=="6"])-2
-length(C.ISO.MAIN.SUM.6s)
-mean(C.ISO.MAIN.SUM.6s, na.rm=TRUE)
+C.ISO.MAIN.SUM = as.numeric(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$phaseOrder == "Phase 1" & D_tall$trialType=="main" & D_tall$objectType=="C"])+
+  as.numeric(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$phaseOrder == "Phase 2" & D_tall$trialType=="main" & D_tall$objectType=="C"])-2
+length(C.ISO.MAIN.SUM)
+mean(C.ISO.MAIN.SUM, na.rm=TRUE)
 
 
 # ISO CONTROL
-A.ISO.CONTROL.SUM.5s = as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="Indirect Screening-Off" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="A" & D_tall_Exp1_5and6yos$Age=="5"])+
-  as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="Indirect Screening-Off" & D_tall_Exp1_5and6yos$phaseOrder=="Phase 2" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="A" & D_tall_Exp1_5and6yos$Age=="5"])-2
-length(A.ISO.CONTROL.SUM.5s)
-mean(A.ISO.CONTROL.SUM.5s, na.rm=TRUE)
+A.ISO.CONTROL.SUM = as.numeric(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$phaseOrder == "Phase 1" & D_tall$trialType=="control" & D_tall$objectType=="A"])+
+  as.numeric(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$phaseOrder == "Phase 2" & D_tall$trialType=="control" & D_tall$objectType=="A"])-2
+length(A.ISO.CONTROL.SUM)
+mean(A.ISO.CONTROL.SUM, na.rm=TRUE)
+
+B.ISO.CONTROL.SUM = as.numeric(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$phaseOrder == "Phase 1" & D_tall$trialType=="control" & D_tall$objectType=="B"])+
+  as.numeric(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$phaseOrder == "Phase 2" & D_tall$trialType=="control" & D_tall$objectType=="B"])-2
+length(B.ISO.CONTROL.SUM)
+mean(B.ISO.CONTROL.SUM, na.rm=TRUE)
+
+C.ISO.CONTROL.SUM = as.numeric(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$phaseOrder == "Phase 1" & D_tall$trialType=="control" & D_tall$objectType=="C"])+
+  as.numeric(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$phaseOrder == "Phase 2" & D_tall$trialType=="control" & D_tall$objectType=="C"])-2
+length(C.ISO.CONTROL.SUM)
+mean(C.ISO.CONTROL.SUM, na.rm=TRUE)
+
+D.ISO.CONTROL.SUM = as.numeric(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$phaseOrder == "Phase 1" & D_tall$trialType=="control" & D_tall$objectType=="D"])+
+  as.numeric(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$phaseOrder == "Phase 2" & D_tall$trialType=="control" & D_tall$objectType=="D"])-2
+length(D.ISO.CONTROL.SUM)
+mean(D.ISO.CONTROL.SUM, na.rm=TRUE)
 
 
-A.ISO.CONTROL.SUM.6s = as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="Indirect Screening-Off" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="A" & D_tall_Exp1_5and6yos$Age=="6"])+
-  as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="Indirect Screening-Off" & D_tall_Exp1_5and6yos$phaseOrder=="Phase 2" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="A" & D_tall_Exp1_5and6yos$Age=="6"])-2
-length(A.ISO.CONTROL.SUM.6s)
-mean(A.ISO.CONTROL.SUM.6s, na.rm=TRUE)
+# Combined dataframe
+D.ISO.DF = data.frame(ID = c(1:33), Condition = rep(c("Indirect Screening-Off"),33),
+                      A.ISO.MAIN.SUM = A.ISO.MAIN.SUM, 
+                      B.ISO.MAIN.SUM = B.ISO.MAIN.SUM,
+                      C.ISO.MAIN.SUM = C.ISO.MAIN.SUM,
+                      A.ISO.CONTROL.SUM = A.ISO.CONTROL.SUM,
+                      B.ISO.CONTROL.SUM = B.ISO.CONTROL.SUM,
+                      C.ISO.CONTROL.SUM = C.ISO.CONTROL.SUM,
+                      D.ISO.CONTROL.SUM = D.ISO.CONTROL.SUM)
+names(D.ISO.DF)
+dim(D.ISO.DF)
+
+D.ISO.DF_tall = reshape(D.ISO.DF, varying = c(3:9), v.names = "measure", 
+                        timevar = "condition",   direction = "long")
+D.ISO.DF_tall = D.ISO.DF_tall[order(D.ISO.DF_tall$ID),] 
+
+D.ISO.DF_tall$objects = rep(c("A","B","C","A","B","C","D"), times = 33)
+D.ISO.DF_tall$eventType = rep(c("main","main","main",
+                                "control","control","control","control"), times = 33)
+
+names(D.ISO.DF_tall)
+D.ISO.DF_tall$id = NULL
+D.ISO.DF_tall$condition = NULL
+names(D.ISO.DF_tall)
+dim(D.ISO.DF_tall)
+D.ISO.DF_tall = D.ISO.DF_tall[,c(1:2,5,4,3)]
+names(D.ISO.DF_tall)
 
 
-B.ISO.CONTROL.SUM.5s = as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="Indirect Screening-Off" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="B" & D_tall_Exp1_5and6yos$Age=="5"])+
-  as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="Indirect Screening-Off" & D_tall_Exp1_5and6yos$phaseOrder=="Phase 2" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="B" & D_tall_Exp1_5and6yos$Age=="5"])-2
-length(B.ISO.CONTROL.SUM.5s)
-mean(B.ISO.CONTROL.SUM.5s, na.rm=TRUE)
+D.ISO.DF_tall$objects = factor(D.ISO.DF_tall$objects)
+D.ISO.DF_tall$eventType = factor(D.ISO.DF_tall$eventType)
+D.ISO.DF_tall$Condition = factor(D.ISO.DF_tall$Condition)
 
-
-B.ISO.CONTROL.SUM.6s = as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="Indirect Screening-Off" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="B" & D_tall_Exp1_5and6yos$Age=="6"])+
-  as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="Indirect Screening-Off" & D_tall_Exp1_5and6yos$phaseOrder=="Phase 2" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="B" & D_tall_Exp1_5and6yos$Age=="6"])-2
-length(B.ISO.CONTROL.SUM.6s)
-mean(B.ISO.CONTROL.SUM.6s, na.rm=TRUE)
-
-
-C.ISO.CONTROL.SUM.5s = as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="Indirect Screening-Off" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="C" & D_tall_Exp1_5and6yos$Age=="5"])+
-  as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="Indirect Screening-Off" & D_tall_Exp1_5and6yos$phaseOrder=="Phase 2" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="C" & D_tall_Exp1_5and6yos$Age=="5"])-2
-length(C.ISO.CONTROL.SUM.5s)
-mean(C.ISO.CONTROL.SUM.5s, na.rm=TRUE)
-
-
-C.ISO.CONTROL.SUM.6s = as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="Indirect Screening-Off" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="C" & D_tall_Exp1_5and6yos$Age=="6"])+
-  as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="Indirect Screening-Off" & D_tall_Exp1_5and6yos$phaseOrder=="Phase 2" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="C" & D_tall_Exp1_5and6yos$Age=="6"])-2
-length(C.ISO.CONTROL.SUM.6s)
-mean(C.ISO.CONTROL.SUM.6s, na.rm=TRUE)
-
-D.ISO.CONTROL.SUM.5s = as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="Indirect Screening-Off" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="D" & D_tall_Exp1_5and6yos$Age=="5"])+
-  as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="Indirect Screening-Off" & D_tall_Exp1_5and6yos$phaseOrder=="Phase 2" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="D" & D_tall_Exp1_5and6yos$Age=="5"])-2
-length(D.ISO.CONTROL.SUM.5s)
-mean(D.ISO.CONTROL.SUM.5s, na.rm=TRUE)
-
-
-D.ISO.CONTROL.SUM.6s = as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="Indirect Screening-Off" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="D" & D_tall_Exp1_5and6yos$Age=="6"])+
-  as.numeric(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="Indirect Screening-Off" & D_tall_Exp1_5and6yos$phaseOrder=="Phase 2" & D_tall_Exp1_5and6yos$trialType=="control" & D_tall_Exp1_5and6yos$objectType=="D" & D_tall_Exp1_5and6yos$Age=="6"])-2
-length(D.ISO.CONTROL.SUM.6s)
-mean(D.ISO.CONTROL.SUM.6s, na.rm=TRUE)
-
-
-# 5s data frame
-# note: the number "16" comes from the length of the one of the columns above
-# e.g., length(D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="Indirect Screening-Off" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="main" & D_tall_Exp1_5and6yos$objectType=="C" & D_tall_Exp1_5and6yos$Age=="5"])
-D.ISO.DF.5s = data.frame(ID = c(1:17), Age = rep(c("5"),17), Condition = rep(c("Indirect Screening-Off"),17),
-                         A.ISO.MAIN.SUM.5s = A.ISO.MAIN.SUM.5s, 
-                         B.ISO.MAIN.SUM.5s = B.ISO.MAIN.SUM.5s,
-                         C.ISO.MAIN.SUM.5s = C.ISO.MAIN.SUM.5s,
-                         A.ISO.CONTROL.SUM.5s = A.ISO.CONTROL.SUM.5s,
-                         B.ISO.CONTROL.SUM.5s = B.ISO.CONTROL.SUM.5s,
-                         C.ISO.CONTROL.SUM.5s = C.ISO.CONTROL.SUM.5s,
-                         D.ISO.CONTROL.SUM.5s = D.ISO.CONTROL.SUM.5s)
-names(D.ISO.DF.5s)
-
-D.ISO.DF.5s_tall = reshape(D.ISO.DF.5s, varying = c(4:10), v.names = "measure", 
-                           timevar = "condition",   direction = "long")
-D.ISO.DF.5s_tall = D.ISO.DF.5s_tall[order(D.ISO.DF.5s_tall$ID),] 
-
-D.ISO.DF.5s_tall$objects = rep(c("A","B","C","A","B","C","D"), times = 17)
-D.ISO.DF.5s_tall$eventType = rep(c("main","main","main",
-                                   "control","control","control","control"), times = 17)
-
-names(D.ISO.DF.5s_tall)
-D.ISO.DF.5s_tall$id = NULL
-D.ISO.DF.5s_tall$condition = NULL
-names(D.ISO.DF.5s_tall)
-D.ISO.DF.5s_tall = D.ISO.DF.5s_tall[,c(1:3,5:6,4)]
-names(D.ISO.DF.5s_tall)
-
-
-D.ISO.DF.5s_tall$Age = factor(D.ISO.DF.5s_tall$Age)
-D.ISO.DF.5s_tall$objects = factor(D.ISO.DF.5s_tall$objects)
-D.ISO.DF.5s_tall$eventType = factor(D.ISO.DF.5s_tall$eventType)
-D.ISO.DF.5s_tall$Condition = factor(D.ISO.DF.5s_tall$Condition)
-
-
-# 6s data frame
-# Note: The number "15" comes from the length of one of the columns above;
-# e.g., D_tall_Exp1_5and6yos$choice[D_tall_Exp1_5and6yos$Condition=="Indirect Screening-Off" & D_tall_Exp1_5and6yos$phaseOrder == "Phase 1" & D_tall_Exp1_5and6yos$trialType=="main" & D_tall_Exp1_5and6yos$objectType=="A" & D_tall_Exp1_5and6yos$Age=="6"]
-D.ISO.DF.6s = data.frame(ID = c(1:16), Age = rep(c("6"),16), Condition = rep(c("Indirect Screening-Off"),16),
-                         A.ISO.MAIN.SUM.6s = A.ISO.MAIN.SUM.6s, 
-                         B.ISO.MAIN.SUM.6s = B.ISO.MAIN.SUM.6s,
-                         C.ISO.MAIN.SUM.6s = C.ISO.MAIN.SUM.6s,
-                         A.ISO.CONTROL.SUM.6s = A.ISO.CONTROL.SUM.6s,
-                         B.ISO.CONTROL.SUM.6s = B.ISO.CONTROL.SUM.6s,
-                         C.ISO.CONTROL.SUM.6s = C.ISO.CONTROL.SUM.6s,
-                         D.ISO.CONTROL.SUM.6s = D.ISO.CONTROL.SUM.6s)
-names(D.ISO.DF.6s)
-
-D.ISO.DF.6s_tall = reshape(D.ISO.DF.6s, varying = c(4:10), v.names = "measure", 
-                           timevar = "condition",   direction = "long")
-D.ISO.DF.6s_tall = D.ISO.DF.6s_tall[order(D.ISO.DF.6s_tall$ID),] 
-
-D.ISO.DF.6s_tall$objects = rep(c("A","B","C","A","B","C","D"), times = 16)
-D.ISO.DF.6s_tall$eventType = rep(c("main","main","main",
-                                   "control","control","control","control"), times = 16)
-
-names(D.ISO.DF.6s_tall)
-D.ISO.DF.6s_tall$id = NULL
-D.ISO.DF.6s_tall$condition = NULL
-names(D.ISO.DF.6s_tall)
-D.ISO.DF.6s_tall = D.ISO.DF.6s_tall[,c(1:3,5:6,4)]
-names(D.ISO.DF.6s_tall)
-
-
-D.ISO.DF.6s_tall$Age = factor(D.ISO.DF.6s_tall$Age)
-D.ISO.DF.6s_tall$objects = factor(D.ISO.DF.6s_tall$objects)
-D.ISO.DF.6s_tall$eventType = factor(D.ISO.DF.6s_tall$eventType)
-D.ISO.DF.6s_tall$Condition = factor(D.ISO.DF.6s_tall$Condition)
+fix(D.ISO.DF_tall)
 
 
 
@@ -497,43 +367,35 @@ D.ISO.DF.6s_tall$Condition = factor(D.ISO.DF.6s_tall$Condition)
 ##################################################################
 
 
-# COMBINE 5S AND 6S BB DATAFRAMES
-D.DF.5s.and.6s_tall = rbind(D.BB.DF.5s_tall, D.BB.DF.6s_tall, 
-                            D.ISO.DF.5s_tall, D.ISO.DF.6s_tall)
-D.DF.5s.and.6s_tall$ID = rep(c(1:64),each=7) # 64 --> 32 5s and 32 6s
-
-
-# main analysis
-lm.fit = lm(measure~(Age+Condition+objects+eventType)^4, data = D.DF.5s.and.6s_tall, 
-            na.action=na.exclude)
-Anova(lm.fit)
+# Combine the BB and ISO dataframes
+D_tall_new = rbind(D.BB.DF_tall, D.ISO.DF_tall)
+D_tall_new$ID = rep(c(1:64),each=7) 
 
 
 # BB follow-up analyses
-lm.fit.4 = lm(measure[D.DF.5s.and.6s_tall$Condition=="Backwards Blocking" & D.DF.5s.and.6s_tall$eventType=="control"]~
-                objects[D.DF.5s.and.6s_tall$Condition=="Backwards Blocking" & D.DF.5s.and.6s_tall$eventType=="control"], data = D.DF.5s.and.6s_tall, 
-              na.action=na.exclude)
-Anova(lm.fit.4)
+lmer.fit.2 = lmer(measure~objects+(1|ID), 
+                  data = D_tall_new[D_tall_new$Condition=="Backwards Blocking" & D_tall_new$eventType=="control",])
+Anova(lmer.fit.2)
 
 # A
-A = D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Backwards Blocking" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="A"]
-mean(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Backwards Blocking" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="A"], na.rm=TRUE)
-sd(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Backwards Blocking" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="A"], na.rm=TRUE)
+A = D_tall_new$measure[D_tall_new$Condition=="Backwards Blocking" & D_tall_new$eventType=="control" & D_tall_new$objects=="A"]
+mean(D_tall_new$measure[D_tall_new$Condition=="Backwards Blocking" & D_tall_new$eventType=="control" & D_tall_new$objects=="A"], na.rm=TRUE)
+sd(D_tall_new$measure[D_tall_new$Condition=="Backwards Blocking" & D_tall_new$eventType=="control" & D_tall_new$objects=="A"], na.rm=TRUE)
 
 # B
-B = D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Backwards Blocking" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="B"]
-mean(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Backwards Blocking" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="B"], na.rm=TRUE)
-sd(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Backwards Blocking" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="B"], na.rm=TRUE)
+B = D_tall_new$measure[D_tall_new$Condition=="Backwards Blocking" & D_tall_new$eventType=="control" & D_tall_new$objects=="B"]
+mean(D_tall_new$measure[D_tall_new$Condition=="Backwards Blocking" & D_tall_new$eventType=="control" & D_tall_new$objects=="B"], na.rm=TRUE)
+sd(D_tall_new$measure[D_tall_new$Condition=="Backwards Blocking" & D_tall_new$eventType=="control" & D_tall_new$objects=="B"], na.rm=TRUE)
 
 # C
-C = D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Backwards Blocking" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="C"]
-mean(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Backwards Blocking" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="C"], na.rm=TRUE)
-sd(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Backwards Blocking" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="C"], na.rm=TRUE)
+C = D_tall_new$measure[D_tall_new$Condition=="Backwards Blocking" & D_tall_new$eventType=="control" & D_tall_new$objects=="C"]
+mean(D_tall_new$measure[D_tall_new$Condition=="Backwards Blocking" & D_tall_new$eventType=="control" & D_tall_new$objects=="C"], na.rm=TRUE)
+sd(D_tall_new$measure[D_tall_new$Condition=="Backwards Blocking" & D_tall_new$eventType=="control" & D_tall_new$objects=="C"], na.rm=TRUE)
 
 # D
-D = D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Backwards Blocking" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="D"]
-mean(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Backwards Blocking" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="D"], na.rm=TRUE)
-sd(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Backwards Blocking" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="D"], na.rm=TRUE)
+D = D_tall_new$measure[D_tall_new$Condition=="Backwards Blocking" & D_tall_new$eventType=="control" & D_tall_new$objects=="D"]
+mean(D_tall_new$measure[D_tall_new$Condition=="Backwards Blocking" & D_tall_new$eventType=="control" & D_tall_new$objects=="D"], na.rm=TRUE)
+sd(D_tall_new$measure[D_tall_new$Condition=="Backwards Blocking" & D_tall_new$eventType=="control" & D_tall_new$objects=="D"], na.rm=TRUE)
 
 t.test(D,A, alternative="two.sided", paired = TRUE)
 t.test(D,B, alternative="two.sided", paired = TRUE)
@@ -541,25 +403,24 @@ t.test(D,C, alternative="two.sided", paired = TRUE)
 
 
 
-lm.fit.5 = lm(measure[D.DF.5s.and.6s_tall$Condition=="Backwards Blocking" & D.DF.5s.and.6s_tall$eventType=="main"]~
-                objects[D.DF.5s.and.6s_tall$Condition=="Backwards Blocking" & D.DF.5s.and.6s_tall$eventType=="main"], data = D.DF.5s.and.6s_tall, 
-              na.action=na.exclude)
-Anova(lm.fit.5)
+lmer.fit.3 = lmer(measure~objects+(1|ID), 
+                  data = D_tall_new[D_tall_new$Condition=="Backwards Blocking" & D_tall_new$eventType=="main",])
+Anova(lmer.fit.3)
 
 # A
-A = D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Backwards Blocking" & D.DF.5s.and.6s_tall$eventType=="main" & D.DF.5s.and.6s_tall$objects=="A"]
-mean(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Backwards Blocking" & D.DF.5s.and.6s_tall$eventType=="main" & D.DF.5s.and.6s_tall$objects=="A"], na.rm=TRUE)
-sd(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Backwards Blocking" & D.DF.5s.and.6s_tall$eventType=="main" & D.DF.5s.and.6s_tall$objects=="A"], na.rm=TRUE)
+A = D_tall_new$measure[D_tall_new$Condition=="Backwards Blocking" & D_tall_new$eventType=="main" & D_tall_new$objects=="A"]
+mean(D_tall_new$measure[D_tall_new$Condition=="Backwards Blocking" & D_tall_new$eventType=="main" & D_tall_new$objects=="A"], na.rm=TRUE)
+sd(D_tall_new$measure[D_tall_new$Condition=="Backwards Blocking" & D_tall_new$eventType=="main" & D_tall_new$objects=="A"], na.rm=TRUE)
 
 # B
-B = D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Backwards Blocking" & D.DF.5s.and.6s_tall$eventType=="main" & D.DF.5s.and.6s_tall$objects=="B"]
-mean(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Backwards Blocking" & D.DF.5s.and.6s_tall$eventType=="main" & D.DF.5s.and.6s_tall$objects=="B"], na.rm=TRUE)
-sd(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Backwards Blocking" & D.DF.5s.and.6s_tall$eventType=="main" & D.DF.5s.and.6s_tall$objects=="B"], na.rm=TRUE)
+B = D_tall_new$measure[D_tall_new$Condition=="Backwards Blocking" & D_tall_new$eventType=="main" & D_tall_new$objects=="B"]
+mean(D_tall_new$measure[D_tall_new$Condition=="Backwards Blocking" & D_tall_new$eventType=="main" & D_tall_new$objects=="B"], na.rm=TRUE)
+sd(D_tall_new$measure[D_tall_new$Condition=="Backwards Blocking" & D_tall_new$eventType=="main" & D_tall_new$objects=="B"], na.rm=TRUE)
 
 # C
-C = D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Backwards Blocking" & D.DF.5s.and.6s_tall$eventType=="main" & D.DF.5s.and.6s_tall$objects=="C"]
-mean(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Backwards Blocking" & D.DF.5s.and.6s_tall$eventType=="main" & D.DF.5s.and.6s_tall$objects=="C"], na.rm=TRUE)
-sd(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Backwards Blocking" & D.DF.5s.and.6s_tall$eventType=="main" & D.DF.5s.and.6s_tall$objects=="C"], na.rm=TRUE)
+C = D_tall_new$measure[D_tall_new$Condition=="Backwards Blocking" & D_tall_new$eventType=="main" & D_tall_new$objects=="C"]
+mean(D_tall_new$measure[D_tall_new$Condition=="Backwards Blocking" & D_tall_new$eventType=="main" & D_tall_new$objects=="C"], na.rm=TRUE)
+sd(D_tall_new$measure[D_tall_new$Condition=="Backwards Blocking" & D_tall_new$eventType=="main" & D_tall_new$objects=="C"], na.rm=TRUE)
 
 t.test(A,B, alternative="two.sided", paired = TRUE)
 t.test(A,C, alternative="two.sided", paired = TRUE)
@@ -568,23 +429,23 @@ t.test(B,C, alternative="two.sided", paired = TRUE)
 ## CRITICAL COMPARISON: this looks at the treatment of B in the control condition of BB compared 
 # to the treatment of B in the main 
 # condition of BB ##
-lm.fit.5b = lm(measure[D.DF.5s.and.6s_tall$objects=="B" & D.DF.5s.and.6s_tall$Condition=="Backwards Blocking"]~
-                 eventType[D.DF.5s.and.6s_tall$objects=="B" & D.DF.5s.and.6s_tall$Condition=="Backwards Blocking"], 
-               data = D.DF.5s.and.6s_tall, 
+lm.fit.5b = lm(measure[D_tall_new$objects=="B" & D_tall_new$Condition=="Backwards Blocking"]~
+                 eventType[D_tall_new$objects=="B" & D_tall_new$Condition=="Backwards Blocking"], 
+               data = D_tall_new, 
                na.action=na.exclude)
 Anova(lm.fit.5b)
 
-t.test(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Backwards Blocking" & D.DF.5s.and.6s_tall$objects=="B" & D.DF.5s.and.6s_tall$eventType=="main"],
-       D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Backwards Blocking" & D.DF.5s.and.6s_tall$objects=="B" & D.DF.5s.and.6s_tall$eventType=="control"],
+t.test(D_tall_new$measure[D_tall_new$Condition=="Backwards Blocking" & D_tall_new$objects=="B" & D_tall_new$eventType=="main"],
+       D_tall_new$measure[D_tall_new$Condition=="Backwards Blocking" & D_tall_new$objects=="B" & D_tall_new$eventType=="control"],
        paired = TRUE, alternative = "two.sided", na.rm = TRUE)
 
-lm.null = lm(measure[D.DF.5s.and.6s_tall$objects=="B" & D.DF.5s.and.6s_tall$Condition=="Backwards Blocking"]~
+lm.null = lm(measure[D_tall_new$objects=="B" & D_tall_new$Condition=="Backwards Blocking"]~
                1, 
-             data = D.DF.5s.and.6s_tall, 
+             data = D_tall_new, 
              na.action=na.exclude)
-lm.alt = lm(measure[D.DF.5s.and.6s_tall$objects=="B" & D.DF.5s.and.6s_tall$Condition=="Backwards Blocking"]~
-              eventType[D.DF.5s.and.6s_tall$objects=="B" & D.DF.5s.and.6s_tall$Condition=="Backwards Blocking"], 
-            data = D.DF.5s.and.6s_tall, 
+lm.alt = lm(measure[D_tall_new$objects=="B" & D_tall_new$Condition=="Backwards Blocking"]~
+              eventType[D_tall_new$objects=="B" & D_tall_new$Condition=="Backwards Blocking"], 
+            data = D_tall_new, 
             na.action=na.exclude)
 null.bic = BIC(lm.null)
 alt.bic = BIC(lm.alt)
@@ -593,30 +454,29 @@ BF01 = exp((alt.bic - null.bic)/2)
 BF10 = 1/BF01
 
 # ISO follow-up analyses
-lm.fit.4 = lm(measure[D.DF.5s.and.6s_tall$Condition=="Indirect Screening-Off" & D.DF.5s.and.6s_tall$eventType=="control"]~
-                objects[D.DF.5s.and.6s_tall$Condition=="Indirect Screening-Off" & D.DF.5s.and.6s_tall$eventType=="control"], data = D.DF.5s.and.6s_tall, 
-              na.action=na.exclude)
-Anova(lm.fit.4)
+lmer.fit.4 = lmer(measure~objects+(1|ID), 
+                  data = D_tall_new[D_tall_new$Condition=="Indirect Screening-Off" & D_tall_new$eventType=="control",])
+Anova(lmer.fit.4)
 
 # A
-A = D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Indirect Screening-Off" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="A"]
-mean(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Indirect Screening-Off" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="A"], na.rm=TRUE)
-sd(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Indirect Screening-Off" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="A"], na.rm=TRUE)
+A = D_tall_new$measure[D_tall_new$Condition=="Indirect Screening-Off" & D_tall_new$eventType=="control" & D_tall_new$objects=="A"]
+mean(D_tall_new$measure[D_tall_new$Condition=="Indirect Screening-Off" & D_tall_new$eventType=="control" & D_tall_new$objects=="A"], na.rm=TRUE)
+sd(D_tall_new$measure[D_tall_new$Condition=="Indirect Screening-Off" & D_tall_new$eventType=="control" & D_tall_new$objects=="A"], na.rm=TRUE)
 
 # B
-B = D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Indirect Screening-Off" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="B"]
-mean(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Indirect Screening-Off" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="B"], na.rm=TRUE)
-sd(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Indirect Screening-Off" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="B"], na.rm=TRUE)
+B = D_tall_new$measure[D_tall_new$Condition=="Indirect Screening-Off" & D_tall_new$eventType=="control" & D_tall_new$objects=="B"]
+mean(D_tall_new$measure[D_tall_new$Condition=="Indirect Screening-Off" & D_tall_new$eventType=="control" & D_tall_new$objects=="B"], na.rm=TRUE)
+sd(D_tall_new$measure[D_tall_new$Condition=="Indirect Screening-Off" & D_tall_new$eventType=="control" & D_tall_new$objects=="B"], na.rm=TRUE)
 
 # C
-C = D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Indirect Screening-Off" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="C"]
-mean(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Indirect Screening-Off" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="C"], na.rm=TRUE)
-sd(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Indirect Screening-Off" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="C"], na.rm=TRUE)
+C = D_tall_new$measure[D_tall_new$Condition=="Indirect Screening-Off" & D_tall_new$eventType=="control" & D_tall_new$objects=="C"]
+mean(D_tall_new$measure[D_tall_new$Condition=="Indirect Screening-Off" & D_tall_new$eventType=="control" & D_tall_new$objects=="C"], na.rm=TRUE)
+sd(D_tall_new$measure[D_tall_new$Condition=="Indirect Screening-Off" & D_tall_new$eventType=="control" & D_tall_new$objects=="C"], na.rm=TRUE)
 
 # D
-D = D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Indirect Screening-Off" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="D"]
-mean(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Indirect Screening-Off" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="D"], na.rm=TRUE)
-sd(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Indirect Screening-Off" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="D"], na.rm=TRUE)
+D = D_tall_new$measure[D_tall_new$Condition=="Indirect Screening-Off" & D_tall_new$eventType=="control" & D_tall_new$objects=="D"]
+mean(D_tall_new$measure[D_tall_new$Condition=="Indirect Screening-Off" & D_tall_new$eventType=="control" & D_tall_new$objects=="D"], na.rm=TRUE)
+sd(D_tall_new$measure[D_tall_new$Condition=="Indirect Screening-Off" & D_tall_new$eventType=="control" & D_tall_new$objects=="D"], na.rm=TRUE)
 
 t.test(D,A, alternative="two.sided", paired = TRUE)
 t.test(D,B, alternative="two.sided", paired = TRUE)
@@ -624,25 +484,24 @@ t.test(D,C, alternative="two.sided", paired = TRUE)
 
 
 
-lm.fit.5 = lm(measure[D.DF.5s.and.6s_tall$Condition=="Indirect Screening-Off" & D.DF.5s.and.6s_tall$eventType=="main"]~
-                objects[D.DF.5s.and.6s_tall$Condition=="Indirect Screening-Off" & D.DF.5s.and.6s_tall$eventType=="main"], data = D.DF.5s.and.6s_tall, 
-              na.action=na.exclude)
-Anova(lm.fit.5)
+lmer.fit.5 = lmer(measure~objects+(1|ID), 
+                  data = D_tall_new[D_tall_new$Condition=="Indirect Screening-Off" & D_tall_new$eventType=="main",])
+Anova(lmer.fit.5)
 
 # A
-A = D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Indirect Screening-Off" & D.DF.5s.and.6s_tall$eventType=="main" & D.DF.5s.and.6s_tall$objects=="A"]
-mean(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Indirect Screening-Off" & D.DF.5s.and.6s_tall$eventType=="main" & D.DF.5s.and.6s_tall$objects=="A"], na.rm=TRUE)
-sd(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Indirect Screening-Off" & D.DF.5s.and.6s_tall$eventType=="main" & D.DF.5s.and.6s_tall$objects=="A"], na.rm=TRUE)
+A = D_tall_new$measure[D_tall_new$Condition=="Indirect Screening-Off" & D_tall_new$eventType=="main" & D_tall_new$objects=="A"]
+mean(D_tall_new$measure[D_tall_new$Condition=="Indirect Screening-Off" & D_tall_new$eventType=="main" & D_tall_new$objects=="A"], na.rm=TRUE)
+sd(D_tall_new$measure[D_tall_new$Condition=="Indirect Screening-Off" & D_tall_new$eventType=="main" & D_tall_new$objects=="A"], na.rm=TRUE)
 
 # B
-B = D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Indirect Screening-Off" & D.DF.5s.and.6s_tall$eventType=="main" & D.DF.5s.and.6s_tall$objects=="B"]
-mean(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Indirect Screening-Off" & D.DF.5s.and.6s_tall$eventType=="main" & D.DF.5s.and.6s_tall$objects=="B"], na.rm=TRUE)
-sd(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Indirect Screening-Off" & D.DF.5s.and.6s_tall$eventType=="main" & D.DF.5s.and.6s_tall$objects=="B"], na.rm=TRUE)
+B = D_tall_new$measure[D_tall_new$Condition=="Indirect Screening-Off" & D_tall_new$eventType=="main" & D_tall_new$objects=="B"]
+mean(D_tall_new$measure[D_tall_new$Condition=="Indirect Screening-Off" & D_tall_new$eventType=="main" & D_tall_new$objects=="B"], na.rm=TRUE)
+sd(D_tall_new$measure[D_tall_new$Condition=="Indirect Screening-Off" & D_tall_new$eventType=="main" & D_tall_new$objects=="B"], na.rm=TRUE)
 
 # C
-C = D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Indirect Screening-Off" & D.DF.5s.and.6s_tall$eventType=="main" & D.DF.5s.and.6s_tall$objects=="C"]
-mean(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Indirect Screening-Off" & D.DF.5s.and.6s_tall$eventType=="main" & D.DF.5s.and.6s_tall$objects=="C"], na.rm=TRUE)
-sd(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Indirect Screening-Off" & D.DF.5s.and.6s_tall$eventType=="main" & D.DF.5s.and.6s_tall$objects=="C"], na.rm=TRUE)
+C = D_tall_new$measure[D_tall_new$Condition=="Indirect Screening-Off" & D_tall_new$eventType=="main" & D_tall_new$objects=="C"]
+mean(D_tall_new$measure[D_tall_new$Condition=="Indirect Screening-Off" & D_tall_new$eventType=="main" & D_tall_new$objects=="C"], na.rm=TRUE)
+sd(D_tall_new$measure[D_tall_new$Condition=="Indirect Screening-Off" & D_tall_new$eventType=="main" & D_tall_new$objects=="C"], na.rm=TRUE)
 
 t.test(A,B, alternative="two.sided", paired = TRUE)
 t.test(A,C, alternative="two.sided", paired = TRUE)
@@ -654,72 +513,41 @@ t.test(B,C, alternative="two.sided", paired = TRUE)
 # OLD AND NEW OPERATIONALIZATION OF BB #
 ########################################
 ########################################
-# NEW OPERATIONALIZATION #
-# BB #
 # A control
-A.control.5s = D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Backwards Blocking" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="A" & D.DF.5s.and.6s_tall$Age=="5"]
-mean(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Backwards Blocking" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="A" & D.DF.5s.and.6s_tall$Age=="5"], na.rm=TRUE)
-sd(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Backwards Blocking" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="A" & D.DF.5s.and.6s_tall$Age=="5"], na.rm=TRUE)
-
-A.control.6s = D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Backwards Blocking" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="A" & D.DF.5s.and.6s_tall$Age=="6"]
-mean(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Backwards Blocking" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="A" & D.DF.5s.and.6s_tall$Age=="6"], na.rm=TRUE)
-sd(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Backwards Blocking" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="A" & D.DF.5s.and.6s_tall$Age=="6"], na.rm=TRUE)
-
+A.control = D_tall_new$measure[D_tall_new$Condition=="Backwards Blocking" & D_tall_new$eventType=="control" & D_tall_new$objects=="A"]
+mean(D_tall_new$measure[D_tall_new$Condition=="Backwards Blocking" & D_tall_new$eventType=="control" & D_tall_new$objects=="A"], na.rm=TRUE)
+sd(D_tall_new$measure[D_tall_new$Condition=="Backwards Blocking" & D_tall_new$eventType=="control" & D_tall_new$objects=="A"], na.rm=TRUE)
 
 # B main v B control
-B.control.5s = D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Backwards Blocking" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="B" & D.DF.5s.and.6s_tall$Age=="5"]
-mean(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Backwards Blocking" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="B" & D.DF.5s.and.6s_tall$Age=="5"], na.rm=TRUE)
-sd(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Backwards Blocking" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="B" & D.DF.5s.and.6s_tall$Age=="5"], na.rm=TRUE)
+B.control = D_tall_new$measure[D_tall_new$Condition=="Backwards Blocking" & D_tall_new$eventType=="control" & D_tall_new$objects=="B"]
+mean(D_tall_new$measure[D_tall_new$Condition=="Backwards Blocking" & D_tall_new$eventType=="control" & D_tall_new$objects=="B"], na.rm=TRUE)
+sd(D_tall_new$measure[D_tall_new$Condition=="Backwards Blocking" & D_tall_new$eventType=="control" & D_tall_new$objects=="B"], na.rm=TRUE)
 
-B.control.6s = D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Backwards Blocking" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="B" & D.DF.5s.and.6s_tall$Age=="6"]
-mean(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Backwards Blocking" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="B" & D.DF.5s.and.6s_tall$Age=="6"], na.rm=TRUE)
-sd(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Backwards Blocking" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="B" & D.DF.5s.and.6s_tall$Age=="6"], na.rm=TRUE)
 
-B.main.5s = D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Backwards Blocking" & D.DF.5s.and.6s_tall$eventType=="main" & D.DF.5s.and.6s_tall$objects=="B" & D.DF.5s.and.6s_tall$Age=="5"]
-mean(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Backwards Blocking" & D.DF.5s.and.6s_tall$eventType=="main" & D.DF.5s.and.6s_tall$objects=="B" & D.DF.5s.and.6s_tall$Age=="5"], na.rm=TRUE)
-sd(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Backwards Blocking" & D.DF.5s.and.6s_tall$eventType=="main" & D.DF.5s.and.6s_tall$objects=="B" & D.DF.5s.and.6s_tall$Age=="5"], na.rm=TRUE)
+B.main = D_tall_new$measure[D_tall_new$Condition=="Backwards Blocking" & D_tall_new$eventType=="main" & D_tall_new$objects=="B"]
+mean(D_tall_new$measure[D_tall_new$Condition=="Backwards Blocking" & D_tall_new$eventType=="main" & D_tall_new$objects=="B"], na.rm=TRUE)
+sd(D_tall_new$measure[D_tall_new$Condition=="Backwards Blocking" & D_tall_new$eventType=="main" & D_tall_new$objects=="B"], na.rm=TRUE)
 
-B.main.6s = D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Backwards Blocking" & D.DF.5s.and.6s_tall$eventType=="main" & D.DF.5s.and.6s_tall$objects=="B" & D.DF.5s.and.6s_tall$Age=="6"]
-mean(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Backwards Blocking" & D.DF.5s.and.6s_tall$eventType=="main" & D.DF.5s.and.6s_tall$objects=="B" & D.DF.5s.and.6s_tall$Age=="6"], na.rm=TRUE)
-sd(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Backwards Blocking" & D.DF.5s.and.6s_tall$eventType=="main" & D.DF.5s.and.6s_tall$objects=="B" & D.DF.5s.and.6s_tall$Age=="6"], na.rm=TRUE)
 
 # C main v C control
-C.control.5s = D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Backwards Blocking" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="C" & D.DF.5s.and.6s_tall$Age=="5"]
-mean(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Backwards Blocking" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="C" & D.DF.5s.and.6s_tall$Age=="5"], na.rm=TRUE)
-sd(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Backwards Blocking" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="C" & D.DF.5s.and.6s_tall$Age=="5"], na.rm=TRUE)
-
-C.control.6s = D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Backwards Blocking" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="C" & D.DF.5s.and.6s_tall$Age=="6"]
-mean(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Backwards Blocking" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="C" & D.DF.5s.and.6s_tall$Age=="6"], na.rm=TRUE)
-sd(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Backwards Blocking" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="C" & D.DF.5s.and.6s_tall$Age=="6"], na.rm=TRUE)
+C.control = D_tall_new$measure[D_tall_new$Condition=="Backwards Blocking" & D_tall_new$eventType=="control" & D_tall_new$objects=="C"]
+mean(D_tall_new$measure[D_tall_new$Condition=="Backwards Blocking" & D_tall_new$eventType=="control" & D_tall_new$objects=="C"], na.rm=TRUE)
+sd(D_tall_new$measure[D_tall_new$Condition=="Backwards Blocking" & D_tall_new$eventType=="control" & D_tall_new$objects=="C"], na.rm=TRUE)
 
 
-C.main.5s = D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Backwards Blocking" & D.DF.5s.and.6s_tall$eventType=="main" & D.DF.5s.and.6s_tall$objects=="C" & D.DF.5s.and.6s_tall$Age=="5"]
-mean(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Backwards Blocking" & D.DF.5s.and.6s_tall$eventType=="main" & D.DF.5s.and.6s_tall$objects=="C" & D.DF.5s.and.6s_tall$Age=="5"], na.rm=TRUE)
-sd(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Backwards Blocking" & D.DF.5s.and.6s_tall$eventType=="main" & D.DF.5s.and.6s_tall$objects=="C" & D.DF.5s.and.6s_tall$Age=="5"], na.rm=TRUE)
-
-
-C.main.6s = D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Backwards Blocking" & D.DF.5s.and.6s_tall$eventType=="main" & D.DF.5s.and.6s_tall$objects=="C" & D.DF.5s.and.6s_tall$Age=="6"]
-mean(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Backwards Blocking" & D.DF.5s.and.6s_tall$eventType=="main" & D.DF.5s.and.6s_tall$objects=="C" & D.DF.5s.and.6s_tall$Age=="6"], na.rm=TRUE)
-sd(D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Backwards Blocking" & D.DF.5s.and.6s_tall$eventType=="main" & D.DF.5s.and.6s_tall$objects=="C" & D.DF.5s.and.6s_tall$Age=="6"], na.rm=TRUE)
+C.main = D_tall_new$measure[D_tall_new$Condition=="Backwards Blocking" & D_tall_new$eventType=="main" & D_tall_new$objects=="C"]
+mean(D_tall_new$measure[D_tall_new$Condition=="Backwards Blocking" & D_tall_new$eventType=="main" & D_tall_new$objects=="C"], na.rm=TRUE)
+sd(D_tall_new$measure[D_tall_new$Condition=="Backwards Blocking" & D_tall_new$eventType=="main" & D_tall_new$objects=="C"], na.rm=TRUE)
 
 
 # create data frame and add columns from the variables above 
-D.new.op.5s = data.frame(ID = c(1:15), Age = rep(5,15), A.control = A.control.5s, B.control = B.control.5s, B.main = B.main.5s,
-                         C.control = C.control.5s, C.main = C.main.5s)
-D.new.op.5s$Age = factor(D.new.op.5s$Age)
-
-
-D.new.op.6s = data.frame(ID = c(16:31), Age = rep(6,16), A.control = A.control.6s, B.control = B.control.6s, B.main = B.main.6s,
-                         C.control = C.control.6s, C.main = C.main.6s)
-D.new.op.6s$Age = factor(D.new.op.6s$Age)
-
-D.new.op = rbind(D.new.op.5s,
-                 D.new.op.6s)
+D.new.op = data.frame(ID = c(1:31), A.control = A.control, B.control = B.control, B.main = B.main,
+                         C.control = C.control, C.main = C.main)
 
 names(D.new.op)
 dim(D.new.op)
 
-D.new.op_tall = reshape(D.new.op, varying = c(3:7), v.names = "measure", 
+D.new.op_tall = reshape(D.new.op, varying = c(2:6), v.names = "measure", 
                         timevar = "condition",   direction = "long")
 D.new.op_tall = D.new.op_tall[order(D.new.op_tall$ID),] 
 
@@ -730,9 +558,9 @@ D.new.op_tall$objects = factor(D.new.op_tall$objects)
 D.new.op_tall$eventType = factor(D.new.op_tall$eventType)
 
 # main analysis 
-lm.fit.7 = lm(measure~(objects+eventType+Age)^3, data = D.new.op_tall, 
-              na.action=na.exclude)
-Anova(lm.fit.7)
+lm.fit.6 = lmer(measure~(objects+eventType)^2+(1|ID), 
+              data = D.new.op_tall)
+Anova(lm.fit.6)
 
 
 mean(D.new.op_tall$measure[D.new.op_tall$eventType=="main"], na.rm = TRUE)
@@ -821,81 +649,10 @@ sd(D.new.op$C.control, na.rm = TRUE)
 
 
 
-# OLD OPERATIONALIZATION #
-# BB #
-b.bb.main = D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Backwards Blocking" & D.DF.5s.and.6s_tall$eventType=="main" & D.DF.5s.and.6s_tall$objects=="B"]
-c.bb.main = D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Backwards Blocking" & D.DF.5s.and.6s_tall$eventType=="main" & D.DF.5s.and.6s_tall$objects=="C"]
-A.bb.control = D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Backwards Blocking" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="A"]
-B.bb.control = D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Backwards Blocking" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="B"]
-C.bb.control = D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Backwards Blocking" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="C"]
-
-b.iso.main = D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Indirect Screening-Off" & D.DF.5s.and.6s_tall$eventType=="main" & D.DF.5s.and.6s_tall$objects=="B"]
-c.iso.main = D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Indirect Screening-Off" & D.DF.5s.and.6s_tall$eventType=="main" & D.DF.5s.and.6s_tall$objects=="C"]
-A.iso.control = D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Indirect Screening-Off" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="A"]
-B.iso.control = D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Indirect Screening-Off" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="B"]
-C.iso.control = D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$Condition=="Indirect Screening-Off" & D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="C"]
-
-
-
-
-# create data frame and add columns from the variables above 
-# BB
-D.old.bb = data.frame(ID = c(1:31), Condition = rep("Backwards Blocking",times=31),
-                      B.main = b.bb.main, C.main = c.bb.main, A.control = A.bb.control,
-                      B.control = B.bb.control, C.control = C.bb.control)
-names(D.old.bb)
-
-D.old.bb_tall = reshape(D.old.bb, varying = c(3:7), v.names = "measure", 
-                        timevar = "condition",   direction = "long")
-D.old.bb_tall = D.old.bb_tall[order(D.old.bb_tall$ID),] 
-D.old.bb_tall$condition = NULL
-
-D.old.bb_tall$objects = rep(c("B","C","A","B","C"), times = 31)
-D.old.bb_tall$eventType = rep(c("main","main","control",
-                                "control","control"), times = 31)
-D.old.bb_tall$objects = factor(D.old.bb_tall$objects)
-D.old.bb_tall$eventType = factor(D.old.bb_tall$eventType)
-
-# ISO
-D.old.iso = data.frame(ID = c(1:33), Condition = rep("Indirect Screening-Off",times=33),
-                       B.main = b.iso.main, C.main = c.iso.main, A.control = A.iso.control,
-                       B.control = B.iso.control, C.control = C.iso.control)
-names(D.old.iso)
-
-D.old.iso_tall = reshape(D.old.iso, varying = c(3:7), v.names = "measure", 
-                         timevar = "condition",   direction = "long")
-D.old.iso_tall = D.old.iso_tall[order(D.old.iso_tall$ID),] 
-D.old.iso_tall$condition = NULL
-
-D.old.iso_tall$objects = rep(c("B","C","A","B","C"), times = 33)
-D.old.iso_tall$eventType = rep(c("main","main","control",
-                                 "control","control"), times = 33)
-D.old.iso_tall$objects = factor(D.old.iso_tall$objects)
-D.old.iso_tall$eventType = factor(D.old.iso_tall$eventType)
-
-
-# combine the BB and ISO dataframes
-D.old.BB.ISO = rbind(D.old.bb_tall, D.old.iso_tall)
-names(D.old.BB.ISO)
-D.old.BB.ISO$id = NULL
-names(D.old.BB.ISO)
-
-
-# main analysis 
-lm.fit.8 = lm(measure~(objects+eventType+Condition)^3, data = D.old.BB.ISO, 
-              na.action=na.exclude)
-Anova(lm.fit.8)
-
-
-mean(D.old.BB.ISO$measure[D.old.BB.ISO$Condition=="Backwards Blocking"], na.rm = TRUE)
-sd(D.old.BB.ISO$measure[D.old.BB.ISO$Condition=="Backwards Blocking"], na.rm = TRUE)
-
-mean(D.old.BB.ISO$measure[D.old.BB.ISO$Condition=="Indirect Screening-Off"], na.rm = TRUE)
-sd(D.old.BB.ISO$measure[D.old.BB.ISO$Condition=="Indirect Screening-Off"], na.rm = TRUE)
 
 
 # Figure
-condition_barplot = ggplot(D.DF.5s.and.6s_tall, aes(eventType, measure, fill = objects)) # create the bar graph with test.trial.2 on the x-axis and measure on the y-axis
+condition_barplot = ggplot(D_tall_new, aes(eventType, measure, fill = objects)) # create the bar graph with test.trial.2 on the x-axis and measure on the y-axis
 condition_barplot + stat_summary(fun = mean, geom = "bar", position = "dodge") + # add the bars, which represent the means and the place them side-by-side with 'dodge'
   facet_wrap(~Condition) +
   stat_summary(fun.data=mean_cl_boot, geom = "errorbar", position = position_dodge(width=0.90), width = 0.2) +
@@ -910,12 +667,3 @@ condition_barplot + stat_summary(fun = mean, geom = "bar", position = "dodge") +
         panel.background = element_blank(), axis.line = element_line(colour = "black"),
         axis.title.x=element_blank()) + 
   ylab("# of questions children judged object was a blicket")
-
-
-
-# compare B control vs B main directly in BB condition
-B.BB.main = D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$eventType=="main" & D.DF.5s.and.6s_tall$objects=="B"]
-B.BB.control = D.DF.5s.and.6s_tall$measure[D.DF.5s.and.6s_tall$eventType=="control" & D.DF.5s.and.6s_tall$objects=="B"]
-
-t.test(B.BB.main,
-       B.BB.control, paired = TRUE, alternative = "two.sided")
