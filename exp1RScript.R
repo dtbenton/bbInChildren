@@ -201,13 +201,13 @@ Anova(lmer.fit)
 ##########################################################
 
 # BB MAIN 
-A.BB.MAIN.SUM = as.numeric(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$phaseOrder == "Phase 1" & D_tall$trialType=="main" & D_tall$objectType=="A"])+
-  as.numeric(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$phaseOrder == "Phase 2" & D_tall$trialType=="main" & D_tall$objectType=="A"])-2
+A.BB.MAIN.SUM = D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$phaseOrder == "Phase 1" & D_tall$trialType=="main" & D_tall$objectType=="A"]+
+  D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$phaseOrder == "Phase 2" & D_tall$trialType=="main" & D_tall$objectType=="A"]
 length(A.BB.MAIN.SUM)
 mean(A.BB.MAIN.SUM, na.rm=TRUE)
 
-B.BB.MAIN.SUM = as.numeric(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$phaseOrder == "Phase 1" & D_tall$trialType=="main" & D_tall$objectType=="B"])+
-  as.numeric(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$phaseOrder == "Phase 2" & D_tall$trialType=="main" & D_tall$objectType=="B"])-2
+B.BB.MAIN.SUM = D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$phaseOrder == "Phase 1" & D_tall$trialType=="main" & D_tall$objectType=="B"]+
+  D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$phaseOrder == "Phase 2" & D_tall$trialType=="main" & D_tall$objectType=="B"]
 length(B.BB.MAIN.SUM)
 mean(B.BB.MAIN.SUM, na.rm=TRUE)
 
