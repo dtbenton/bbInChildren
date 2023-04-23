@@ -27,29 +27,29 @@ options(scipen=9999)
 # create variables
 # BB
 #main
-BB.A.main = rep("2",16)
-BB.B.main = rep("1",16) # 0.5+0.5
-BB.C.main = rep("1",16) # 0.5+0.5
+BB.A.main = rep("1",16)
+BB.B.main = rep("0.5",16) # 0.5+0.5
+BB.C.main = rep("0.5",16) # 0.5+0.5
 
 
 # control
-BB.A.control = rep("1.14",16) # 0.5+0.5
-BB.B.control = rep("1.14",16) # 0.5+0.5
-BB.C.control = rep("1.14",16) # 0.5+0.5
-BB.D.control = rep("2",16) # 0.5+0.5
+BB.A.control = rep("0.57",16) # 0.5+0.5
+BB.B.control = rep("0.57",16) # 0.5+0.5
+BB.C.control = rep("0.57",16) # 0.5+0.5
+BB.D.control = rep("1",16) # 0.5+0.5
 
 
 # ISO
 #main
 ISO.A.main = rep("0",16)
-ISO.B.main = rep("1.34",16) # 0.5+0.5
-ISO.C.main = rep("1.34",16) # 0.5+0.5
+ISO.B.main = rep("0.67",16) # 0.5+0.5
+ISO.C.main = rep("0.67",16) # 0.5+0.5
 
 
 # control
-ISO.A.control = rep("1.14",16) # 0.5+0.5
-ISO.B.control = rep("1.14",16) # 0.5+0.5
-ISO.C.control = rep("1.14",16) # 0.5+0.5
+ISO.A.control = rep("0.57",16) # 0.5+0.5
+ISO.B.control = rep("0.57",16) # 0.5+0.5
+ISO.C.control = rep("0.57",16) # 0.5+0.5
 ISO.D.control = rep("0",16) # 0.5+0.5
 
 
@@ -138,7 +138,6 @@ str(D_tall)
 # plot data
 condition_barplot = ggplot(D_tall, aes(trial, measure, fill=objects)) # create the bar graph with test.trial.2 on the x-axis and measure on the y-axis
 condition_barplot + stat_summary(fun = mean, geom = "bar", position = "dodge") + # add the bars, which represent the means and the place them side-by-side with 'dodge'
-  stat_summary(fun.data=mean_cl_boot, geom = "errorbar", position = position_dodge(width=0.90), width = 0.2) + # add errors bars
   ylab("Ratings") + # change the label of the y-axis
   facet_wrap(~condition, ncol=2) +
   scale_y_continuous(expand = c(0, 0)) +
@@ -147,7 +146,7 @@ condition_barplot + stat_summary(fun = mean, geom = "bar", position = "dodge") +
                              "#C8C8C8",
                              "#696969")) +
   
-  coord_cartesian(ylim=c(0, 2.5)) +
+  coord_cartesian(ylim=c(0, 1.2)) +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_blank(), axis.line = element_line(colour = "black"))
 
@@ -162,29 +161,29 @@ condition_barplot + stat_summary(fun = mean, geom = "bar", position = "dodge") +
 ######################
 # BB
 #main
-BB.A.main = rep("2",16)
-BB.B.main = rep("1.3",16) # 0.5+0.5
-BB.C.main = rep("1.3",16) # 0.5+0.5
+BB.A.main = rep("1",16)
+BB.B.main = rep("0.65",16) # 0.5+0.5
+BB.C.main = rep("0.65",16) # 0.5+0.5
 
 
 # control
-BB.A.control = rep("1.36",16) # 0.5+0.5
-BB.B.control = rep("1.36",16) # 0.5+0.5
-BB.C.control = rep("1.36",16) # 0.5+0.5
-BB.D.control = rep("2",16) # 0.5+0.5
+BB.A.control = rep("0.68",16) # 0.5+0.5
+BB.B.control = rep("0.68",16) # 0.5+0.5
+BB.C.control = rep("0.68",16) # 0.5+0.5
+BB.D.control = rep("1",16) # 0.5+0.5
 
 
 # ISO
 #main
 ISO.A.main = rep("0",16)
-ISO.B.main = rep("1.48",16) # 0.5+0.5
-ISO.C.main = rep("1.48",16) # 0.5+0.5
+ISO.B.main = rep("0.74",16) # 0.5+0.5
+ISO.C.main = rep("0.74",16) # 0.5+0.5
 
 
 # control
-ISO.A.control = rep("1.36",16) # 0.5+0.5
-ISO.B.control = rep("1.36",16) # 0.5+0.5
-ISO.C.control = rep("1.36",16) # 0.5+0.5
+ISO.A.control = rep("0.68",16) # 0.5+0.5
+ISO.B.control = rep("0.68",16) # 0.5+0.5
+ISO.C.control = rep("0.68",16) # 0.5+0.5
 ISO.D.control = rep("0",16) # 0.5+0.5
 
 
@@ -273,16 +272,15 @@ str(D_tall)
 # figures
 condition_barplot = ggplot(D_tall, aes(trial, measure, fill=objects)) # create the bar graph with test.trial.2 on the x-axis and measure on the y-axis
 condition_barplot + stat_summary(fun = mean, geom = "bar", position = "dodge") + # add the bars, which represent the means and the place them side-by-side with 'dodge'
-  stat_summary(fun.data=mean_cl_boot, geom = "errorbar", position = position_dodge(width=0.90), width = 0.2) + # add errors bars
   ylab("Ratings") + # change the label of the y-axis
   facet_wrap(~condition, ncol=2) +
   scale_y_continuous(expand = c(0, 0)) +
   scale_fill_manual(values=c("#000000",
-                             "#888888",
-                             "#C8C8C8",
-                             "#696969")) +
-  
-  coord_cartesian(ylim=c(0, 2.5)) +
+                                      "#888888",
+                                      "#C8C8C8",
+                                      "#696969")) +
+                                        
+  coord_cartesian(ylim=c(0, 1.2)) +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_blank(), axis.line = element_line(colour = "black"))
 
@@ -296,29 +294,29 @@ condition_barplot + stat_summary(fun = mean, geom = "bar", position = "dodge") +
 ######################
 # BB
 #main
-BB.A.main = rep("2",16)
-BB.B.main = rep("1.6",16) # 0.5+0.5
-BB.C.main = rep("1.6",16) # 0.5+0.5
+BB.A.main = rep("1",16)
+BB.B.main = rep("0.8",16) # 0.5+0.5
+BB.C.main = rep("0.8",16) # 0.5+0.5
 
 
 # control
-BB.A.control = rep("1.62",16) # 0.5+0.5
-BB.B.control = rep("1.62",16) # 0.5+0.5
-BB.C.control = rep("1.62",16) # 0.5+0.5
-BB.D.control = rep("2",16) # 0.5+0.5
+BB.A.control = rep("0.81",16) # 0.5+0.5
+BB.B.control = rep("0.81",16) # 0.5+0.5
+BB.C.control = rep("0.81",16) # 0.5+0.5
+BB.D.control = rep("1",16) # 0.5+0.5
 
 
 # ISO
 #main
 ISO.A.main = rep("0",16)
-ISO.B.main = rep("1.66",16) # 0.5+0.5
-ISO.C.main = rep("1.66",16) # 0.5+0.5
+ISO.B.main = rep("0.83",16) # 0.5+0.5
+ISO.C.main = rep("0.83",16) # 0.5+0.5
 
 
 # control
-ISO.A.control = rep("1.62",16) # 0.5+0.5
-ISO.B.control = rep("1.62",16) # 0.5+0.5
-ISO.C.control = rep("1.62",16) # 0.5+0.5
+ISO.A.control = rep("0.81",16) # 0.5+0.5
+ISO.B.control = rep("0.81",16) # 0.5+0.5
+ISO.C.control = rep("0.81",16) # 0.5+0.5
 ISO.D.control = rep("0",16) # 0.5+0.5
 
 
@@ -405,16 +403,15 @@ str(D_tall)
 # figures
 condition_barplot = ggplot(D_tall, aes(trial, measure, fill=objects)) # create the bar graph with test.trial.2 on the x-axis and measure on the y-axis
 condition_barplot + stat_summary(fun = mean, geom = "bar", position = "dodge") + # add the bars, which represent the means and the place them side-by-side with 'dodge'
-  stat_summary(fun.data=mean_cl_boot, geom = "errorbar", position = position_dodge(width=0.90), width = 0.2) + # add errors bars
   ylab("Ratings") + # change the label of the y-axis
   facet_wrap(~condition, ncol=2) +
   scale_y_continuous(expand = c(0, 0)) +
   scale_fill_manual(values=c("#000000",
-                             "#888888",
-                             "#C8C8C8",
-                             "#696969")) +
-  
-  coord_cartesian(ylim=c(0, 2.5)) +
+                                      "#888888",
+                                      "#C8C8C8",
+                                      "#696969")) +
+                                        
+  coord_cartesian(ylim=c(0, 1.2)) +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_blank(), axis.line = element_line(colour = "black"))
 
@@ -429,29 +426,29 @@ condition_barplot + stat_summary(fun = mean, geom = "bar", position = "dodge") +
 ######################
 # BB
 #main
-BB.A.main = rep("2",16)
-BB.B.main = rep("1.9",16) # 0.5+0.5
-BB.C.main = rep("1.9",16) # 0.5+0.5
+BB.A.main = rep("1",16)
+BB.B.main = rep("0.95",16) # 0.5+0.5
+BB.C.main = rep("0.95",16) # 0.5+0.5
 
 
 # control
-BB.A.control = rep("1.9",16) # 0.5+0.5
-BB.B.control = rep("1.9",16) # 0.5+0.5
-BB.C.control = rep("1.9",16) # 0.5+0.5
-BB.D.control = rep("2",16) # 0.5+0.5
+BB.A.control = rep("0.95",16) # 0.5+0.5
+BB.B.control = rep("0.95",16) # 0.5+0.5
+BB.C.control = rep("0.95",16) # 0.5+0.5
+BB.D.control = rep("1",16) # 0.5+0.5
 
 
 # ISO
 #main
 ISO.A.main = rep("0",16)
-ISO.B.main = rep("1.9",16) # 0.5+0.5
-ISO.C.main = rep("1.9",16) # 0.5+0.5
+ISO.B.main = rep("0.95",16) # 0.5+0.5
+ISO.C.main = rep("0.95",16) # 0.5+0.5
 
 
 # control
-ISO.A.control = rep("1.9",16) # 0.5+0.5
-ISO.B.control = rep("1.9",16) # 0.5+0.5
-ISO.C.control = rep("1.9",16) # 0.5+0.5
+ISO.A.control = rep("0.95",16) # 0.5+0.5
+ISO.B.control = rep("0.95",16) # 0.5+0.5
+ISO.C.control = rep("0.95",16) # 0.5+0.5
 ISO.D.control = rep("0",16) # 0.5+0.5
 
 
@@ -538,16 +535,15 @@ str(D_tall)
 # figures
 condition_barplot = ggplot(D_tall, aes(trial, measure, fill=objects)) # create the bar graph with test.trial.2 on the x-axis and measure on the y-axis
 condition_barplot + stat_summary(fun = mean, geom = "bar", position = "dodge") + # add the bars, which represent the means and the place them side-by-side with 'dodge'
-  stat_summary(fun.data=mean_cl_boot, geom = "errorbar", position = position_dodge(width=0.90), width = 0.2) + # add errors bars
   ylab("Ratings") + # change the label of the y-axis
   facet_wrap(~condition, ncol=2) +
   scale_y_continuous(expand = c(0, 0)) +
   scale_fill_manual(values=c("#000000",
-                             "#888888",
-                             "#C8C8C8",
-                             "#696969")) +
-  
-  coord_cartesian(ylim=c(0, 2.5)) +
+                                      "#888888",
+                                      "#C8C8C8",
+                                      "#696969")) +
+                                        
+  coord_cartesian(ylim=c(0, 1.2)) +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_blank(), axis.line = element_line(colour = "black"))
 
@@ -560,29 +556,29 @@ condition_barplot + stat_summary(fun = mean, geom = "bar", position = "dodge") +
 ######################
 # BB
 #main
-BB.A.main = rep("2",16)
-BB.B.main = rep("2",16) # 0.5+0.5
-BB.C.main = rep("2",16) # 0.5+0.5
+BB.A.main = rep("1",16)
+BB.B.main = rep("1",16) # 0.5+0.5
+BB.C.main = rep("1",16) # 0.5+0.5
 
 
 # control
-BB.A.control = rep("2",16) # 0.5+0.5
-BB.B.control = rep("2",16) # 0.5+0.5
-BB.C.control = rep("2",16) # 0.5+0.5
-BB.D.control = rep("2",16) # 0.5+0.5
+BB.A.control = rep("1",16) # 0.5+0.5
+BB.B.control = rep("1",16) # 0.5+0.5
+BB.C.control = rep("1",16) # 0.5+0.5
+BB.D.control = rep("1",16) # 0.5+0.5
 
 
 # ISO
 #main
 ISO.A.main = rep("0",16)
-ISO.B.main = rep("2",16) # 0.5+0.5
-ISO.C.main = rep("2",16) # 0.5+0.5
+ISO.B.main = rep("1",16) # 0.5+0.5
+ISO.C.main = rep("1",16) # 0.5+0.5
 
 
 # control
-ISO.A.control = rep("2",16) # 0.5+0.5
-ISO.B.control = rep("2",16) # 0.5+0.5
-ISO.C.control = rep("2",16) # 0.5+0.5
+ISO.A.control = rep("1",16) # 0.5+0.5
+ISO.B.control = rep("1",16) # 0.5+0.5
+ISO.C.control = rep("1",16) # 0.5+0.5
 ISO.D.control = rep("0",16) # 0.5+0.5
 
 
@@ -669,16 +665,15 @@ str(D_tall)
 # figures
 condition_barplot = ggplot(D_tall, aes(trial, measure, fill=objects)) # create the bar graph with test.trial.2 on the x-axis and measure on the y-axis
 condition_barplot + stat_summary(fun = mean, geom = "bar", position = "dodge") + # add the bars, which represent the means and the place them side-by-side with 'dodge'
-  stat_summary(fun.data=mean_cl_boot, geom = "errorbar", position = position_dodge(width=0.90), width = 0.2) + # add errors bars
   ylab("Ratings") + # change the label of the y-axis
   facet_wrap(~condition, ncol=2) +
   scale_y_continuous(expand = c(0, 0)) +
   scale_fill_manual(values=c("#000000",
-                             "#888888",
-                             "#C8C8C8",
-                             "#696969")) +
-  
-  coord_cartesian(ylim=c(0, 2.5)) +
+                                      "#888888",
+                                      "#C8C8C8",
+                                      "#696969")) +
+                                        
+  coord_cartesian(ylim=c(0, 1.2)) +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_blank(), axis.line = element_line(colour = "black"))
 
