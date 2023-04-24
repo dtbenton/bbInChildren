@@ -113,12 +113,13 @@ D_experimental_tall = D_experimental_tall[,c(3,4,1,5,2)]
 
 # create new data frame from new columns 
 D.new.control = data.frame(BB.A.control = BB.A.control, BB.B.control = BB.B.control,
-                           BB.C.control = BB.C.control, ISO.A.control = ISO.A.control, 
-                           ISO.B.control = ISO.B.control, ISO.C.control = ISO.C.control)
+                           BB.C.control = BB.C.control, BB.D.control = BB.D.control,
+                           ISO.A.control = ISO.A.control,ISO.B.control = ISO.B.control, 
+                           ISO.C.control = ISO.C.control, ISO.D.control = ISO.D.control)
 
-D_control_tall =  reshape(D.new.control, varying = c(1:6), v.names = "measure", 
+D_control_tall =  reshape(D.new.control, varying = c(1:8), v.names = "measure", 
                           timevar = "condition",   direction = "long")
-D_control_tall$ID = rep(c(1:200), times = 6)
+D_control_tall$ID = rep(c(1:200), times = 8)
 
 # remove 'id' column from the reshape() function
 D_control_tall$id = NULL
@@ -127,13 +128,13 @@ D_control_tall$id = NULL
 D_control_tall = D_control_tall[order(D_control_tall$ID),] 
 
 # replace the 'condition' column with a more appropriate one
-D_control_tall$condition = rep(c("BB","ISO"), each = 3, times = 200)
+D_control_tall$condition = rep(c("BB","ISO"), each = 4, times = 200)
 
 # create a 'trial' column
-D_control_tall$trial = rep(c("control"), times = 1200)
+D_control_tall$trial = rep(c("control"), times = 1600)
 
 # create 'object' column
-D_control_tall$objects = rep(c("A","B","C"), times = 400)
+D_control_tall$objects = rep(c("A","B","C", "D"), times = 400)
 
 # remove 'row.names' column 
 D_control_tall$row.names = NULL
@@ -146,7 +147,6 @@ D_control_tall = D_control_tall[,c(3,4,1,5,2)]
 # combine the dataframes
 D_tall = rbind(D_experimental_tall,
                D_control_tall)
-fix(D_tall)
 names(D_tall)
 
 # plot data
