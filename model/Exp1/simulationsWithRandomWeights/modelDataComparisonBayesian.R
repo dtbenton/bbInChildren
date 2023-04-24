@@ -197,49 +197,181 @@ behavioral_predictions = c(A.BB.MAIN.SUM, B.BB.MAIN.SUM, C.BB.MAIN.SUM, A.BB.CON
 # model predictions
 
 # .5
-model_predictions = c(1, 0.5, 0.5, 0.57, 0.57, 0.57, 1,
+model_predictions_5 = c(1, 0.5, 0.5, 0.57, 0.57, 0.57, 1,
                       0, 0.67, 0.67, 0.57, 0.57, 0.57, 0)
-model_predictions
+model_predictions_5
 
 # model fit: 
-caret::postResample(model_predictions, behavioral_predictions)
+caret::postResample(model_predictions_5, behavioral_predictions)
 
 # .65
-model_predictions = c(1, 0.65, 0.65, 0.68, 0.68, 0.68, 1,
+model_predictions_65 = c(1, 0.65, 0.65, 0.68, 0.68, 0.68, 1,
                       0, 0.74, 0.74, 0.68, 0.68, 0.68, 0)
 
-model_predictions
+model_predictions_65
 
 # model fit: 
-caret::postResample(model_predictions, behavioral_predictions)
+caret::postResample(model_predictions_65, behavioral_predictions)
 
 # .80
-model_predictions = c(1, 0.80, 0.80, 0.81, 0.81, 0.81, 1,
+model_predictions_80 = c(1, 0.80, 0.80, 0.81, 0.81, 0.81, 1,
                       0, 0.83, 0.83, 0.81, 0.81, 0.81, 0)
 
-model_predictions
+model_predictions_80
 
 
 # model fit: 
-caret::postResample(model_predictions, behavioral_predictions)
+caret::postResample(model_predictions_80, behavioral_predictions)
 
 
 # .95
-model_predictions = c(1, 0.95, 0.95, 0.95, 0.95, 0.95, 1,
+model_predictions_95 = c(1, 0.95, 0.95, 0.95, 0.95, 0.95, 1,
                       0, 0.95, 0.95, 0.95, 0.95, 0.95, 0)
-model_predictions
+model_predictions_95
 
 # model fit: 
-caret::postResample(model_predictions, behavioral_predictions)
+caret::postResample(model_predictions_95, behavioral_predictions)
 
 
 # 1
-model_predictions = c(1, 1, 1, 1, 1, 1, 1,
+model_predictions_1 = c(1, 1, 1, 1, 1, 1, 1,
                       0, 1, 1, 1, 1, 1, 0)
 
-model_predictions
+model_predictions_1
 
 # model fit: 
-caret::postResample(model_predictions, behavioral_predictions)
+caret::postResample(model_predictions_1, behavioral_predictions)
 
 
+
+
+###################
+###################
+## BB MODEL FITS ##
+###################
+###################
+
+
+B.BB.MAIN.SUM = mean(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="experimental" & D_tall$objectType=="B"], na.rm=TRUE)
+
+C.BB.MAIN.SUM = mean(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="experimental" & D_tall$objectType=="C"], na.rm=TRUE)
+
+
+A.BB.CONTROL.SUM = mean(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="control" & D_tall$objectType=="A"], na.rm=TRUE)
+
+B.BB.CONTROL.SUM = mean(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="control" & D_tall$objectType=="B"], na.rm=TRUE)
+
+C.BB.CONTROL.SUM = mean(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="control" & D_tall$objectType=="C"], na.rm=TRUE)
+
+
+
+
+# behavioral predictions
+behavioral_predictions = c(B.BB.MAIN.SUM, C.BB.MAIN.SUM, A.BB.CONTROL.SUM, B.BB.CONTROL.SUM, C.BB.CONTROL.SUM)
+
+behavioral_predictions
+
+# .5
+model_predictions_5 = c(0.5, 0.5, 0.57, 0.57, 0.57)
+model_predictions_5
+
+# model fit: 
+caret::postResample(model_predictions_5, behavioral_predictions)
+
+# .65
+model_predictions_65 = c(0.65, 0.65, 0.68, 0.68, 0.68)
+
+model_predictions_65
+
+# model fit: 
+caret::postResample(model_predictions_65, behavioral_predictions)
+
+# .80
+model_predictions_80 = c(0.80, 0.80, 0.81, 0.81, 0.81)
+
+model_predictions_80
+
+
+# model fit: 
+caret::postResample(model_predictions_80, behavioral_predictions)
+
+
+# .95
+model_predictions_95 = c(0.95, 0.95, 0.95, 0.95, 0.95)
+model_predictions_95
+
+# model fit: 
+caret::postResample(model_predictions_95, behavioral_predictions)
+
+
+# 1
+model_predictions_1 = c(1, 1, 1, 1, 1)
+
+model_predictions_1
+
+# model fit: 
+caret::postResample(model_predictions_1, behavioral_predictions)
+
+
+
+####################
+####################
+## ISO MODEL FITS ##
+####################
+####################
+
+
+#ISO
+B.ISO.MAIN.SUM = mean(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="experimental" & D_tall$objectType=="B"], na.rm=TRUE)
+
+C.ISO.MAIN.SUM = mean(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="experimental" & D_tall$objectType=="C"], na.rm=TRUE)
+
+
+A.ISO.CONTROL.SUM = mean(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="control" & D_tall$objectType=="A"], na.rm=TRUE)
+
+B.ISO.CONTROL.SUM = mean(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="control" & D_tall$objectType=="B"], na.rm=TRUE)
+
+C.ISO.CONTROL.SUM = mean(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="control" & D_tall$objectType=="C"], na.rm=TRUE)
+
+behavioral_predictions = c(B.ISO.MAIN.SUM, C.ISO.MAIN.SUM, A.ISO.CONTROL.SUM, B.ISO.CONTROL.SUM, C.ISO.CONTROL.SUM)
+
+# .5
+model_predictions_5 = c(0.67, 0.67, 0.57, 0.57, 0.57)
+model_predictions_5
+
+# model fit: 
+caret::postResample(model_predictions_5, behavioral_predictions)
+
+# .65
+model_predictions_65 = c(0.74, 0.74, 0.68, 0.68, 0.68)
+
+model_predictions_65
+
+# model fit: 
+caret::postResample(model_predictions_65, behavioral_predictions)
+
+# .80
+model_predictions_80 = c(0.83, 0.83, 0.81, 0.81, 0.81)
+
+model_predictions_80
+
+
+# model fit: 
+caret::postResample(model_predictions_80, behavioral_predictions)
+
+
+# .95
+model_predictions_95 = c(0.95, 0.95, 0.95, 0.95, 0.95)
+model_predictions_95
+
+# model fit: 
+caret::postResample(model_predictions_95, behavioral_predictions)
+
+
+# 1
+model_predictions_1 = c(1, 1, 1, 1, 1)
+
+model_predictions_1
+
+# model fit: 
+caret::postResample(model_predictions_1, behavioral_predictions)

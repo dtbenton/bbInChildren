@@ -258,3 +258,88 @@ cor(model_predictions, behavioral_predictions)
 #      RMSE  Rsquared       MAE 
 # 0.2233398 0.7830250 0.1550331
 
+
+
+###################
+###################
+## BB MODEL FITS ##
+###################
+###################
+
+# load data
+D.2 = read.csv(file.choose(), header = TRUE, stringsAsFactors = FALSE)
+
+# BEHAVIORAL DATA
+B.BB.MAIN.SUM = mean(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="experimental" & D_tall$objectType=="B"], na.rm=TRUE)
+
+C.BB.MAIN.SUM = mean(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="experimental" & D_tall$objectType=="C"], na.rm=TRUE)
+
+
+A.BB.CONTROL.SUM = mean(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="control" & D_tall$objectType=="A"], na.rm=TRUE)
+
+B.BB.CONTROL.SUM = mean(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="control" & D_tall$objectType=="B"], na.rm=TRUE)
+
+C.BB.CONTROL.SUM = mean(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="control" & D_tall$objectType=="C"], na.rm=TRUE)
+
+
+behavioral_predictions = c(B.BB.MAIN.SUM, C.BB.MAIN.SUM, A.BB.CONTROL.SUM, B.BB.CONTROL.SUM, C.BB.CONTROL.SUM)
+
+
+# MODEL DATA
+# BB trial objects #
+# main
+BB.B.main = D.2$choice[D.2$object=="B" & D.2$trial=="main" & D.2$condition=="BB"]
+
+BB.C.main = D.2$choice[D.2$object=="C" & D.2$trial=="main" & D.2$condition=="BB"]
+
+
+# control
+BB.A.control = D.2$choice[D.2$object=="A" & D.2$trial=="control" & D.2$condition=="BB"]
+
+BB.B.control = D.2$choice[D.2$object=="B" & D.2$trial=="control" & D.2$condition=="BB"]
+
+BB.C.control = D.2$choice[D.2$object=="C" & D.2$trial=="control" & D.2$condition=="BB"]
+
+model_predictions = c(mean(BB.B.main), mean(BB.C.main), mean(BB.A.control), mean(BB.B.control), mean(BB.C.control))
+
+# model fit: 
+caret::postResample(model_predictions, behavioral_predictions)
+
+###################
+###################
+## ISO MODEL FITS ##
+###################
+###################
+
+# BEHAVIORAL DATA
+B.ISO.MAIN.SUM = mean(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="experimental" & D_tall$objectType=="B"], na.rm=TRUE)
+
+C.ISO.MAIN.SUM = mean(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="experimental" & D_tall$objectType=="C"], na.rm=TRUE)
+
+
+A.ISO.CONTROL.SUM = mean(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="control" & D_tall$objectType=="A"], na.rm=TRUE)
+
+B.ISO.CONTROL.SUM = mean(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="control" & D_tall$objectType=="B"], na.rm=TRUE)
+
+C.ISO.CONTROL.SUM = mean(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="control" & D_tall$objectType=="C"], na.rm=TRUE)
+
+
+behavioral_predictions = c(B.ISO.MAIN.SUM, C.ISO.MAIN.SUM, A.ISO.CONTROL.SUM, B.ISO.CONTROL.SUM, C.ISO.CONTROL.SUM)
+
+
+# MODEL DATA
+# ISO trial objects #
+# main
+ISO.B.main = D.2$choice[D.2$object=="B" & D.2$trial=="main" & D.2$condition=="ISO"]
+
+ISO.C.main = D.2$choice[D.2$object=="C" & D.2$trial=="main" & D.2$condition=="ISO"]
+
+
+# control
+ISO.A.control = D.2$choice[D.2$object=="A" & D.2$trial=="control" & D.2$condition=="ISO"]
+
+ISO.B.control = D.2$choice[D.2$object=="B" & D.2$trial=="control" & D.2$condition=="ISO"]
+
+ISO.C.control = D.2$choice[D.2$object=="C" & D.2$trial=="control" & D.2$condition=="ISO"]
+
+model_predictions = c(mean(ISO.B.main), mean(ISO.C.main), mean(ISO.A.control), mean(ISO.B.control), mean(ISO.C.control))
