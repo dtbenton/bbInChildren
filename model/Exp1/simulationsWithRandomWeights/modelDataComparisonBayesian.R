@@ -375,3 +375,181 @@ model_predictions_1
 
 # model fit: 
 caret::postResample(model_predictions_1, behavioral_predictions)
+
+
+#######################################
+#######################################
+## EXPERIMENTAL CONDITION MODEL FITS ##
+#######################################
+#######################################
+# behavioral predictions 
+#BB
+A.BB.MAIN.SUM = mean(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="experimental" & D_tall$objectType=="A"], na.rm=TRUE)
+
+B.BB.MAIN.SUM = mean(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="experimental" & D_tall$objectType=="B"], na.rm=TRUE)
+
+C.BB.MAIN.SUM = mean(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="experimental" & D_tall$objectType=="C"], na.rm=TRUE)
+
+
+
+#ISO
+A.ISO.MAIN.SUM = mean(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="experimental" & D_tall$objectType=="A"], na.rm=TRUE)
+
+B.ISO.MAIN.SUM = mean(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="experimental" & D_tall$objectType=="B"], na.rm=TRUE)
+
+C.ISO.MAIN.SUM = mean(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="experimental" & D_tall$objectType=="C"], na.rm=TRUE)
+
+
+
+# behavioral predictions
+behavioral_predictions = c(A.BB.MAIN.SUM, B.BB.MAIN.SUM, C.BB.MAIN.SUM, A.ISO.MAIN.SUM, B.ISO.MAIN.SUM, C.ISO.MAIN.SUM)
+
+
+
+######################
+######################
+###                ###
+### BAYESIAN MODEL ###
+###                ###
+######################
+######################
+
+# ENTER IN THIS ORDER: 
+# c(mean(BB.A.main), mean(BB.B.main), mean(BB.C.main), mean(BB.A.control), mean(BB.B.control), mean(BB.C.control), mean(BB.D.control),
+# mean(ISO.A.main), mean(ISO.B.main), mean(ISO.C.main), mean(ISO.A.control), mean(ISO.B.control), mean(ISO.C.control), mean(ISO.D.control)
+# model predictions
+
+# .5
+model_predictions_5 = c(1, 0.5, 0.5,0, 0.67, 0.67)
+model_predictions_5
+
+# model fit: 
+caret::postResample(model_predictions_5, behavioral_predictions)
+
+# .65
+model_predictions_65 = c(1, 0.65, 0.65,0, 0.74, 0.74)
+
+model_predictions_65
+
+# model fit: 
+caret::postResample(model_predictions_65, behavioral_predictions)
+
+# .80
+model_predictions_80 = c(1, 0.80, 0.80,0, 0.83, 0.83)
+
+model_predictions_80
+
+
+# model fit: 
+caret::postResample(model_predictions_80, behavioral_predictions)
+
+
+# .95
+model_predictions_95 = c(1, 0.95, 0.95,0, 0.95, 0.95)
+model_predictions_95
+
+# model fit: 
+caret::postResample(model_predictions_95, behavioral_predictions)
+
+
+# 1
+model_predictions_1 = c(1, 1, 1,0, 1, 1)
+
+model_predictions_1
+
+# model fit: 
+caret::postResample(model_predictions_1, behavioral_predictions)
+
+
+##################################
+##################################
+## CONTROL CONDITION MODEL FITS ##
+##################################
+##################################
+
+# behavioral predictions 
+#BB
+
+A.BB.CONTROL.SUM = mean(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="control" & D_tall$objectType=="A"], na.rm=TRUE)
+
+B.BB.CONTROL.SUM = mean(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="control" & D_tall$objectType=="B"], na.rm=TRUE)
+
+C.BB.CONTROL.SUM = mean(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="control" & D_tall$objectType=="C"], na.rm=TRUE)
+
+D.BB.CONTROL.SUM = mean(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="control" & D_tall$objectType=="D"], na.rm=TRUE)
+
+
+#ISO
+A.ISO.CONTROL.SUM = mean(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="control" & D_tall$objectType=="A"], na.rm=TRUE)
+
+B.ISO.CONTROL.SUM = mean(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="control" & D_tall$objectType=="B"], na.rm=TRUE)
+
+C.ISO.CONTROL.SUM = mean(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="control" & D_tall$objectType=="C"], na.rm=TRUE)
+
+D.ISO.CONTROL.SUM = mean(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="control" & D_tall$objectType=="D"], na.rm=TRUE)
+
+
+# behavioral predictions
+behavioral_predictions = c(A.BB.CONTROL.SUM, B.BB.CONTROL.SUM, C.BB.CONTROL.SUM, D.BB.CONTROL.SUM,
+                           A.ISO.CONTROL.SUM, B.ISO.CONTROL.SUM, C.ISO.CONTROL.SUM, D.ISO.CONTROL.SUM)
+
+
+
+######################
+######################
+###                ###
+### BAYESIAN MODEL ###
+###                ###
+######################
+######################
+
+# ENTER IN THIS ORDER: 
+# c(mean(BB.A.main), mean(BB.B.main), mean(BB.C.main), mean(BB.A.control), mean(BB.B.control), mean(BB.C.control), mean(BB.D.control),
+# mean(ISO.A.main), mean(ISO.B.main), mean(ISO.C.main), mean(ISO.A.control), mean(ISO.B.control), mean(ISO.C.control), mean(ISO.D.control)
+# model predictions
+
+# .5
+model_predictions_5 = c(0.57, 0.57, 0.57, 1,
+                        0.57, 0.57, 0.57, 0)
+model_predictions_5
+
+# model fit: 
+caret::postResample(model_predictions_5, behavioral_predictions)
+
+# .65
+model_predictions_65 = c(0.68, 0.68, 0.68, 1,
+                         0.68, 0.68, 0.68, 0)
+
+model_predictions_65
+
+# model fit: 
+caret::postResample(model_predictions_65, behavioral_predictions)
+
+# .80
+model_predictions_80 = c(0.81, 0.81, 0.81, 1,
+                         0.81, 0.81, 0.81, 0)
+
+model_predictions_80
+
+
+# model fit: 
+caret::postResample(model_predictions_80, behavioral_predictions)
+
+
+# .95
+model_predictions_95 = c(0.95, 0.95, 0.95, 1,
+                         0.95, 0.95, 0.95, 0)
+model_predictions_95
+
+# model fit: 
+caret::postResample(model_predictions_95, behavioral_predictions)
+
+
+# 1
+model_predictions_1 = c(1, 1, 1, 1,
+                        1, 1, 1, 0)
+
+model_predictions_1
+
+# model fit: 
+caret::postResample(model_predictions_1, behavioral_predictions)
