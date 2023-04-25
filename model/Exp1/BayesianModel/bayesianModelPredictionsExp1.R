@@ -26,10 +26,10 @@ options(scipen=9999)
 ## p = 0.5 ##
 # create variables
 # BB
-#main
-BB.A.main = rep("1",16)
-BB.B.main = rep("0.5",16) # 0.5+0.5
-BB.C.main = rep("0.5",16) # 0.5+0.5
+#experimental
+BB.A.experimental = rep("1",16)
+BB.B.experimental = rep("0.5",16) # 0.5+0.5
+BB.C.experimental = rep("0.5",16) # 0.5+0.5
 
 
 # control
@@ -40,10 +40,10 @@ BB.D.control = rep("1",16) # 0.5+0.5
 
 
 # ISO
-#main
-ISO.A.main = rep("0",16)
-ISO.B.main = rep("0.67",16) # 0.5+0.5
-ISO.C.main = rep("0.67",16) # 0.5+0.5
+#experimental
+ISO.A.experimental = rep("0",16)
+ISO.B.experimental = rep("0.67",16) # 0.5+0.5
+ISO.C.experimental = rep("0.67",16) # 0.5+0.5
 
 
 # control
@@ -55,34 +55,34 @@ ISO.D.control = rep("0",16) # 0.5+0.5
 
 
 # create a dataframe that combines the variables
-D.new.main = data.frame(BB.A.main = BB.A.main, BB.B.main = BB.B.main,
-                        BB.C.main = BB.C.main, ISO.A.main = ISO.A.main, 
-                        ISO.B.main = ISO.B.main, ISO.C.main = ISO.C.main)
+D.new.experimental = data.frame(BB.A.experimental = BB.A.experimental, BB.B.experimental = BB.B.experimental,
+                        BB.C.experimental = BB.C.experimental, ISO.A.experimental = ISO.A.experimental, 
+                        ISO.B.experimental = ISO.B.experimental, ISO.C.experimental = ISO.C.experimental)
 
-D_main_tall =  reshape(D.new.main, varying = c(1:6), v.names = "measure", 
+D_experimental_tall =  reshape(D.new.experimental, varying = c(1:6), v.names = "measure", 
                        timevar = "condition",   direction = "long")
-D_main_tall$ID = rep(c(1:16), times = 6)
+D_experimental_tall$ID = rep(c(1:16), times = 6)
 
 # remove 'id' column from the reshape() function
-D_main_tall$id = NULL
+D_experimental_tall$id = NULL
 
 # organize the dataframe by ID
-D_main_tall = D_main_tall[order(D_main_tall$ID),] 
+D_experimental_tall = D_experimental_tall[order(D_experimental_tall$ID),] 
 
 # replace the 'condition' column with a more appropriate one
-D_main_tall$condition = rep(c("BB","ISO"), each = 3, times = 16)
+D_experimental_tall$condition = rep(c("BB","ISO"), each = 3, times = 16)
 
 # create a 'trial' column
-D_main_tall$trial = rep(c("main"), times = 96)
+D_experimental_tall$trial = rep(c("experimental"), times = 96)
 
 # create 'object' column
-D_main_tall$objects = rep(c("A","B","C"), times = 32)
+D_experimental_tall$objects = rep(c("A","B","C"), times = 32)
 
 # remove 'row.names' column 
-D_main_tall$row.names = NULL
+D_experimental_tall$row.names = NULL
 
 # reorder columns 
-D_main_tall = D_main_tall[,c(3,4,1,5,2)]
+D_experimental_tall = D_experimental_tall[,c(3,4,1,5,2)]
 
 #############
 ## control ##
@@ -120,9 +120,8 @@ D_control_tall = D_control_tall[,c(3,4,1,5,2)]
 
 
 # combine the dataframes
-D_tall = rbind(D_main_tall,
+D_tall = rbind(D_experimental_tall,
                D_control_tall)
-fix(D_tall)
 names(D_tall)
 
 # convert variables to their proper type
@@ -148,7 +147,8 @@ condition_barplot + stat_summary(fun = mean, geom = "bar", position = "dodge") +
   
   coord_cartesian(ylim=c(0, 1.2)) +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
-        panel.background = element_blank(), axis.line = element_line(colour = "black"))
+        panel.background = element_blank(), axis.line = element_line(colour = "black"),
+        axis.title.x=element_blank())
 
 
 
@@ -160,10 +160,10 @@ condition_barplot + stat_summary(fun = mean, geom = "bar", position = "dodge") +
 ######################
 ######################
 # BB
-#main
-BB.A.main = rep("1",16)
-BB.B.main = rep("0.65",16) # 0.5+0.5
-BB.C.main = rep("0.65",16) # 0.5+0.5
+#experimental
+BB.A.experimental = rep("1",16)
+BB.B.experimental = rep("0.65",16) # 0.5+0.5
+BB.C.experimental = rep("0.65",16) # 0.5+0.5
 
 
 # control
@@ -174,10 +174,10 @@ BB.D.control = rep("1",16) # 0.5+0.5
 
 
 # ISO
-#main
-ISO.A.main = rep("0",16)
-ISO.B.main = rep("0.74",16) # 0.5+0.5
-ISO.C.main = rep("0.74",16) # 0.5+0.5
+#experimental
+ISO.A.experimental = rep("0",16)
+ISO.B.experimental = rep("0.74",16) # 0.5+0.5
+ISO.C.experimental = rep("0.74",16) # 0.5+0.5
 
 
 # control
@@ -189,34 +189,34 @@ ISO.D.control = rep("0",16) # 0.5+0.5
 
 
 # create a dataframe that combines the variables
-D.new.main = data.frame(BB.A.main = BB.A.main, BB.B.main = BB.B.main,
-                        BB.C.main = BB.C.main, ISO.A.main = ISO.A.main, 
-                        ISO.B.main = ISO.B.main, ISO.C.main = ISO.C.main)
+D.new.experimental = data.frame(BB.A.experimental = BB.A.experimental, BB.B.experimental = BB.B.experimental,
+                        BB.C.experimental = BB.C.experimental, ISO.A.experimental = ISO.A.experimental, 
+                        ISO.B.experimental = ISO.B.experimental, ISO.C.experimental = ISO.C.experimental)
 
-D_main_tall =  reshape(D.new.main, varying = c(1:6), v.names = "measure", 
+D_experimental_tall =  reshape(D.new.experimental, varying = c(1:6), v.names = "measure", 
                        timevar = "condition",   direction = "long")
-D_main_tall$ID = rep(c(1:16), times = 6)
+D_experimental_tall$ID = rep(c(1:16), times = 6)
 
 # remove 'id' column from the reshape() function
-D_main_tall$id = NULL
+D_experimental_tall$id = NULL
 
 # organize the dataframe by ID
-D_main_tall = D_main_tall[order(D_main_tall$ID),] 
+D_experimental_tall = D_experimental_tall[order(D_experimental_tall$ID),] 
 
 # replace the 'condition' column with a more appropriate one
-D_main_tall$condition = rep(c("BB","ISO"), each = 3, times = 16)
+D_experimental_tall$condition = rep(c("BB","ISO"), each = 3, times = 16)
 
 # create a 'trial' column
-D_main_tall$trial = rep(c("main"), times = 96)
+D_experimental_tall$trial = rep(c("experimental"), times = 96)
 
 # create 'object' column
-D_main_tall$objects = rep(c("A","B","C"), times = 32)
+D_experimental_tall$objects = rep(c("A","B","C"), times = 32)
 
 # remove 'row.names' column 
-D_main_tall$row.names = NULL
+D_experimental_tall$row.names = NULL
 
 # reorder columns 
-D_main_tall = D_main_tall[,c(3,4,1,5,2)]
+D_experimental_tall = D_experimental_tall[,c(3,4,1,5,2)]
 
 #############
 ## control ##
@@ -254,7 +254,7 @@ D_control_tall = D_control_tall[,c(3,4,1,5,2)]
 
 
 # combine the dataframes
-D_tall = rbind(D_main_tall,
+D_tall = rbind(D_experimental_tall,
                D_control_tall)
 names(D_tall)
 
@@ -282,7 +282,8 @@ condition_barplot + stat_summary(fun = mean, geom = "bar", position = "dodge") +
                                         
   coord_cartesian(ylim=c(0, 1.2)) +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
-        panel.background = element_blank(), axis.line = element_line(colour = "black"))
+        panel.background = element_blank(), axis.line = element_line(colour = "black"),
+        axis.title.x=element_blank())
 
 
 
@@ -293,10 +294,10 @@ condition_barplot + stat_summary(fun = mean, geom = "bar", position = "dodge") +
 ######################
 ######################
 # BB
-#main
-BB.A.main = rep("1",16)
-BB.B.main = rep("0.8",16) # 0.5+0.5
-BB.C.main = rep("0.8",16) # 0.5+0.5
+#experimental
+BB.A.experimental = rep("1",16)
+BB.B.experimental = rep("0.8",16) # 0.5+0.5
+BB.C.experimental = rep("0.8",16) # 0.5+0.5
 
 
 # control
@@ -307,10 +308,10 @@ BB.D.control = rep("1",16) # 0.5+0.5
 
 
 # ISO
-#main
-ISO.A.main = rep("0",16)
-ISO.B.main = rep("0.83",16) # 0.5+0.5
-ISO.C.main = rep("0.83",16) # 0.5+0.5
+#experimental
+ISO.A.experimental = rep("0",16)
+ISO.B.experimental = rep("0.83",16) # 0.5+0.5
+ISO.C.experimental = rep("0.83",16) # 0.5+0.5
 
 
 # control
@@ -322,34 +323,34 @@ ISO.D.control = rep("0",16) # 0.5+0.5
 
 
 # create a dataframe that combines the variables
-D.new.main = data.frame(BB.A.main = BB.A.main, BB.B.main = BB.B.main,
-                        BB.C.main = BB.C.main, ISO.A.main = ISO.A.main, 
-                        ISO.B.main = ISO.B.main, ISO.C.main = ISO.C.main)
+D.new.experimental = data.frame(BB.A.experimental = BB.A.experimental, BB.B.experimental = BB.B.experimental,
+                        BB.C.experimental = BB.C.experimental, ISO.A.experimental = ISO.A.experimental, 
+                        ISO.B.experimental = ISO.B.experimental, ISO.C.experimental = ISO.C.experimental)
 
-D_main_tall =  reshape(D.new.main, varying = c(1:6), v.names = "measure", 
+D_experimental_tall =  reshape(D.new.experimental, varying = c(1:6), v.names = "measure", 
                        timevar = "condition",   direction = "long")
-D_main_tall$ID = rep(c(1:16), times = 6)
+D_experimental_tall$ID = rep(c(1:16), times = 6)
 
 # remove 'id' column from the reshape() function
-D_main_tall$id = NULL
+D_experimental_tall$id = NULL
 
 # organize the dataframe by ID
-D_main_tall = D_main_tall[order(D_main_tall$ID),] 
+D_experimental_tall = D_experimental_tall[order(D_experimental_tall$ID),] 
 
 # replace the 'condition' column with a more appropriate one
-D_main_tall$condition = rep(c("BB","ISO"), each = 3, times = 16)
+D_experimental_tall$condition = rep(c("BB","ISO"), each = 3, times = 16)
 
 # create a 'trial' column
-D_main_tall$trial = rep(c("main"), times = 96)
+D_experimental_tall$trial = rep(c("experimental"), times = 96)
 
 # create 'object' column
-D_main_tall$objects = rep(c("A","B","C"), times = 32)
+D_experimental_tall$objects = rep(c("A","B","C"), times = 32)
 
 # remove 'row.names' column 
-D_main_tall$row.names = NULL
+D_experimental_tall$row.names = NULL
 
 # reorder columns 
-D_main_tall = D_main_tall[,c(3,4,1,5,2)]
+D_experimental_tall = D_experimental_tall[,c(3,4,1,5,2)]
 
 #############
 ## control ##
@@ -387,7 +388,7 @@ D_control_tall = D_control_tall[,c(3,4,1,5,2)]
 
 
 # combine the dataframes
-D_tall = rbind(D_main_tall,
+D_tall = rbind(D_experimental_tall,
                D_control_tall)
 names(D_tall)
 
@@ -413,7 +414,8 @@ condition_barplot + stat_summary(fun = mean, geom = "bar", position = "dodge") +
                                         
   coord_cartesian(ylim=c(0, 1.2)) +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
-        panel.background = element_blank(), axis.line = element_line(colour = "black"))
+        panel.background = element_blank(), axis.line = element_line(colour = "black"),
+        axis.title.x=element_blank())
 
 
 
@@ -425,10 +427,10 @@ condition_barplot + stat_summary(fun = mean, geom = "bar", position = "dodge") +
 ######################
 ######################
 # BB
-#main
-BB.A.main = rep("1",16)
-BB.B.main = rep("0.95",16) # 0.5+0.5
-BB.C.main = rep("0.95",16) # 0.5+0.5
+#experimental
+BB.A.experimental = rep("1",16)
+BB.B.experimental = rep("0.95",16) # 0.5+0.5
+BB.C.experimental = rep("0.95",16) # 0.5+0.5
 
 
 # control
@@ -439,10 +441,10 @@ BB.D.control = rep("1",16) # 0.5+0.5
 
 
 # ISO
-#main
-ISO.A.main = rep("0",16)
-ISO.B.main = rep("0.95",16) # 0.5+0.5
-ISO.C.main = rep("0.95",16) # 0.5+0.5
+#experimental
+ISO.A.experimental = rep("0",16)
+ISO.B.experimental = rep("0.95",16) # 0.5+0.5
+ISO.C.experimental = rep("0.95",16) # 0.5+0.5
 
 
 # control
@@ -454,34 +456,34 @@ ISO.D.control = rep("0",16) # 0.5+0.5
 
 
 # create a dataframe that combines the variables
-D.new.main = data.frame(BB.A.main = BB.A.main, BB.B.main = BB.B.main,
-                        BB.C.main = BB.C.main, ISO.A.main = ISO.A.main, 
-                        ISO.B.main = ISO.B.main, ISO.C.main = ISO.C.main)
+D.new.experimental = data.frame(BB.A.experimental = BB.A.experimental, BB.B.experimental = BB.B.experimental,
+                        BB.C.experimental = BB.C.experimental, ISO.A.experimental = ISO.A.experimental, 
+                        ISO.B.experimental = ISO.B.experimental, ISO.C.experimental = ISO.C.experimental)
 
-D_main_tall =  reshape(D.new.main, varying = c(1:6), v.names = "measure", 
+D_experimental_tall =  reshape(D.new.experimental, varying = c(1:6), v.names = "measure", 
                        timevar = "condition",   direction = "long")
-D_main_tall$ID = rep(c(1:16), times = 6)
+D_experimental_tall$ID = rep(c(1:16), times = 6)
 
 # remove 'id' column from the reshape() function
-D_main_tall$id = NULL
+D_experimental_tall$id = NULL
 
 # organize the dataframe by ID
-D_main_tall = D_main_tall[order(D_main_tall$ID),] 
+D_experimental_tall = D_experimental_tall[order(D_experimental_tall$ID),] 
 
 # replace the 'condition' column with a more appropriate one
-D_main_tall$condition = rep(c("BB","ISO"), each = 3, times = 16)
+D_experimental_tall$condition = rep(c("BB","ISO"), each = 3, times = 16)
 
 # create a 'trial' column
-D_main_tall$trial = rep(c("main"), times = 96)
+D_experimental_tall$trial = rep(c("experimental"), times = 96)
 
 # create 'object' column
-D_main_tall$objects = rep(c("A","B","C"), times = 32)
+D_experimental_tall$objects = rep(c("A","B","C"), times = 32)
 
 # remove 'row.names' column 
-D_main_tall$row.names = NULL
+D_experimental_tall$row.names = NULL
 
 # reorder columns 
-D_main_tall = D_main_tall[,c(3,4,1,5,2)]
+D_experimental_tall = D_experimental_tall[,c(3,4,1,5,2)]
 
 #############
 ## control ##
@@ -519,7 +521,7 @@ D_control_tall = D_control_tall[,c(3,4,1,5,2)]
 
 
 # combine the dataframes
-D_tall = rbind(D_main_tall,
+D_tall = rbind(D_experimental_tall,
                D_control_tall)
 names(D_tall)
 
@@ -545,7 +547,8 @@ condition_barplot + stat_summary(fun = mean, geom = "bar", position = "dodge") +
                                         
   coord_cartesian(ylim=c(0, 1.2)) +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
-        panel.background = element_blank(), axis.line = element_line(colour = "black"))
+        panel.background = element_blank(), axis.line = element_line(colour = "black"),
+        axis.title.x=element_blank())
 
 
 
@@ -555,10 +558,10 @@ condition_barplot + stat_summary(fun = mean, geom = "bar", position = "dodge") +
 ######################
 ######################
 # BB
-#main
-BB.A.main = rep("1",16)
-BB.B.main = rep("1",16) # 0.5+0.5
-BB.C.main = rep("1",16) # 0.5+0.5
+#experimental
+BB.A.experimental = rep("1",16)
+BB.B.experimental = rep("1",16) # 0.5+0.5
+BB.C.experimental = rep("1",16) # 0.5+0.5
 
 
 # control
@@ -569,10 +572,10 @@ BB.D.control = rep("1",16) # 0.5+0.5
 
 
 # ISO
-#main
-ISO.A.main = rep("0",16)
-ISO.B.main = rep("1",16) # 0.5+0.5
-ISO.C.main = rep("1",16) # 0.5+0.5
+#experimental
+ISO.A.experimental = rep("0",16)
+ISO.B.experimental = rep("1",16) # 0.5+0.5
+ISO.C.experimental = rep("1",16) # 0.5+0.5
 
 
 # control
@@ -584,34 +587,34 @@ ISO.D.control = rep("0",16) # 0.5+0.5
 
 
 # create a dataframe that combines the variables
-D.new.main = data.frame(BB.A.main = BB.A.main, BB.B.main = BB.B.main,
-                        BB.C.main = BB.C.main, ISO.A.main = ISO.A.main, 
-                        ISO.B.main = ISO.B.main, ISO.C.main = ISO.C.main)
+D.new.experimental = data.frame(BB.A.experimental = BB.A.experimental, BB.B.experimental = BB.B.experimental,
+                        BB.C.experimental = BB.C.experimental, ISO.A.experimental = ISO.A.experimental, 
+                        ISO.B.experimental = ISO.B.experimental, ISO.C.experimental = ISO.C.experimental)
 
-D_main_tall =  reshape(D.new.main, varying = c(1:6), v.names = "measure", 
+D_experimental_tall =  reshape(D.new.experimental, varying = c(1:6), v.names = "measure", 
                        timevar = "condition",   direction = "long")
-D_main_tall$ID = rep(c(1:16), times = 6)
+D_experimental_tall$ID = rep(c(1:16), times = 6)
 
 # remove 'id' column from the reshape() function
-D_main_tall$id = NULL
+D_experimental_tall$id = NULL
 
 # organize the dataframe by ID
-D_main_tall = D_main_tall[order(D_main_tall$ID),] 
+D_experimental_tall = D_experimental_tall[order(D_experimental_tall$ID),] 
 
 # replace the 'condition' column with a more appropriate one
-D_main_tall$condition = rep(c("BB","ISO"), each = 3, times = 16)
+D_experimental_tall$condition = rep(c("BB","ISO"), each = 3, times = 16)
 
 # create a 'trial' column
-D_main_tall$trial = rep(c("main"), times = 96)
+D_experimental_tall$trial = rep(c("experimental"), times = 96)
 
 # create 'object' column
-D_main_tall$objects = rep(c("A","B","C"), times = 32)
+D_experimental_tall$objects = rep(c("A","B","C"), times = 32)
 
 # remove 'row.names' column 
-D_main_tall$row.names = NULL
+D_experimental_tall$row.names = NULL
 
 # reorder columns 
-D_main_tall = D_main_tall[,c(3,4,1,5,2)]
+D_experimental_tall = D_experimental_tall[,c(3,4,1,5,2)]
 
 #############
 ## control ##
@@ -649,7 +652,7 @@ D_control_tall = D_control_tall[,c(3,4,1,5,2)]
 
 
 # combine the dataframes
-D_tall = rbind(D_main_tall,
+D_tall = rbind(D_experimental_tall,
                D_control_tall)
 names(D_tall)
 
@@ -675,5 +678,6 @@ condition_barplot + stat_summary(fun = mean, geom = "bar", position = "dodge") +
                                         
   coord_cartesian(ylim=c(0, 1.2)) +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
-        panel.background = element_blank(), axis.line = element_line(colour = "black"))
+        panel.background = element_blank(), axis.line = element_line(colour = "black"),
+        axis.title.x=element_blank())
 
