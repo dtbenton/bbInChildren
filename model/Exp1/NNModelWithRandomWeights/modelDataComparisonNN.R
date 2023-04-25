@@ -252,11 +252,8 @@ model_predictions = c(mean(BB.A.main), mean(BB.B.main), mean(BB.C.main), mean(BB
 #####################
 # model fit indices #
 #####################
-
 caret::postResample(model_predictions, behavioral_predictions)
-cor(model_predictions, behavioral_predictions)
-#      RMSE  Rsquared       MAE 
-# 0.2233398 0.7830250 0.1550331
+
 
 
 

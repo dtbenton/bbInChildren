@@ -101,6 +101,7 @@ set totalEpochs [list 400 800 1000 1500]
 set elementalPhase [list Aplus Dplus Aminus Dminus]
 set testPhase [list experimentalTest controlTest experimentalTest controlTest]
 
+
 # define loop
 foreach epoch $trainingEpochs totalEpoch $totalEpochs { 
 	foreach elemPhase $elementalPhase conLevel $condition testEvent $testPhase {
