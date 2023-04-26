@@ -1,1 +1,0 @@
-you can get these simulations to work out exactly right by setting momentum to be 0 and training on each phase (e.g., the AB+ phase and the A+ phase) for 100 epochs
