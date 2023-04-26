@@ -96,8 +96,8 @@ proc testNetwork {n train trainNum train2 trainNum2 test train3 trainNum3 train4
 
 # define lists for looping
 set condition [list BBexperimental BBcontrol ISOexperimental ISOcontrol]
-set trainingEpochs [list 200 400 500 750]
-set totalEpochs [list 400 800 1000 1500]
+set trainingEpochs [list 200 400 500 750 1000]
+set totalEpochs [list 400 800 1000 1500 2000]
 set elementalPhase [list Aplus Dplus Aminus Dminus]
 set testPhase [list experimentalTest controlTest experimentalTest controlTest]
 
