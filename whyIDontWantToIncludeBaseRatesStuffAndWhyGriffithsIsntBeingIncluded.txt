@@ -7,3 +7,5 @@ I kept most of the text because it does strengthen the paper
 Analysis
 
 I see your point about the linear model but remember that even if, for a given child, the response is binary, averaged over children the response is actually continuous. because we're reporting averages (on continuous values) a linear model is perfectly fine. Now, what I'm happy to do is make a note the the conclusions of the study don't change if we run these a logistic models. (which, if memory served, they don't, but i can run those again to be sure).
+
+i don't think we should remove participants who said yes to everything for two reasons. first, power. second, all yes is actually meaningful and reflects uncertainy (when considered over participants)

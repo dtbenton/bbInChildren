@@ -194,6 +194,53 @@ coefs = data.frame(coef(summary(first.three.way.BB.lmer)))
 coefs$p.z <- 2 * (1 - pnorm(abs(coefs$t.value))) # a column where the p-value is computed from the z-distribution
 coefs 
 
+# follow up analyses for the first three-way interaction
+A.BB.mean = mean(D_tall$choice[D_tall$objectType=="A" & D_tall$Condition=="Backwards Blocking"], rm.na=TRUE)
+A.BB.mean
+A.BB.sd = sd(D_tall$choice[D_tall$objectType=="A" & D_tall$Condition=="Backwards Blocking"])
+A.BB.sd
+
+B.BB = mean(D_tall$choice[D_tall$objectType=="B" & D_tall$Condition=="Backwards Blocking"], rm.na=TRUE)
+B.BB
+B.BB.sd = sd(D_tall$choice[D_tall$objectType=="B" & D_tall$Condition=="Backwards Blocking"])
+B.BB.sd
+
+C.BB = mean(D_tall$choice[D_tall$objectType=="C" & D_tall$Condition=="Backwards Blocking"], rm.na=TRUE)
+C.BB
+C.BB.sd = sd(D_tall$choice[D_tall$objectType=="C" & D_tall$Condition=="Backwards Blocking"])
+C.BB.sd
+
+D.BB = mean(D_tall$choice[D_tall$objectType=="D" & D_tall$Condition=="Backwards Blocking"], rm.na=TRUE)
+D.BB
+D.BB.sd = sd(D_tall$choice[D_tall$objectType=="D" & D_tall$Condition=="Backwards Blocking"], rm.na=TRUE)
+D.BB.sd
+
+# A vs. B = SIG
+t.test(D_tall$choice[D_tall$objectType=="A" & D_tall$Condition=="Backwards Blocking"],
+       D_tall$choice[D_tall$objectType=="B" & D_tall$Condition=="Backwards Blocking"], paired=TRUE)
+
+# A vs. C = SIG
+t.test(D_tall$choice[D_tall$objectType=="A" & D_tall$Condition=="Backwards Blocking"],
+       D_tall$choice[D_tall$objectType=="C" & D_tall$Condition=="Backwards Blocking"], paired=TRUE)
+
+# A vs. D = SIG
+t.test(D_tall$choice[D_tall$objectType=="A" & D_tall$Condition=="Backwards Blocking"],
+       D_tall$choice[D_tall$objectType=="D" & D_tall$Condition=="Backwards Blocking"])
+
+
+# B vs. C
+t.test(D_tall$choice[D_tall$objectType=="B" & D_tall$Condition=="Backwards Blocking"],
+       D_tall$choice[D_tall$objectType=="C" & D_tall$Condition=="Backwards Blocking"], paired=TRUE)
+
+# B vs. D = SIGN
+t.test(D_tall$choice[D_tall$objectType=="B" & D_tall$Condition=="Backwards Blocking"],
+       D_tall$choice[D_tall$objectType=="D" & D_tall$Condition=="Backwards Blocking"])
+
+# C vs. D = SIGN
+t.test(D_tall$choice[D_tall$objectType=="C" & D_tall$Condition=="Backwards Blocking"],
+       D_tall$choice[D_tall$objectType=="D" & D_tall$Condition=="Backwards Blocking"])
+
+
 # ISO
 first.three.way.ISO.lmer = lmer(choice~(AgeNum+objectType)^3+(1|ID), 
                                data=D_tall[D_tall$Condition=="Indirect Screening-Off",])
