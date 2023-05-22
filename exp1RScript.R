@@ -319,6 +319,126 @@ follow.up.second.three.way.iso = lmer(choice~objectType+(1|ID),
                                       data=D_tall[D_tall$Condition=="Indirect Screening-Off" & D_tall$phaseOrder=="Phase 1",])
 Anova(follow.up.second.three.way.iso)
 
+# Phase 1
+A.BB.mean = mean(D_tall$choice[D_tall$objectType=="A" & D_tall$phaseOrder=="Phase 1"], rm.na=TRUE)
+A.BB.mean
+A.BB.sd = sd(D_tall$choice[D_tall$objectType=="A" & D_tall$phaseOrder=="Phase 1"])
+A.BB.sd
+
+B.BB = mean(D_tall$choice[D_tall$objectType=="B" & D_tall$phaseOrder=="Phase 1"], rm.na=TRUE)
+B.BB
+B.BB.sd = sd(D_tall$choice[D_tall$objectType=="B" & D_tall$phaseOrder=="Phase 1"])
+B.BB.sd
+
+C.BB = mean(D_tall$choice[D_tall$objectType=="C" & D_tall$phaseOrder=="Phase 1"], rm.na=TRUE)
+C.BB
+C.BB.sd = sd(D_tall$choice[D_tall$objectType=="C" & D_tall$phaseOrder=="Phase 1"])
+C.BB.sd
+
+D.BB = mean(D_tall$choice[D_tall$objectType=="D" & D_tall$phaseOrder=="Phase 1"], rm.na=TRUE)
+D.BB
+D.BB.sd = sd(D_tall$choice[D_tall$objectType=="D" & D_tall$phaseOrder=="Phase 1"])
+D.BB.sd
+
+
+
+# A vs. B 
+t.test(D_tall$choice[D_tall$objectType=="A" & D_tall$phaseOrder=="Phase 1"],
+       D_tall$choice[D_tall$objectType=="B" & D_tall$phaseOrder=="Phase 1"], paired=TRUE)
+
+# A vs. C 
+t.test(D_tall$choice[D_tall$objectType=="A" & D_tall$phaseOrder=="Phase 1"],
+       D_tall$choice[D_tall$objectType=="C" & D_tall$phaseOrder=="Phase 1"], paired=TRUE)
+
+# A vs. D = SIG
+t.test(D_tall$choice[D_tall$objectType=="A" & D_tall$phaseOrder=="Phase 1"],
+       D_tall$choice[D_tall$objectType=="D" & D_tall$phaseOrder=="Phase 1"])
+
+
+# B vs. C = SIG
+t.test(D_tall$choice[D_tall$objectType=="B" & D_tall$phaseOrder=="Phase 1"],
+       D_tall$choice[D_tall$objectType=="C" & D_tall$phaseOrder=="Phase 1"], paired=TRUE)
+
+# B vs. D 
+t.test(D_tall$choice[D_tall$objectType=="B" & D_tall$phaseOrder=="Phase 1"],
+       D_tall$choice[D_tall$objectType=="D" & D_tall$phaseOrder=="Phase 1"])
+
+# C vs. D = SIG
+t.test(D_tall$choice[D_tall$objectType=="C" & D_tall$phaseOrder=="Phase 1"],
+       D_tall$choice[D_tall$objectType=="D" & D_tall$phaseOrder=="Phase 1"])
+
+
+
+
+# Phase 2
+A.BB.mean = mean(D_tall$choice[D_tall$objectType=="A" & D_tall$phaseOrder=="Phase 2"], rm.na=TRUE)
+A.BB.mean
+A.BB.sd = sd(D_tall$choice[D_tall$objectType=="A" & D_tall$phaseOrder=="Phase 2"])
+A.BB.sd
+
+B.BB = mean(D_tall$choice[D_tall$objectType=="B" & D_tall$phaseOrder=="Phase 2"], rm.na=TRUE)
+B.BB
+B.BB.sd = sd(D_tall$choice[D_tall$objectType=="B" & D_tall$phaseOrder=="Phase 2"])
+B.BB.sd
+
+C.BB = mean(D_tall$choice[D_tall$objectType=="C" & D_tall$phaseOrder=="Phase 2"], rm.na=TRUE)
+C.BB
+C.BB.sd = sd(D_tall$choice[D_tall$objectType=="C" & D_tall$phaseOrder=="Phase 2"])
+C.BB.sd
+
+D.BB = mean(D_tall$choice[D_tall$objectType=="D" & D_tall$phaseOrder=="Phase 2"], rm.na=TRUE)
+D.BB
+D.BB.sd = sd(D_tall$choice[D_tall$objectType=="D" & D_tall$phaseOrder=="Phase 2"])
+
+# Phase 2
+A.BB.mean = mean(D_tall$choice[D_tall$objectType=="A" & D_tall$phaseOrder=="Phase 2"], rm.na=TRUE)
+A.BB.mean
+A.BB.sd = sd(D_tall$choice[D_tall$objectType=="A" & D_tall$phaseOrder=="Phase 2"])
+A.BB.sd
+
+B.BB = mean(D_tall$choice[D_tall$objectType=="B" & D_tall$phaseOrder=="Phase 2"], rm.na=TRUE)
+B.BB
+B.BB.sd = sd(D_tall$choice[D_tall$objectType=="B" & D_tall$phaseOrder=="Phase 2"])
+B.BB.sd
+
+C.BB = mean(D_tall$choice[D_tall$objectType=="C" & D_tall$phaseOrder=="Phase 2"], rm.na=TRUE)
+C.BB
+C.BB.sd = sd(D_tall$choice[D_tall$objectType=="C" & D_tall$phaseOrder=="Phase 2"])
+C.BB.sd
+
+D.BB = mean(D_tall$choice[D_tall$objectType=="D" & D_tall$phaseOrder=="Phase 2"], rm.na=TRUE)
+D.BB
+D.BB.sd = sd(D_tall$choice[D_tall$objectType=="D" & D_tall$phaseOrder=="Phase 2"])
+D.BB.sd
+
+
+
+# A vs. B 
+t.test(D_tall$choice[D_tall$objectType=="A" & D_tall$phaseOrder=="Phase 2"],
+       D_tall$choice[D_tall$objectType=="B" & D_tall$phaseOrder=="Phase 2"], paired=TRUE)
+
+# A vs. C 
+t.test(D_tall$choice[D_tall$objectType=="A" & D_tall$phaseOrder=="Phase 2"],
+       D_tall$choice[D_tall$objectType=="C" & D_tall$phaseOrder=="Phase 2"], paired=TRUE)
+
+# A vs. D 
+t.test(D_tall$choice[D_tall$objectType=="A" & D_tall$phaseOrder=="Phase 2"],
+       D_tall$choice[D_tall$objectType=="D" & D_tall$phaseOrder=="Phase 2"])
+
+
+# B vs. C 
+t.test(D_tall$choice[D_tall$objectType=="B" & D_tall$phaseOrder=="Phase 2"],
+       D_tall$choice[D_tall$objectType=="C" & D_tall$phaseOrder=="Phase 2"], paired=TRUE)
+
+# B vs. D 
+t.test(D_tall$choice[D_tall$objectType=="B" & D_tall$phaseOrder=="Phase 2"],
+       D_tall$choice[D_tall$objectType=="D" & D_tall$phaseOrder=="Phase 2"])
+
+# C vs. D = SIG
+t.test(D_tall$choice[D_tall$objectType=="C" & D_tall$phaseOrder=="Phase 2"],
+       D_tall$choice[D_tall$objectType=="D" & D_tall$phaseOrder=="Phase 2"])
+
+
 ## THIRD THREE-WAY INTERACTION: AGE X CONDITION X OBJECT
 ## BB EXPERIMENTAL CONDITION ##
 bb.experimental.lmer = lmer(choice~objectType+(1|ID), data=D_tall[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="experimental",])
