@@ -1,0 +1,9 @@
+I've chosen not to include the base rate stuff in the intro because it's not necessarily the focus of this study -- the point of the study is to look at how children reason about BB events for 3 and 4 objects and whether their inferences comport with the predictions of a bayes model or an associative model. By including a discussion of base rates (at least in the intro), we're setting ourselves up to be swiftly rejected. I can see a reveiwer saying, "Ok, you talked all about base rates, but your study doesn't actually manipulate base rates. Now go to that study." I'm under a time crunch, and as much as I'd like to collect those data, cannot. I'm fine mentioning this work as one limitations and allude to how future research should investigate it, but I don't think the place to do it is in the inro.
+
+# starrt email with this:
+
+I kept most of the text because it does strengthen the paper
+
+Analysis
+
+I see your point about the linear model but remember that even if, for a given child, the response is binary, averaged over children the response is actually continuous. because we're reporting averages (on continuous values) a linear model is perfectly fine. Now, what I'm happy to do is make a note the the conclusions of the study don't change if we run these a logistic models. (which, if memory served, they don't, but i can run those again to be sure).
