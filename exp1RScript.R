@@ -253,6 +253,57 @@ coefs$p.z <- 2 * (1 - pnorm(abs(coefs$t.value))) # a column where the p-value is
 coefs 
 
 
+# follow up analyses for the first three-way interaction
+A.ISO.mean = mean(D_tall$choice[D_tall$objectType=="A" & D_tall$Condition=="Indirect Screening-Off"], rm.na=TRUE)
+A.ISO.mean
+A.ISO.sd = sd(D_tall$choice[D_tall$objectType=="A" & D_tall$Condition=="Indirect Screening-Off"])
+A.ISO.sd
+
+B.ISO = mean(D_tall$choice[D_tall$objectType=="B" & D_tall$Condition=="Indirect Screening-Off"], rm.na=TRUE)
+B.ISO
+B.ISO.sd = sd(D_tall$choice[D_tall$objectType=="B" & D_tall$Condition=="Indirect Screening-Off"])
+B.ISO.sd
+
+C.ISO = mean(D_tall$choice[D_tall$objectType=="C" & D_tall$Condition=="Indirect Screening-Off"], rm.na=TRUE)
+C.ISO
+C.ISO.sd = sd(D_tall$choice[D_tall$objectType=="C" & D_tall$Condition=="Indirect Screening-Off"])
+C.ISO.sd
+
+D.ISO = mean(D_tall$choice[D_tall$objectType=="D" & D_tall$Condition=="Indirect Screening-Off"], rm.na=TRUE)
+D.ISO
+D.ISO.sd = sd(D_tall$choice[D_tall$objectType=="D" & D_tall$Condition=="Indirect Screening-Off"])
+D.ISO.sd
+
+# A vs. B = SIG
+t.test(D_tall$choice[D_tall$objectType=="A" & D_tall$Condition=="Indirect Screening-Off"],
+       D_tall$choice[D_tall$objectType=="B" & D_tall$Condition=="Indirect Screening-Off"], paired=TRUE)
+
+# A vs. C = SIG
+t.test(D_tall$choice[D_tall$objectType=="A" & D_tall$Condition=="Indirect Screening-Off"],
+       D_tall$choice[D_tall$objectType=="C" & D_tall$Condition=="Indirect Screening-Off"], paired=TRUE)
+
+# A vs. D = SIG
+t.test(D_tall$choice[D_tall$objectType=="A" & D_tall$Condition=="Indirect Screening-Off"],
+       D_tall$choice[D_tall$objectType=="D" & D_tall$Condition=="Indirect Screening-Off"])
+
+
+# B vs. C
+t.test(D_tall$choice[D_tall$objectType=="B" & D_tall$Condition=="Indirect Screening-Off"],
+       D_tall$choice[D_tall$objectType=="C" & D_tall$Condition=="Indirect Screening-Off"], paired=TRUE)
+
+# B vs. D = SIGN
+t.test(D_tall$choice[D_tall$objectType=="B" & D_tall$Condition=="Indirect Screening-Off"],
+       D_tall$choice[D_tall$objectType=="D" & D_tall$Condition=="Indirect Screening-Off"])
+
+# C vs. D = SIGN
+t.test(D_tall$choice[D_tall$objectType=="C" & D_tall$Condition=="Indirect Screening-Off"],
+       D_tall$choice[D_tall$objectType=="D" & D_tall$Condition=="Indirect Screening-Off"])
+
+
+
+
+
+
 ## SECOND THREE-WAY INTERACTION: CONDITION X TRIAL X OBJECT
 second.three.way.BB.lmer = lmer(choice~(phaseOrder+objectType)^3+(1|ID), 
                                data=D_tall[D_tall$Condition=="Backwards Blocking",])
@@ -324,6 +375,7 @@ t.test(D,C, alternative="two.sided", paired = TRUE)
 t.test(A,B, alternative="two.sided", paired = TRUE)
 t.test(A,C, alternative="two.sided", paired = TRUE)
 t.test(B,C, alternative="two.sided", paired = TRUE)
+
 
 ## ISO EXPERIMENTAL CONDITION ##
 iso.experimental.lmer = lmer(choice~objectType+(1|ID), data=D_tall[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="experimental",])
