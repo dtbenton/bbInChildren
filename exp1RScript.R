@@ -212,7 +212,7 @@ C.BB.sd
 
 D.BB = mean(D_tall$choice[D_tall$objectType=="D" & D_tall$Condition=="Backwards Blocking"], rm.na=TRUE)
 D.BB
-D.BB.sd = sd(D_tall$choice[D_tall$objectType=="D" & D_tall$Condition=="Backwards Blocking"], rm.na=TRUE)
+D.BB.sd = sd(D_tall$choice[D_tall$objectType=="D" & D_tall$Condition=="Backwards Blocking"])
 D.BB.sd
 
 # A vs. B = SIG
@@ -223,7 +223,7 @@ t.test(D_tall$choice[D_tall$objectType=="A" & D_tall$Condition=="Backwards Block
 t.test(D_tall$choice[D_tall$objectType=="A" & D_tall$Condition=="Backwards Blocking"],
        D_tall$choice[D_tall$objectType=="C" & D_tall$Condition=="Backwards Blocking"], paired=TRUE)
 
-# A vs. D = SIG
+# A vs. D 
 t.test(D_tall$choice[D_tall$objectType=="A" & D_tall$Condition=="Backwards Blocking"],
        D_tall$choice[D_tall$objectType=="D" & D_tall$Condition=="Backwards Blocking"])
 
