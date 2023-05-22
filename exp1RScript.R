@@ -434,7 +434,7 @@ t.test(D_tall$choice[D_tall$objectType=="B" & D_tall$phaseOrder=="Phase 2"],
 t.test(D_tall$choice[D_tall$objectType=="B" & D_tall$phaseOrder=="Phase 2"],
        D_tall$choice[D_tall$objectType=="D" & D_tall$phaseOrder=="Phase 2"])
 
-# C vs. D = SIG
+# C vs. D 
 t.test(D_tall$choice[D_tall$objectType=="C" & D_tall$phaseOrder=="Phase 2"],
        D_tall$choice[D_tall$objectType=="D" & D_tall$phaseOrder=="Phase 2"])
 
@@ -616,6 +616,69 @@ sd(D.new.op_tall$choice[D.new.op_tall$trialType=="main"], na.rm = TRUE)
 mean(D.new.op_tall$choice[D.new.op_tall$trialType=="control"], na.rm = TRUE)
 sd(D.new.op_tall$choice[D.new.op_tall$trialType=="control"], na.rm = TRUE)
 
+
+
+###################
+###################
+### ISO ANALYSES ###
+###################
+# A control
+A.control = D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="control" & D_tall$objectType=="A"]
+mean(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="control" & D_tall$objectType=="A"], na.rm=TRUE)
+sd(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="control" & D_tall$objectType=="A"], na.rm=TRUE)
+
+# B experimental v B control
+B.control = D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="control" & D_tall$objectType=="B"]
+mean(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="control" & D_tall$objectType=="B"], na.rm=TRUE)
+sd(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="control" & D_tall$objectType=="B"], na.rm=TRUE)
+
+
+B.experimental = D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="experimental" & D_tall$objectType=="B"]
+mean(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="experimental" & D_tall$objectType=="B"], na.rm=TRUE)
+sd(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="experimental" & D_tall$objectType=="B"], na.rm=TRUE)
+
+
+# C experimental v C control
+C.control = D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="control" & D_tall$objectType=="C"]
+mean(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="control" & D_tall$objectType=="C"], na.rm=TRUE)
+sd(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="control" & D_tall$objectType=="C"], na.rm=TRUE)
+
+
+C.experimental = D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="experimental" & D_tall$objectType=="C"]
+mean(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="experimental" & D_tall$objectType=="C"], na.rm=TRUE)
+sd(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="experimental" & D_tall$objectType=="C"], na.rm=TRUE)
+
+
+# create data frame and add columns from the variables above 
+D.new.op = data.frame(ID = c(1:66), A.control = A.control, B.control = B.control, B.experimental = B.experimental,
+                      C.control = C.control, C.experimental = C.experimental)
+
+names(D.new.op)
+dim(D.new.op)
+
+D.new.op_tall = reshape(D.new.op, varying = c(2:6), v.names = "choice", 
+                        timevar = "condition",   direction = "long")
+D.new.op_tall = D.new.op_tall[order(D.new.op_tall$ID),] 
+
+D.new.op_tall$objectType = rep(c("A","B","B","C","C"), times = 33)
+D.new.op_tall$trialType = rep(c("control","control","main",
+                                "control","main"), times = 33)
+D.new.op_tall$objectType = factor(D.new.op_tall$objectType)
+D.new.op_tall$trialType = factor(D.new.op_tall$trialType)
+
+
+# main analysis 
+iso.evidence.lmer = lmer(choice~(objectType+trialType)^2+(1|ID), 
+                         data = D.new.op_tall)
+Anova(iso.evidence.lmer)
+
+
+mean(D.new.op_tall$choice[D.new.op_tall$trialType=="main"], na.rm = TRUE)
+sd(D.new.op_tall$choice[D.new.op_tall$trialType=="main"], na.rm = TRUE)
+
+
+mean(D.new.op_tall$choice[D.new.op_tall$trialType=="control"], na.rm = TRUE)
+sd(D.new.op_tall$choice[D.new.op_tall$trialType=="control"], na.rm = TRUE)
 
 ##############
 ##############

@@ -9,3 +9,9 @@ Analysis
 I see your point about the linear model but remember that even if, for a given child, the response is binary, averaged over children the response is actually continuous. because we're reporting averages (on continuous values) a linear model is perfectly fine. Now, what I'm happy to do is make a note the the conclusions of the study don't change if we run these a logistic models. (which, if memory served, they don't, but i can run those again to be sure).
 
 i don't think we should remove participants who said yes to everything for two reasons. first, power. second, all yes is actually meaningful and reflects uncertainy (when considered over participants)
+
+I've kept in this text: If such a model was able to capture the present behavioral data, then the conclusion that the Rescorla-Wagner model is insufficient to explain children’s causal reasoning (e.g., Sobel et al., 2004) may be premature  (we return to this issue in the General Discussion). I disagree that I'm not being constructive. The point here is look: This is what has been said but it turns out that when you increase hte number of objects (by as little as 1), the RW does a much better job. It is important that the literature sees that there's nuance to this point, and ignoring it is, in my view, painting an inaccurate picture (because the only statement out there would be yours in S 2004). And I even disagree with the point of S 2004. Yes it was to build a B model, but you also go to great lengths to knock down Rescorla. I'm rectifying situations by saying loook RW isn't all that bad. It's not like I'm saying S 2004 is wrong and his conclusions are bunk. I'm simply adding (much needed) nuance. 
+
+I use model and network for variety.
+
+send david model data to compute rmse's
