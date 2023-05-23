@@ -12,6 +12,8 @@ i don't think we should remove participants who said yes to everything for two r
 
 I've kept in this text: If such a model was able to capture the present behavioral data, then the conclusion that the Rescorla-Wagner model is insufficient to explain children’s causal reasoning (e.g., Sobel et al., 2004) may be premature  (we return to this issue in the General Discussion). I disagree that I'm not being constructive. The point here is look: This is what has been said but it turns out that when you increase hte number of objects (by as little as 1), the RW does a much better job. It is important that the literature sees that there's nuance to this point, and ignoring it is, in my view, painting an inaccurate picture (because the only statement out there would be yours in S 2004). And I even disagree with the point of S 2004. Yes it was to build a B model, but you also go to great lengths to knock down Rescorla. I'm rectifying situations by saying loook RW isn't all that bad. It's not like I'm saying S 2004 is wrong and his conclusions are bunk. I'm simply adding (much needed) nuance. 
 
-I use model and network for variety.
+you say to remove baeys model of 1. we have no basis to remove it for two reasons. first, we did not manipulate base rates. secondly, it wasn't, as your suggestion would seem to predict, the worst performning model.
 
 send david model data to compute rmse's
+
+you seem to suggest throughout that i'm assuming that there is one model and even say so in one of your comments. i disagree that saying that participants mostly rely on mechanism A and some on mechanism B is saying that only A wins. I'm expliclty saying its both, and i go on in the GD to acknowledge that the balance may not always be this way. we may just have to disagree about this point. 
