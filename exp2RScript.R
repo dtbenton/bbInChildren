@@ -24,14 +24,17 @@ D = read.csv(file.choose(), header = TRUE, stringsAsFactors = FALSE)
 # get dimension of dataframe
 dim(D)
 
+# remove unnecessary rows
+D = D[c(1:64),]
+
 # reshape dataframe from wide to long
-D_tall =  reshape(D, varying = c(9:24), v.names = "measure", 
+D_tall =  reshape(D, varying = c(11:26), v.names = "measure", 
                   timevar = "condition",   direction = "long")
 
 D_tall = D_tall[order(D_tall$ID),] # order the data frame in terms of participant ID;
-# to avoid wonky things happening and to save yourself 
-# a full-day headache in the future, reorder by ID
-# immediately after reshaping the dataframe.
+                                   # to avoid wonky things happening and to save yourself 
+                                   # a full-day headache in the future, reorder by ID
+                                   # immediately after reshaping the dataframe.
 
 names(D_tall)
 D_tall$id = NULL
@@ -39,21 +42,21 @@ names(D_tall)
 
 D_tall$trialType = rep(c("control","control","control","control","control","control","control",
                          "control","control", "control","main","main",
-                         "main","main","main","main"), times = 48)
+                         "main","main","main","main"), times =64)
 
 D_tall$testPhase = rep(c("first","first","first","first","first",
                          "second","second","second","second","second",
-                         "first","first","first","second","second","second"), times = 48)
+                         "first","first","first","second","second","second"), times = 64)
 
 D_tall$objectType = rep(c("A","B","C","D","E",
                           "A","B","C","D","E",
                           "A","B","C",
-                          "A","B","C"), times = 48)
+                          "A","B","C"), times = 64)
 
 D_tall$phaseOrder = rep(c("Phase 1","Phase 1","Phase 1","Phase 1","Phase 1",
                           "Phase 2","Phase 2","Phase 2","Phase 2","Phase 2",
                           "Phase 1","Phase 1","Phase 1",
-                          "Phase 2","Phase 2","Phase 2"), times = 48)
+                          "Phase 2","Phase 2","Phase 2"), times = 64)
 
 
 
@@ -61,7 +64,9 @@ D_tall$phaseOrder = rep(c("Phase 1","Phase 1","Phase 1","Phase 1","Phase 1",
 
 # CHANGE SOME OF THE COLUMN NAMES
 names(D_tall)
-colnames(D_tall)[which(names(D_tall) == "AGE.Y.")] <- "Age"
+colnames(D_tall)[which(names(D_tall) == "AGE.Y.")] <- "AgeCat"
+colnames(D_tall)[which(names(D_tall) == "AGE.M.")] <- "AgeNum"
+colnames(D_tall)[which(names(D_tall) == "RACE")] <- "Race"
 colnames(D_tall)[which(names(D_tall) == "SEX")] <- "Sex"
 colnames(D_tall)[which(names(D_tall) == "BB.IS")] <- "Condition"
 colnames(D_tall)[which(names(D_tall) == "SUBCONDITION")] <- "SubCondition"
@@ -72,12 +77,10 @@ colnames(D_tall)[which(names(D_tall) == "measure")] <- "choice"
 # remove more unnecessary columns
 names(D_tall)
 D_tall$CONDITION = NULL
+D_tall$condition = NULL
 
 # colnames(D_tall)[which(names(D_tall) == "SUBCONDITION")] <- "Subcondition"
 names(D_tall)
-
-
-
 
 
 # MODIFY CHOICES COLUMN
@@ -107,10 +110,10 @@ table(D_tall$choice)
 
 # RENAME LEVELS OF COLUMNS
 D_tall$Condition = revalue(x = as.factor(D_tall$Condition), 
-                           c("0" = "BB", "1"="ISO"))
+                           c("0" = "Backwards Blocking", "1"="Indirect Screening-Off"))
 
 D_tall$Sex = revalue(x = as.factor(D_tall$Sex), 
-                     c("0" = "female", "1"="male"))
+                     c("F" = "Female", "M"="Male"))
 
 
 # D_tall$Subcondition = revalue(x = as.factor(D_tall$Subcondition), 
@@ -123,7 +126,7 @@ D_tall$Pretest = revalue(x = as.factor(D_tall$Pretest),
                          c("0" = "Incorrect", "1"="Correct"))
 
 
-D_tall$Age = as.factor(D_tall$Age)
+D_tall$AgeCat = as.factor(D_tall$AgeCat)
 D_tall$testPhase = as.factor(D_tall$testPhase)
 D_tall$objectType = as.factor(D_tall$objectType)
 D_tall$trialType = as.factor(D_tall$trialType)
@@ -133,33 +136,28 @@ names(D_tall)
 D_tall$condition = NULL
 names(D_tall)
 dim(D_tall)
-D_tall = as.data.frame(D_tall[,c(1:3,5:6,4,9:12,7:8)])
+D_tall = as.data.frame(D_tall[,c(1:3,5,4,7,8,6,11:14,10,9)])
 fix(D_tall)
 
 
-# subset dataframes by experiments
-table(D_tall$Age)
-D_tall_Exp1_5and6yos = subset(D_tall, ! Age %in% c("4"))
-D_tall_Exp1_5and6yos$Age = factor(D_tall_Exp1_5and6yos$Age)
-dim(D_tall_Exp1_5and6yos)
 
 
 # get the number of participants in each condition
-table(D_tall_Exp1_5and6yos$Condition)/16
+table(D_tall$Condition)/16
 
-table(D_tall_Exp1_5and6yos$Condition[D_tall_Exp1_5and6yos$Age=="5"])/16
-table(D_tall_Exp1_5and6yos$Condition[D_tall_Exp1_5and6yos$Age=="6"])/16
+table(D_tall$Condition[D_tall$AgeCat=="5"])/16
+table(D_tall$Condition[D_tall$AgeCat=="6"])/16
 
 ###################################
 # Participant section information #
 ###################################
 # 5 yos #
 # number of males and females
-table(D_tall$Sex[D_tall$Age=="5"])/16
+table(D_tall$Sex[D_tall$AgeCat=="5"])/16
 
 # 6 yos #
 # number of males and females
-table(D_tall$Sex[D_tall$Age=="6"])/16
+table(D_tall$Sex[D_tall$AgeCat=="6"])/16
 
 
 # power analysis for sample size
