@@ -6,7 +6,6 @@ addGroup A 1 INPUT
 addGroup B 1 INPUT
 addGroup C 1 INPUT
 addGroup D 1 INPUT
-addGroup E 1 INPUT
 
 # output group
 addGroup Effect 1 OUTPUT SUM_SQUARED
@@ -14,7 +13,7 @@ addGroup Effect 1 OUTPUT SUM_SQUARED
 
 
 # connect groups (input -> output)
-connectGroups {A B C D E} Effect
+connectGroups {A B C D} Effect
 
 # delete bias
 deleteGroups bias

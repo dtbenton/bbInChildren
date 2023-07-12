@@ -21,11 +21,10 @@ deleteGroups bias
 
 # training examples
 loadExamples ABCplus.ex
-loadExamples Aplus.ex
-loadExamples Aminus.ex
-loadExamples Dplus.ex
-loadExamples Dminus.ex
-loadExamples Dnothing.ex
+loadExamples ABplus.ex
+loadExamples ABminus.ex
+loadExamples DEplus.ex
+loadExamples DEminus.ex
 loadExamples experimentalTest.ex
 loadExamples controlTest.ex
 
@@ -99,7 +98,7 @@ proc testNetwork {n train trainNum train2 trainNum2 test train3 trainNum3 train4
 set condition [list BBexperimental BBcontrol ISOexperimental ISOcontrol]
 set trainingEpochs [list 200 400 500 750 1000]
 set totalEpochs [list 400 800 1000 1500 2000]
-set elementalPhase [list Aplus Dplus Aminus Dminus]
+set elementalPhase [list ABplus DEplus ABminus DEminus]
 set testPhase [list experimentalTest controlTest experimentalTest controlTest]
 
 
@@ -111,4 +110,4 @@ foreach epoch $trainingEpochs totalEpoch $totalEpochs {
 }
 
 # Example command, corresponding to the above:
-# testNetwork 16 ABCplus 200 Dplus 200 controlTest ABCplus 200 Dplus 200 controlTest BBcontrolExp400epochs.txt Effect
+# testNetwork 16 ABCplus 200 DEplus 200 controlTest ABCplus 200 DEplus 200 controlTest BBcontrolExp400epochs.txt Effect
