@@ -1,3 +1,60 @@
+# BESPOKE MULTIPLE COMPARISONS FUNCTION #
+multiple_comparison_func = function(trialTypeName, conditionName){
+  # Define the object types
+  objectTypes = c("A", "B", "C", "D", "E")
+  
+  # Initialize a data frame to hold the results
+  results = data.frame()
+  
+  # Loop over the object types
+  for(i in 1:length(objectTypes)){
+    for(j in 1:length(objectTypes)){
+      # Skip if object types are the same
+      if(i == j) next
+      
+      # Extract the matched pairs
+      choices_i <- D_tall$choice[D_tall$objectType==objectTypes[i] & D_tall$trialType==trialTypeName & D_tall$Condition==conditionName]
+      choices_j <- D_tall$choice[D_tall$objectType==objectTypes[j] & D_tall$trialType==trialTypeName & D_tall$Condition==conditionName]
+      
+      # Find the minimum length of the two vectors
+      min_len <- min(length(choices_i), length(choices_j))
+      
+      # Check if enough observations are available for the t-test
+      if (min_len < 2) {
+        # Skip the comparison if not enough observations
+        next
+      }
+      
+      # Perform the t-test using only the matched pairs
+      test_result <- t.test(choices_i[1:min_len], choices_j[1:min_len], paired=TRUE)
+      
+      # Print what's being compared
+      print(paste("Comparing", objectTypes[i], "vs.", objectTypes[j]))
+      
+      # Create column names dynamically
+      col_i <- objectTypes[i]
+      col_j <- objectTypes[j]
+      
+      # Save the comparison and the t-test results to the results data frame
+      results = rbind(results, data.frame(Comparison = paste(objectTypes[i], "vs.", objectTypes[j]),
+                                          P_Value = test_result$p.value,
+                                          t_value = test_result$statistic,
+                                          df = test_result$parameter,
+                                          mean_i = mean(choices_i),
+                                          mean_j = mean(choices_j),
+                                          sd_i = sd(choices_i),
+                                          sd_j = sd(choices_j)))
+    }
+  }
+  
+  # Print the data frame of results
+  return(results)
+}
+
+
+
+
+
 # load all relevant libraries
 library(nlme)
 library(lme4)
@@ -84,25 +141,6 @@ D_tall$condition = NULL
 names(D_tall)
 
 
-# MODIFY CHOICES COLUMN
-# Deal with "unsures" in the choice column
-D_tall$choices = rep(0, nrow(D_tall))
-for(i in 1:nrow(D_tall)){
-  if(is.na(D_tall$choice[i])==T|D_tall$choice[i]=="NaN"){
-    D_tall$choices[i]= NA
-  } else if(D_tall$choice[i]==1){
-    D_tall$choices[i]=1
-  } else if(D_tall$choice[i]==0){
-    D_tall$choices[i]=0
-  } else {
-    D_tall$choices[i]=NA
-  }
-}
-
-D_tall$choice = D_tall$choices
-D_tall$choices = NULL
-D_tall$choice = as.factor(D_tall$choice)
-
 # get counts for choice 
 table(D_tall$choice)
 
@@ -144,11 +182,40 @@ fix(D_tall)
 
 
 
-# get the number of participants in each condition
+# get the number of participants in each condition by age
 table(D_tall$Condition)/16
 
 table(D_tall$Condition[D_tall$AgeCat=="5"])/16
 table(D_tall$Condition[D_tall$AgeCat=="6"])/16
+
+# get the number of participants in each condition by sex
+table(D_tall$Condition[D_tall$AgeCat=="5" & D_tall$Sex=="Male"])/16
+table(D_tall$Condition[D_tall$AgeCat=="5" & D_tall$Sex=="Female"])/16
+
+table(D_tall$Condition[D_tall$AgeCat=="6" & D_tall$Sex=="Male"])/16
+table(D_tall$Condition[D_tall$AgeCat=="6" & D_tall$Sex=="Female"])/16
+
+# mean ages and ranges
+mean(D_tall$AgeNum[D_tall$AgeCat=="5"])
+range(D_tall$AgeNum[D_tall$AgeCat=="5"])
+sd(D_tall$AgeNum[D_tall$AgeCat=="5"])
+
+mean(D_tall$AgeNum[D_tall$AgeCat=="6"])
+range(D_tall$AgeNum[D_tall$AgeCat=="6"])
+sd(D_tall$AgeNum[D_tall$AgeCat=="6"])
+
+# demographics info
+# asian 
+table(D_tall$Race)[[1]]/sum(table(D_tall$Race))
+
+# black 
+table(D_tall$Race)[[2]]/sum(table(D_tall$Race))
+
+# hispanic
+table(D_tall$Race)[[3]]/sum(table(D_tall$Race))
+
+# white
+table(D_tall$Race)[[4]]/sum(table(D_tall$Race))
 
 ###################################
 # Participant section information #
@@ -200,391 +267,36 @@ Anova(lmer.fit)
 ##########################
 ##########################
 
-## FIRST THREE-WAY INTERACTION: AGE X CONDITION X OBJECT
-#BB
-first.three.way.BB.lmer = lmer(choice~(AgeNum+objectType)^3+(1|ID), 
-                               data=D_tall[D_tall$Condition=="Backwards Blocking",])
-summary(first.three.way.BB.lmer)
-Anova(first.three.way.BB.lmer)
 
-# get p.value for first.three.way.BB.lmer
-coefs = data.frame(coef(summary(first.three.way.BB.lmer)))
-coefs$p.z <- 2 * (1 - pnorm(abs(coefs$t.value))) # a column where the p-value is computed from the z-distribution
-coefs 
+## THREE-WAY INTERACTION: CONDITION X TRIAL TYPE X OBJECT
 
-# follow up analyses for the first three-way interaction
-A.BB.mean = mean(D_tall$choice[D_tall$objectType=="A" & D_tall$Condition=="Backwards Blocking"], rm.na=TRUE)
-A.BB.mean
-A.BB.sd = sd(D_tall$choice[D_tall$objectType=="A" & D_tall$Condition=="Backwards Blocking"])
-A.BB.sd
+## BB main CONDITION ##
+bb.main.lmer = lmer(choice~objectType+(1|ID), data=D_tall[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="main",])
+Anova(bb.main.lmer)
 
-B.BB = mean(D_tall$choice[D_tall$objectType=="B" & D_tall$Condition=="Backwards Blocking"], rm.na=TRUE)
-B.BB
-B.BB.sd = sd(D_tall$choice[D_tall$objectType=="B" & D_tall$Condition=="Backwards Blocking"])
-B.BB.sd
-
-C.BB = mean(D_tall$choice[D_tall$objectType=="C" & D_tall$Condition=="Backwards Blocking"], rm.na=TRUE)
-C.BB
-C.BB.sd = sd(D_tall$choice[D_tall$objectType=="C" & D_tall$Condition=="Backwards Blocking"])
-C.BB.sd
-
-D.BB = mean(D_tall$choice[D_tall$objectType=="D" & D_tall$Condition=="Backwards Blocking"], rm.na=TRUE)
-D.BB
-D.BB.sd = sd(D_tall$choice[D_tall$objectType=="D" & D_tall$Condition=="Backwards Blocking"])
-D.BB.sd
-
-
-E.BB = mean(D_tall$choice[D_tall$objectType=="E" & D_tall$Condition=="Backwards Blocking"], rm.na=TRUE)
-E.BB
-E.BB.sd = sd(D_tall$choice[D_tall$objectType=="E" & D_tall$Condition=="Backwards Blocking"])
-E.BB.sd
-
-# Define the object types
-objectTypes = c("A", "B", "C", "D", "E")
-
-# Initialize a data frame to hold the results
-results = data.frame()
-
-# Loop over the object types
-for(i in 1:length(objectTypes)){
-  for(j in 1:length(objectTypes)){
-    # Skip if object types are the same
-    if(i == j) next
-    
-    # Extract the matched pairs
-    choices_i <- D_tall$choice[D_tall$objectType==objectTypes[i] & D_tall$Condition=="Backwards Blocking"]
-    choices_j <- D_tall$choice[D_tall$objectType==objectTypes[j] & D_tall$Condition=="Backwards Blocking"]
-    
-    # Find the minimum length of the two vectors
-    min_len <- min(length(choices_i), length(choices_j))
-    
-    # Perform the t-test using only the matched pairs
-    test_result <- t.test(choices_i[1:min_len], choices_j[1:min_len], paired=TRUE)
-    
-    # Print what's being compared
-    print(paste("Comparing", objectTypes[i], "vs.", objectTypes[j], "- p-value:", test_result$p.value))
-    
-    # Save the comparison and the p-value to the results data frame
-    results = rbind(results, data.frame(Comparison = paste(objectTypes[i], "vs.", objectTypes[j]), P_Value = test_result$p.value))
-  }
-}
-
-# Print the data frame of results
-print(results)
-
-
-
-# ISO
-first.three.way.ISO.lmer = lmer(choice~(AgeNum+objectType)^3+(1|ID), 
-                                data=D_tall[D_tall$Condition=="Indirect Screening-Off",])
-summary(first.three.way.ISO.lmer)
-Anova(first.three.way.ISO.lmer)
-
-# get p.value for first.three.way.BB.lmer
-coefs = data.frame(coef(summary(first.three.way.BB.lmer)))
-coefs$p.z <- 2 * (1 - pnorm(abs(coefs$t.value))) # a column where the p-value is computed from the z-distribution
-coefs 
-
-
-# follow up analyses for the first three-way interaction
-A.ISO.mean = mean(D_tall$choice[D_tall$objectType=="A" & D_tall$Condition=="Indirect Screening-Off"], rm.na=TRUE)
-A.ISO.mean
-A.ISO.sd = sd(D_tall$choice[D_tall$objectType=="A" & D_tall$Condition=="Indirect Screening-Off"])
-A.ISO.sd
-
-B.ISO = mean(D_tall$choice[D_tall$objectType=="B" & D_tall$Condition=="Indirect Screening-Off"], rm.na=TRUE)
-B.ISO
-B.ISO.sd = sd(D_tall$choice[D_tall$objectType=="B" & D_tall$Condition=="Indirect Screening-Off"])
-B.ISO.sd
-
-C.ISO = mean(D_tall$choice[D_tall$objectType=="C" & D_tall$Condition=="Indirect Screening-Off"], rm.na=TRUE)
-C.ISO
-C.ISO.sd = sd(D_tall$choice[D_tall$objectType=="C" & D_tall$Condition=="Indirect Screening-Off"])
-C.ISO.sd
-
-D.ISO = mean(D_tall$choice[D_tall$objectType=="D" & D_tall$Condition=="Indirect Screening-Off"], rm.na=TRUE)
-D.ISO
-D.ISO.sd = sd(D_tall$choice[D_tall$objectType=="D" & D_tall$Condition=="Indirect Screening-Off"])
-D.ISO.sd
-
-# A vs. B = SIG
-t.test(D_tall$choice[D_tall$objectType=="A" & D_tall$Condition=="Indirect Screening-Off"],
-       D_tall$choice[D_tall$objectType=="B" & D_tall$Condition=="Indirect Screening-Off"], paired=TRUE)
-
-# A vs. C = SIG
-t.test(D_tall$choice[D_tall$objectType=="A" & D_tall$Condition=="Indirect Screening-Off"],
-       D_tall$choice[D_tall$objectType=="C" & D_tall$Condition=="Indirect Screening-Off"], paired=TRUE)
-
-# A vs. D = SIG
-t.test(D_tall$choice[D_tall$objectType=="A" & D_tall$Condition=="Indirect Screening-Off"],
-       D_tall$choice[D_tall$objectType=="D" & D_tall$Condition=="Indirect Screening-Off"])
-
-
-# B vs. C
-t.test(D_tall$choice[D_tall$objectType=="B" & D_tall$Condition=="Indirect Screening-Off"],
-       D_tall$choice[D_tall$objectType=="C" & D_tall$Condition=="Indirect Screening-Off"], paired=TRUE)
-
-# B vs. D = SIGN
-t.test(D_tall$choice[D_tall$objectType=="B" & D_tall$Condition=="Indirect Screening-Off"],
-       D_tall$choice[D_tall$objectType=="D" & D_tall$Condition=="Indirect Screening-Off"])
-
-# C vs. D = SIGN
-t.test(D_tall$choice[D_tall$objectType=="C" & D_tall$Condition=="Indirect Screening-Off"],
-       D_tall$choice[D_tall$objectType=="D" & D_tall$Condition=="Indirect Screening-Off"])
-
-
-
-
-
-
-## SECOND THREE-WAY INTERACTION: CONDITION X TRIAL X OBJECT
-second.three.way.BB.lmer = lmer(choice~(phaseOrder+objectType)^3+(1|ID), 
-                                data=D_tall[D_tall$Condition=="Backwards Blocking",])
-summary(second.three.way.BB.lmer)
-Anova(second.three.way.BB.lmer)
-
-second.three.way.ISO.lmer = lmer(choice~(phaseOrder+objectType)^3+(1|ID), 
-                                 data=D_tall[D_tall$Condition=="Indirect Screening-Off",])
-summary(second.three.way.ISO.lmer)
-Anova(second.three.way.ISO.lmer)
-
-follow.up.second.three.way.iso = lmer(choice~objectType+(1|ID), 
-                                      data=D_tall[D_tall$Condition=="Indirect Screening-Off" & D_tall$phaseOrder=="Phase 1",])
-Anova(follow.up.second.three.way.iso)
-
-# Phase 1
-A.BB.mean = mean(D_tall$choice[D_tall$objectType=="A" & D_tall$phaseOrder=="Phase 1"], rm.na=TRUE)
-A.BB.mean
-A.BB.sd = sd(D_tall$choice[D_tall$objectType=="A" & D_tall$phaseOrder=="Phase 1"])
-A.BB.sd
-
-B.BB = mean(D_tall$choice[D_tall$objectType=="B" & D_tall$phaseOrder=="Phase 1"], rm.na=TRUE)
-B.BB
-B.BB.sd = sd(D_tall$choice[D_tall$objectType=="B" & D_tall$phaseOrder=="Phase 1"])
-B.BB.sd
-
-C.BB = mean(D_tall$choice[D_tall$objectType=="C" & D_tall$phaseOrder=="Phase 1"], rm.na=TRUE)
-C.BB
-C.BB.sd = sd(D_tall$choice[D_tall$objectType=="C" & D_tall$phaseOrder=="Phase 1"])
-C.BB.sd
-
-D.BB = mean(D_tall$choice[D_tall$objectType=="D" & D_tall$phaseOrder=="Phase 1"], rm.na=TRUE)
-D.BB
-D.BB.sd = sd(D_tall$choice[D_tall$objectType=="D" & D_tall$phaseOrder=="Phase 1"])
-D.BB.sd
-
-
-
-# A vs. B 
-t.test(D_tall$choice[D_tall$objectType=="A" & D_tall$phaseOrder=="Phase 1"],
-       D_tall$choice[D_tall$objectType=="B" & D_tall$phaseOrder=="Phase 1"], paired=TRUE)
-
-# A vs. C 
-t.test(D_tall$choice[D_tall$objectType=="A" & D_tall$phaseOrder=="Phase 1"],
-       D_tall$choice[D_tall$objectType=="C" & D_tall$phaseOrder=="Phase 1"], paired=TRUE)
-
-# A vs. D = SIG
-t.test(D_tall$choice[D_tall$objectType=="A" & D_tall$phaseOrder=="Phase 1"],
-       D_tall$choice[D_tall$objectType=="D" & D_tall$phaseOrder=="Phase 1"])
-
-
-# B vs. C = SIG
-t.test(D_tall$choice[D_tall$objectType=="B" & D_tall$phaseOrder=="Phase 1"],
-       D_tall$choice[D_tall$objectType=="C" & D_tall$phaseOrder=="Phase 1"], paired=TRUE)
-
-# B vs. D 
-t.test(D_tall$choice[D_tall$objectType=="B" & D_tall$phaseOrder=="Phase 1"],
-       D_tall$choice[D_tall$objectType=="D" & D_tall$phaseOrder=="Phase 1"])
-
-# C vs. D = SIG
-t.test(D_tall$choice[D_tall$objectType=="C" & D_tall$phaseOrder=="Phase 1"],
-       D_tall$choice[D_tall$objectType=="D" & D_tall$phaseOrder=="Phase 1"])
-
-
-
-
-# Phase 2
-A.BB.mean = mean(D_tall$choice[D_tall$objectType=="A" & D_tall$phaseOrder=="Phase 2"], rm.na=TRUE)
-A.BB.mean
-A.BB.sd = sd(D_tall$choice[D_tall$objectType=="A" & D_tall$phaseOrder=="Phase 2"])
-A.BB.sd
-
-B.BB = mean(D_tall$choice[D_tall$objectType=="B" & D_tall$phaseOrder=="Phase 2"], rm.na=TRUE)
-B.BB
-B.BB.sd = sd(D_tall$choice[D_tall$objectType=="B" & D_tall$phaseOrder=="Phase 2"])
-B.BB.sd
-
-C.BB = mean(D_tall$choice[D_tall$objectType=="C" & D_tall$phaseOrder=="Phase 2"], rm.na=TRUE)
-C.BB
-C.BB.sd = sd(D_tall$choice[D_tall$objectType=="C" & D_tall$phaseOrder=="Phase 2"])
-C.BB.sd
-
-D.BB = mean(D_tall$choice[D_tall$objectType=="D" & D_tall$phaseOrder=="Phase 2"], rm.na=TRUE)
-D.BB
-D.BB.sd = sd(D_tall$choice[D_tall$objectType=="D" & D_tall$phaseOrder=="Phase 2"])
-
-# Phase 2
-A.BB.mean = mean(D_tall$choice[D_tall$objectType=="A" & D_tall$phaseOrder=="Phase 2"], rm.na=TRUE)
-A.BB.mean
-A.BB.sd = sd(D_tall$choice[D_tall$objectType=="A" & D_tall$phaseOrder=="Phase 2"])
-A.BB.sd
-
-B.BB = mean(D_tall$choice[D_tall$objectType=="B" & D_tall$phaseOrder=="Phase 2"], rm.na=TRUE)
-B.BB
-B.BB.sd = sd(D_tall$choice[D_tall$objectType=="B" & D_tall$phaseOrder=="Phase 2"])
-B.BB.sd
-
-C.BB = mean(D_tall$choice[D_tall$objectType=="C" & D_tall$phaseOrder=="Phase 2"], rm.na=TRUE)
-C.BB
-C.BB.sd = sd(D_tall$choice[D_tall$objectType=="C" & D_tall$phaseOrder=="Phase 2"])
-C.BB.sd
-
-D.BB = mean(D_tall$choice[D_tall$objectType=="D" & D_tall$phaseOrder=="Phase 2"], rm.na=TRUE)
-D.BB
-D.BB.sd = sd(D_tall$choice[D_tall$objectType=="D" & D_tall$phaseOrder=="Phase 2"])
-D.BB.sd
-
-
-
-# A vs. B 
-t.test(D_tall$choice[D_tall$objectType=="A" & D_tall$phaseOrder=="Phase 2"],
-       D_tall$choice[D_tall$objectType=="B" & D_tall$phaseOrder=="Phase 2"], paired=TRUE)
-
-# A vs. C 
-t.test(D_tall$choice[D_tall$objectType=="A" & D_tall$phaseOrder=="Phase 2"],
-       D_tall$choice[D_tall$objectType=="C" & D_tall$phaseOrder=="Phase 2"], paired=TRUE)
-
-# A vs. D 
-t.test(D_tall$choice[D_tall$objectType=="A" & D_tall$phaseOrder=="Phase 2"],
-       D_tall$choice[D_tall$objectType=="D" & D_tall$phaseOrder=="Phase 2"])
-
-
-# B vs. C 
-t.test(D_tall$choice[D_tall$objectType=="B" & D_tall$phaseOrder=="Phase 2"],
-       D_tall$choice[D_tall$objectType=="C" & D_tall$phaseOrder=="Phase 2"], paired=TRUE)
-
-# B vs. D 
-t.test(D_tall$choice[D_tall$objectType=="B" & D_tall$phaseOrder=="Phase 2"],
-       D_tall$choice[D_tall$objectType=="D" & D_tall$phaseOrder=="Phase 2"])
-
-# C vs. D 
-t.test(D_tall$choice[D_tall$objectType=="C" & D_tall$phaseOrder=="Phase 2"],
-       D_tall$choice[D_tall$objectType=="D" & D_tall$phaseOrder=="Phase 2"])
-
-
-## THIRD THREE-WAY INTERACTION: AGE X CONDITION X OBJECT
-## BB EXPERIMENTAL CONDITION ##
-bb.experimental.lmer = lmer(choice~objectType+(1|ID), data=D_tall[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="experimental",])
-Anova(bb.experimental.lmer)
-
-# A
-A = D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="experimental" & D_tall$objectType=="A"]
-mean(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="experimental" & D_tall$objectType=="A"], na.rm=TRUE)
-sd(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="experimental" & D_tall$objectType=="A"], na.rm=TRUE)
-
-# B
-B = D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="experimental" & D_tall$objectType=="B"]
-mean(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="experimental" & D_tall$objectType=="B"], na.rm=TRUE)
-sd(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="experimental" & D_tall$objectType=="B"], na.rm=TRUE)
-
-# C
-C = D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="experimental" & D_tall$objectType=="C"]
-mean(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="experimental" & D_tall$objectType=="C"], na.rm=TRUE)
-sd(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="experimental" & D_tall$objectType=="C"], na.rm=TRUE)
-
-t.test(A,B, alternative="two.sided", paired = TRUE)
-t.test(A,C, alternative="two.sided", paired = TRUE)
-t.test(B,C, alternative="two.sided", paired = TRUE)
+multiple_comparison_func("main","Backwards Blocking")
 
 
 ## BB CONTROL CONDITION ##
 bb.control.lmer = lmer(choice~objectType+(1|ID), data=D_tall[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="control",])
 Anova(bb.control.lmer)
 
-# A
-A = D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="control" & D_tall$objectType=="A"]
-mean(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="control" & D_tall$objectType=="A"], na.rm=TRUE)
-sd(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="control" & D_tall$objectType=="A"], na.rm=TRUE)
-
-# B
-B = D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="control" & D_tall$objectType=="B"]
-mean(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="control" & D_tall$objectType=="B"], na.rm=TRUE)
-sd(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="control" & D_tall$objectType=="B"], na.rm=TRUE)
-
-# C
-C = D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="control" & D_tall$objectType=="C"]
-mean(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="control" & D_tall$objectType=="C"], na.rm=TRUE)
-sd(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="control" & D_tall$objectType=="C"], na.rm=TRUE)
-
-# D
-D = D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="control" & D_tall$objectType=="D"]
-mean(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="control" & D_tall$objectType=="D"], na.rm=TRUE)
-sd(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="control" & D_tall$objectType=="D"], na.rm=TRUE)
-
-t.test(D,A, alternative="two.sided", paired = TRUE)
-t.test(D,B, alternative="two.sided", paired = TRUE)
-t.test(D,C, alternative="two.sided", paired = TRUE)
-
-t.test(A,B, alternative="two.sided", paired = TRUE)
-t.test(A,C, alternative="two.sided", paired = TRUE)
-t.test(B,C, alternative="two.sided", paired = TRUE)
 
 
-## ISO EXPERIMENTAL CONDITION ##
-iso.experimental.lmer = lmer(choice~objectType+(1|ID), data=D_tall[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="experimental",])
-Anova(iso.experimental.lmer)
+## ISO main CONDITION ##
+iso.main.lmer = lmer(choice~objectType+(1|ID), data=D_tall[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="main",])
+Anova(iso.main.lmer)
 
-# A
-A = D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="experimental" & D_tall$objectType=="A"]
-mean(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="experimental" & D_tall$objectType=="A"], na.rm=TRUE)
-sd(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="experimental" & D_tall$objectType=="A"], na.rm=TRUE)
+multiple_comparison_func("main","Indirect Screening-Off")
 
-# B
-B = D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="experimental" & D_tall$objectType=="B"]
-mean(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="experimental" & D_tall$objectType=="B"], na.rm=TRUE)
-sd(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="experimental" & D_tall$objectType=="B"], na.rm=TRUE)
-
-# C
-C = D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="experimental" & D_tall$objectType=="C"]
-mean(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="experimental" & D_tall$objectType=="C"], na.rm=TRUE)
-sd(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="experimental" & D_tall$objectType=="C"], na.rm=TRUE)
-
-t.test(A,B, alternative="two.sided", paired = TRUE)
-t.test(A,C, alternative="two.sided", paired = TRUE)
-t.test(B,C, alternative="two.sided", paired = TRUE)
 
 
 ## ISO CONTROL CONDITION ##
 iso.control.lmer = lmer(choice~objectType+(1|ID), data=D_tall[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="control",])
 Anova(iso.control.lmer)
 
-# A
-A = D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="control" & D_tall$objectType=="A"]
-mean(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="control" & D_tall$objectType=="A"], na.rm=TRUE)
-sd(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="control" & D_tall$objectType=="A"], na.rm=TRUE)
+multiple_comparison_func("control","Indirect Screening-Off")
 
-# B
-B = D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="control" & D_tall$objectType=="B"]
-mean(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="control" & D_tall$objectType=="B"], na.rm=TRUE)
-sd(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="control" & D_tall$objectType=="B"], na.rm=TRUE)
-
-# C
-C = D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="control" & D_tall$objectType=="C"]
-mean(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="control" & D_tall$objectType=="C"], na.rm=TRUE)
-sd(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="control" & D_tall$objectType=="C"], na.rm=TRUE)
-
-# D
-D = D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="control" & D_tall$objectType=="D"]
-mean(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="control" & D_tall$objectType=="D"], na.rm=TRUE)
-sd(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="control" & D_tall$objectType=="D"], na.rm=TRUE)
-
-t.test(D,A, alternative="two.sided", paired = TRUE)
-t.test(D,B, alternative="two.sided", paired = TRUE)
-t.test(D,C, alternative="two.sided", paired = TRUE)
-
-t.test(A,B, alternative="two.sided", paired = TRUE)
-t.test(A,C, alternative="two.sided", paired = TRUE)
-t.test(B,C, alternative="two.sided", paired = TRUE)
 
 
 ###################
@@ -596,31 +308,27 @@ A.control = D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialT
 mean(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="control" & D_tall$objectType=="A"], na.rm=TRUE)
 sd(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="control" & D_tall$objectType=="A"], na.rm=TRUE)
 
-# B experimental v B control
+# B control
 B.control = D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="control" & D_tall$objectType=="B"]
 mean(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="control" & D_tall$objectType=="B"], na.rm=TRUE)
 sd(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="control" & D_tall$objectType=="B"], na.rm=TRUE)
 
 
-B.experimental = D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="experimental" & D_tall$objectType=="B"]
-mean(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="experimental" & D_tall$objectType=="B"], na.rm=TRUE)
-sd(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="experimental" & D_tall$objectType=="B"], na.rm=TRUE)
-
-
-# C experimental v C control
+# C control
 C.control = D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="control" & D_tall$objectType=="C"]
 mean(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="control" & D_tall$objectType=="C"], na.rm=TRUE)
 sd(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="control" & D_tall$objectType=="C"], na.rm=TRUE)
 
 
-C.experimental = D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="experimental" & D_tall$objectType=="C"]
-mean(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="experimental" & D_tall$objectType=="C"], na.rm=TRUE)
-sd(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="experimental" & D_tall$objectType=="C"], na.rm=TRUE)
+# C main
+C.main = D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="main" & D_tall$objectType=="C"]
+mean(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="main" & D_tall$objectType=="C"], na.rm=TRUE)
+sd(D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="main" & D_tall$objectType=="C"], na.rm=TRUE)
 
 
 # create data frame and add columns from the variables above 
-D.new.op = data.frame(ID = c(1:62), A.control = A.control, B.control = B.control, B.experimental = B.experimental,
-                      C.control = C.control, C.experimental = C.experimental)
+D.new.op = data.frame(ID = c(1:64), A.control = A.control, B.control = B.control, C.control = C.control,
+                      C.main = C.main)
 
 names(D.new.op)
 dim(D.new.op)
@@ -629,9 +337,9 @@ D.new.op_tall = reshape(D.new.op, varying = c(2:6), v.names = "choice",
                         timevar = "condition",   direction = "long")
 D.new.op_tall = D.new.op_tall[order(D.new.op_tall$ID),] 
 
-D.new.op_tall$objectType = rep(c("A","B","B","C","C"), times = 31)
+D.new.op_tall$objectType = rep(c("A","B","B","C","C"), times = 32)
 D.new.op_tall$trialType = rep(c("control","control","main",
-                                "control","main"), times = 31)
+                                "control","main"), times = 32)
 D.new.op_tall$objectType = factor(D.new.op_tall$objectType)
 D.new.op_tall$trialType = factor(D.new.op_tall$trialType)
 
@@ -660,31 +368,31 @@ A.control = D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$tr
 mean(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="control" & D_tall$objectType=="A"], na.rm=TRUE)
 sd(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="control" & D_tall$objectType=="A"], na.rm=TRUE)
 
-# B experimental v B control
+# B main v B control
 B.control = D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="control" & D_tall$objectType=="B"]
 mean(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="control" & D_tall$objectType=="B"], na.rm=TRUE)
 sd(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="control" & D_tall$objectType=="B"], na.rm=TRUE)
 
 
-B.experimental = D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="experimental" & D_tall$objectType=="B"]
-mean(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="experimental" & D_tall$objectType=="B"], na.rm=TRUE)
-sd(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="experimental" & D_tall$objectType=="B"], na.rm=TRUE)
+B.main = D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="main" & D_tall$objectType=="B"]
+mean(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="main" & D_tall$objectType=="B"], na.rm=TRUE)
+sd(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="main" & D_tall$objectType=="B"], na.rm=TRUE)
 
 
-# C experimental v C control
+# C main v C control
 C.control = D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="control" & D_tall$objectType=="C"]
 mean(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="control" & D_tall$objectType=="C"], na.rm=TRUE)
 sd(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="control" & D_tall$objectType=="C"], na.rm=TRUE)
 
 
-C.experimental = D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="experimental" & D_tall$objectType=="C"]
-mean(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="experimental" & D_tall$objectType=="C"], na.rm=TRUE)
-sd(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="experimental" & D_tall$objectType=="C"], na.rm=TRUE)
+C.main = D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="main" & D_tall$objectType=="C"]
+mean(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="main" & D_tall$objectType=="C"], na.rm=TRUE)
+sd(D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="main" & D_tall$objectType=="C"], na.rm=TRUE)
 
 
 # create data frame and add columns from the variables above 
-D.new.op = data.frame(ID = c(1:66), A.control = A.control, B.control = B.control, B.experimental = B.experimental,
-                      C.control = C.control, C.experimental = C.experimental)
+D.new.op = data.frame(ID = c(1:66), A.control = A.control, B.control = B.control, B.main = B.main,
+                      C.control = C.control, C.main = C.main)
 
 names(D.new.op)
 dim(D.new.op)
@@ -729,7 +437,7 @@ condition_barplot + stat_summary(fun = mean, geom = "bar", position = "dodge") +
                              "#696969",
                              "#A8A8A8")) +
   
-  coord_cartesian(ylim=c(0, 2)) +
+  coord_cartesian(ylim=c(0, 1.5)) +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_blank(), axis.line = element_line(colour = "black"),
         axis.title.x=element_blank()) + 
