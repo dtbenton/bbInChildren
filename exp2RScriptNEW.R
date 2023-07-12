@@ -726,9 +726,10 @@ condition_barplot + stat_summary(fun = mean, geom = "bar", position = "dodge") +
   scale_fill_manual(values=c("#000000",
                              "#888888",
                              "#C8C8C8",
-                             "#696969")) +
+                             "#696969",
+                             "#A8A8A8")) +
   
-  coord_cartesian(ylim=c(0, 1.2)) +
+  coord_cartesian(ylim=c(0, 2)) +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_blank(), axis.line = element_line(colour = "black"),
         axis.title.x=element_blank()) + 
