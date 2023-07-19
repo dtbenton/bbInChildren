@@ -1,123 +1,1213 @@
-##############################################################
-##############################################################
-## COMPARE THE NN AND BAYESIAN MODEL FOR THEIR OVERALL FITS ##
-##############################################################
-##############################################################
+################################################################
+################################################################
+################################################################
+### COMPARE THE NN AND BAYESIAN MODEL FOR THEIR OVERALL FITS ###
+################################################################
+################################################################
+################################################################
+# LOAD REQUIRED PACKAGE
+library(caret)
 
-# Overall fit # 
+#### %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ####                 
+#### %%%%%%%%%%  THIS SECTION DEFINES A VERY SIMPLE BAYESIAN MODEL %%%%%%%%%% ####
+#### %%%%%%%%%%                                                    %%%%%%%%%% ####
+#### %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ####
 
-# RMSE
-nn_rmse = c(.1,.13,.15,.17,.18)
-mean(nn_rmse)
+get_init_priors = function(L, p) {
+  mod_priors = c()
+  for (model in L) {
+    prior_prob = 1
+    for (spec in model) {
+      prior_prob = prior_prob*((1-p)^(1-spec))*(p^spec)
+    }
+    mod_priors = c(mod_priors, prior_prob)
+  }
+  return(mod_priors)
+}
 
-bayes_rmse = c(.21,.16,.15,.22,.25)
-mean(bayes_rmse)
+get_likelihoods = function(L, event) {
+  placements = event[1:length(event)-1]
+  outcome = event[length(event)]
+  likelihoods = c()
+  for (model in L) {
+    activation = 0
+    for (i in 1:length(placements)) {
+      if (placements[i]==1 & model[i]==1) {
+        activation = 1
+      }
+    }
+    likelihoods = c(likelihoods, activation==outcome)
+  }
+  return(likelihoods)
+}
 
-t.test(nn_rmse, bayes_rmse, paired = FALSE,
-       alternative = "two.sided")
+compute_two_posts = function(L, priors, event1, event2) {
+  likelihoods1 = get_likelihoods(L, event1)
+  likelihoods2 = get_likelihoods(L, event2)
+  numerators = likelihoods1*likelihoods2*priors
+  norm_term = sum(numerators)
+  return(numerators/norm_term)
+}
 
-# MAE
-nn_mae = c(.07,.09,.11,.14,.15)
-mean(nn_mae)
+get_blicket_probs = function(L, posts) {
+  blicket_probs = c()
+  for (i in 1:length(L[[1]])) {
+    prob = 0
+    for (j in 1:length(L)) {
+      prob = prob + L[[j]][i]*posts[j]
+    }
+    blicket_probs = c(blicket_probs, prob)
+  }
+  return(blicket_probs)
+}
 
-bayes_mae = c(.19,.13,.10,.19,.22)
-mean(bayes_mae)
+MyIntToBit = function(x, dig) {
+  i <- 0L
+  string <- numeric(dig)
+  while (x > 0) {
+    string[dig - i] <- x %% 2L
+    x <- x %/% 2L
+    i <- i + 1L
+  }
+  string
+}
 
-t.test(nn_mae, bayes_mae, paired = FALSE,
-       alternative = "two.sided")
-
-
-
-
-# BB Condition fit # 
-
-# RMSE
-nn_rmse = c(.14,.18,.19,.22,.23)
-mean(nn_rmse)
-
-bayes_rmse = c(.19,.10,.14,.26,.31)
-mean(bayes_rmse)
-
-t.test(nn_rmse, bayes_rmse, paired = FALSE,
-       alternative = "two.sided")
-
-# MAE
-nn_mae = c(.09,.15,.16,.19,.20)
-mean(nn_mae)
-
-bayes_mae = c(.17,.10,.09,.24,.29)
-mean(bayes_mae)
-
-t.test(nn_mae, bayes_mae, paired = FALSE,
-       alternative = "two.sided")
-
-
-
-# ISO Condition fit # 
-
-# RMSE
-nn_rmse = c(.04,.06,.08,.09,.11)
-mean(nn_rmse)
-
-bayes_rmse = c(.22,.13,.14,.22,.19)
-mean(bayes_rmse)
-
-t.test(nn_rmse, bayes_rmse, paired = FALSE,
-       alternative = "two.sided")
-
-# MAE
-nn_mae = c(.04,.05,.06,.09,.10)
-mean(nn_mae)
-
-bayes_mae = c(.21,.11,.13,.19,.18)
-mean(bayes_mae)
-
-t.test(nn_mae, bayes_mae, paired = FALSE,
-       alternative = "two.sided")
-
-
-
-# Experimental Condition fit # 
-
-# RMSE
-nn_rmse = c(.13,.18,.19,.21,.22)
-mean(nn_rmse)
-
-bayes_rmse = c(.13,.12,.17,.26,.29)
-mean(bayes_rmse)
-
-t.test(nn_rmse, bayes_rmse, paired = FALSE,
-       alternative = "two.sided")
-
-# MAE
-nn_mae = c(.11,.15,.16,.18,.19)
-mean(nn_mae)
-
-bayes_mae = c(.11,.08,.14,.23,.26)
-mean(bayes_mae)
-
-t.test(nn_mae, bayes_mae, paired = FALSE,
-       alternative = "two.sided")
+get_model_list = function(num_blickets) {
+  return(lapply(0:(2^num_blickets - 1), function(x) MyIntToBit(x, num_blickets)))
+}
 
 
-# Control Condition fit # 
+bayes_model_func = function(x,prob,event1,event2){
+  L = get_model_list(x) # x is the number of candidate causes
+  priors = get_init_priors(L, prob) # prob = probability that an object is a blicket
+  event1 = event1 #event1/event2 are lists, in which the first n elements correspond to the # of candidate causes and teh last element corresponds to
+  # whether the machine activates
+  event2 = event2
+  posts = compute_two_posts(L, priors, event1, event2)
+  blicket_probs = get_blicket_probs(L, posts)
+  print(blicket_probs)
+}
 
-# RMSE
-nn_rmse = c(.07,.08,.10,.12,.13)
-mean(nn_rmse)
+#### %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ####                 
+#### %%%%%%%%%%  THIS SECTION COMPUTES FITS FOR THE DATA OVERALL %%%%%%%%%% ####
+#### %%%%%%%%%%                 FOR EXPERIMENT 1                 %%%%%%%%%% ####
+#### %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ####
+#### ----> LOAD BEHAVIORAL DATA <---- ####
 
-bayes_rmse = c(.26,.19,.14,.18,.21)
-mean(bayes_rmse)
+# NOTE: This assumes you've loaded the data from the 'exp1Rscript.R' datafile
 
-t.test(nn_rmse, bayes_rmse, paired = FALSE,
-       alternative = "two.sided")
+# create objects for the means of different objects across the BB and ISO conditions
+# BB
+A.main.bb = mean(D_tall$choice[D_tall$objectType=="A" & D_tall$trialType=="main" & D_tall$Condition=="Backwards Blocking"])
+B.main.bb = mean(D_tall$choice[D_tall$objectType=="B" & D_tall$trialType=="main" & D_tall$Condition=="Backwards Blocking"])
+C.main.bb = mean(D_tall$choice[D_tall$objectType=="C" & D_tall$trialType=="main" & D_tall$Condition=="Backwards Blocking"])
 
-# MAE
-nn_mae = c(.05,.06,.07,.09,.11)
-mean(nn_mae)
+A.control.bb = mean(D_tall$choice[D_tall$objectType=="A" & D_tall$trialType=="control" & D_tall$Condition=="Backwards Blocking"])
+B.control.bb = mean(D_tall$choice[D_tall$objectType=="B" & D_tall$trialType=="control" & D_tall$Condition=="Backwards Blocking"])
+C.control.bb = mean(D_tall$choice[D_tall$objectType=="C" & D_tall$trialType=="control" & D_tall$Condition=="Backwards Blocking"])
+D.control.bb = mean(D_tall$choice[D_tall$objectType=="D" & D_tall$trialType=="control" & D_tall$Condition=="Backwards Blocking"])
 
-bayes_mae = c(.25,.17,.08,.16,.19)
-mean(bayes_mae)
 
-t.test(nn_mae, bayes_mae, paired = FALSE,
-       alternative = "two.sided")
+# ISO
+A.main.iso = mean(D_tall$choice[D_tall$objectType=="A" & D_tall$trialType=="main" & D_tall$Condition=="Indirect Screening-Off"])
+B.main.iso = mean(D_tall$choice[D_tall$objectType=="B" & D_tall$trialType=="main" & D_tall$Condition=="Indirect Screening-Off"])
+C.main.iso = mean(D_tall$choice[D_tall$objectType=="C" & D_tall$trialType=="main" & D_tall$Condition=="Indirect Screening-Off"])
+
+A.control.iso = mean(D_tall$choice[D_tall$objectType=="A" & D_tall$trialType=="control" & D_tall$Condition=="Indirect Screening-Off"])
+B.control.iso = mean(D_tall$choice[D_tall$objectType=="B" & D_tall$trialType=="control" & D_tall$Condition=="Indirect Screening-Off"])
+C.control.iso = mean(D_tall$choice[D_tall$objectType=="C" & D_tall$trialType=="control" & D_tall$Condition=="Indirect Screening-Off"])
+D.control.iso = mean(D_tall$choice[D_tall$objectType=="D" & D_tall$trialType=="control" & D_tall$Condition=="Indirect Screening-Off"])
+
+# create an object called 'behavioral_data' that stores the means across columns
+
+behavioral_data = c(A.main.bb, B.main.bb, C.main.bb, A.control.bb, B.control.bb, C.control.bb, D.control.bb,
+                    A.main.iso, B.main.iso, C.main.iso, A.control.iso, B.control.iso, C.control.iso, D.control.iso)
+
+
+#### ----> NEURAL NETWORK AND BEHAVIORAL DATA COMPARISON <---- ####
+folder_path <- "C:/Users/bentod2/Documents/projects/current/bbInChildren/model/NNModelWithRandomWeights/exp1/modelData"
+
+files <- list.files(path = folder_path, pattern = ".txt", full.names = TRUE)
+
+# Initialize a data frame to hold the results
+results <- data.frame(RMSE = numeric(), MAE = numeric())
+
+for (file in files) {
+  data <- read.table(file, header = FALSE, stringsAsFactors = FALSE)
+  data$condition <- rep(c("Backwards Blocking", "Indirect Screening-Off"), each = 1400)
+  data$objects <- data$V2
+  data$trialtype <- rep(c("main", "control", "main", "control"), times = c(600, 800, 600, 800))
+  
+  # BB
+  A.BB.main <- mean(data$V3[data$trialtype=="main" & data$objects=="A" & data$condition=="Backwards Blocking"])
+  B.BB.main <- mean(data$V3[data$trialtype=="main" & data$objects=="B" & data$condition=="Backwards Blocking"])
+  C.BB.main <- mean(data$V3[data$trialtype=="main" & data$objects=="C" & data$condition=="Backwards Blocking"])
+  
+  A.BB.control <- mean(data$V3[data$trialtype=="control" & data$objects=="A" & data$condition=="Backwards Blocking"])
+  B.BB.control <- mean(data$V3[data$trialtype=="control" & data$objects=="B" & data$condition=="Backwards Blocking"])
+  C.BB.control <- mean(data$V3[data$trialtype=="control" & data$objects=="C" & data$condition=="Backwards Blocking"])
+  D.BB.control <- mean(data$V3[data$trialtype=="control" & data$objects=="D" & data$condition=="Backwards Blocking"])
+  
+  # ISO
+  A.ISO.main <- mean(data$V3[data$trialtype=="main" & data$objects=="A" & data$condition=="Indirect Screening-Off"])
+  B.ISO.main <- mean(data$V3[data$trialtype=="main" & data$objects=="B" & data$condition=="Indirect Screening-Off"])
+  C.ISO.main <- mean(data$V3[data$trialtype=="main" & data$objects=="C" & data$condition=="Indirect Screening-Off"])
+  
+  A.ISO.control <- mean(data$V3[data$trialtype=="control" & data$objects=="A" & data$condition=="Indirect Screening-Off"])
+  B.ISO.control <- mean(data$V3[data$trialtype=="control" & data$objects=="B" & data$condition=="Indirect Screening-Off"])
+  C.ISO.control <- mean(data$V3[data$trialtype=="control" & data$objects=="C" & data$condition=="Indirect Screening-Off"])
+  D.ISO.control <- mean(data$V3[data$trialtype=="control" & data$objects=="D" & data$condition=="Indirect Screening-Off"])
+
+  model_predictions <- c(A.BB.main, B.BB.main, C.BB.main, A.BB.control, B.BB.control, C.BB.control, D.BB.control,
+                         A.ISO.main, B.ISO.main, C.ISO.main, A.ISO.control, B.ISO.control, C.ISO.control, D.ISO.control)
+  
+  # Assuming you have the `behavioral_data` variable defined somewhere
+  
+  res <- postResample(pred = model_predictions, obs = behavioral_data)
+  
+  epoch_number <- tools::file_path_sans_ext(basename(file))
+  
+  results <- rbind(as.numeric(epoch_number)*4, RMSE = res[["RMSE"]], MAE = res[["MAE"]])
+  
+  print(results)
+}
+
+
+#### ----> BAYESIAN MODEL AND BEHAVIORAL DATA COMPARISON <---- ####
+
+# NOTE: YOU NEED TO LOAD THE BAYESIAN MODEL BEFORE YOU CAN USE THE CODE BELOW ##
+
+# create a vector of priors
+priors = c(0.5, 0.65, 0.80, 0.95, 1)
+
+resultsBayes <- data.frame(RMSE = numeric(), MAE = numeric())
+
+for(i in priors){
+  # BBexperimental: ABC+ A+
+  bbMain = bayes_model_func(x=3,i,event1=c(1,1,1,1),event2=c(1,0,0,1)) 
+  
+  # BBcontrol: ABC+ D+
+  bbControl = bayes_model_func(x=5,i,event1=c(1,1,1,0,0,1),event2=c(0,0,0,1,0,1)) 
+  
+  
+  # ISOexperimental: ABC+ A-
+  isoMain = bayes_model_func(x=3,i,event1=c(1,1,1,1),event2=c(1,0,0,0)) 
+  
+  # ISOcontrol: ABC+ D-
+  isoControl = bayes_model_func(x=5,i,event1=c(1,1,1,0,0,1),event2=c(0,0,0,1,0,0))
+  
+  
+  model_predictions = c(bbMain[[1]], bbMain[[2]], bbMain[[3]], bbControl[[1]], bbControl[[2]], bbControl[[3]], bbControl[[4]],
+                        isoMain[[1]], isoMain[[2]], isoMain[[3]], isoControl[[1]], isoControl[[2]], isoControl[[3]], isoControl[[4]])
+  
+  res <- postResample(pred = model_predictions, obs = behavioral_data)
+  
+  
+  resultsBayes <- rbind(prior = i, RMSE = res[["RMSE"]], MAE = res[["MAE"]])
+  
+  print(resultsBayes)
+  
+}
+
+
+
+
+#### %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ####                 
+#### %%%%%%%%%%  THIS SECTION COMPUTES FITS FOR THE BB DATA      %%%%%%%%%% ####
+#### %%%%%%%%%%                                                  %%%%%%%%%% ####
+#### %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ####
+
+# BB
+A.main.bb = mean(D_tall$choice[D_tall$objectType=="A" & D_tall$trialType=="main" & D_tall$Condition=="Backwards Blocking"])
+B.main.bb = mean(D_tall$choice[D_tall$objectType=="B" & D_tall$trialType=="main" & D_tall$Condition=="Backwards Blocking"])
+C.main.bb = mean(D_tall$choice[D_tall$objectType=="C" & D_tall$trialType=="main" & D_tall$Condition=="Backwards Blocking"])
+
+A.control.bb = mean(D_tall$choice[D_tall$objectType=="A" & D_tall$trialType=="control" & D_tall$Condition=="Backwards Blocking"])
+B.control.bb = mean(D_tall$choice[D_tall$objectType=="B" & D_tall$trialType=="control" & D_tall$Condition=="Backwards Blocking"])
+C.control.bb = mean(D_tall$choice[D_tall$objectType=="C" & D_tall$trialType=="control" & D_tall$Condition=="Backwards Blocking"])
+D.control.bb = mean(D_tall$choice[D_tall$objectType=="D" & D_tall$trialType=="control" & D_tall$Condition=="Backwards Blocking"])
+
+
+# create an object called 'behavioral_data' that stores the means across columns
+
+behavioral_data = c(A.main.bb, B.main.bb, C.main.bb, A.control.bb, B.control.bb, C.control.bb, D.control.bb)
+
+
+#### ----> NEURAL NETWORK AND BEHAVIORAL DATA COMPARISON <---- ####
+folder_path <- "C:/Users/bentod2/Documents/projects/current/bbInChildren/model/NNModelWithRandomWeights/exp1/modelData"
+
+files <- list.files(path = folder_path, pattern = ".txt", full.names = TRUE)
+
+# Initialize a data frame to hold the results
+results <- data.frame(RMSE = numeric(), MAE = numeric())
+
+for (file in files) {
+  data <- read.table(file, header = FALSE, stringsAsFactors = FALSE)
+  data$condition <- rep(c("Backwards Blocking", "Indirect Screening-Off"), each = 1400)
+  data$objects <- data$V2
+  data$trialtype <- rep(c("main", "control", "main", "control"), times = c(600, 800, 600, 800))
+  
+  # BB
+  A.BB.main <- mean(data$V3[data$trialtype=="main" & data$objects=="A" & data$condition=="Backwards Blocking"])
+  B.BB.main <- mean(data$V3[data$trialtype=="main" & data$objects=="B" & data$condition=="Backwards Blocking"])
+  C.BB.main <- mean(data$V3[data$trialtype=="main" & data$objects=="C" & data$condition=="Backwards Blocking"])
+  
+  A.BB.control <- mean(data$V3[data$trialtype=="control" & data$objects=="A" & data$condition=="Backwards Blocking"])
+  B.BB.control <- mean(data$V3[data$trialtype=="control" & data$objects=="B" & data$condition=="Backwards Blocking"])
+  C.BB.control <- mean(data$V3[data$trialtype=="control" & data$objects=="C" & data$condition=="Backwards Blocking"])
+  D.BB.control <- mean(data$V3[data$trialtype=="control" & data$objects=="D" & data$condition=="Backwards Blocking"])
+
+  model_predictions <- c(A.BB.main, B.BB.main, C.BB.main, A.BB.control, B.BB.control, C.BB.control, D.BB.control)
+  
+  # Assuming you have the `behavioral_data` variable defined somewhere
+  
+  res <- postResample(pred = model_predictions, obs = behavioral_data)
+  
+  epoch_number <- tools::file_path_sans_ext(basename(file))
+  
+  results <- rbind(as.numeric(epoch_number)*4, RMSE = res[["RMSE"]], MAE = res[["MAE"]])
+  
+  print(results)
+}
+
+
+#### ----> BAYESIAN MODEL AND BEHAVIORAL DATA COMPARISON <---- ####
+
+# NOTE: YOU NEED TO LOAD THE BAYESIAN MODEL BEFORE YOU CAN USE THE CODE BELOW ##
+
+# create a vector of priors
+priors = c(0.5, 0.65, 0.80, 0.95, 1)
+
+resultsBayes <- data.frame(RMSE = numeric(), MAE = numeric())
+
+for(i in priors){
+  # BBexperimental: ABC+ A+
+  bbMain = bayes_model_func(x=3,i,event1=c(1,1,1,1),event2=c(1,0,0,1)) 
+  
+  # BBcontrol: ABC+ D+
+  bbControl = bayes_model_func(x=5,i,event1=c(1,1,1,0,0,1),event2=c(0,0,0,1,0,1)) 
+  
+  
+  # ISOexperimental: ABC+ A-
+  isoMain = bayes_model_func(x=3,i,event1=c(1,1,1,1),event2=c(1,0,0,0)) 
+  
+  # ISOcontrol: ABC+ D-
+  isoControl = bayes_model_func(x=5,i,event1=c(1,1,1,0,0,1),event2=c(0,0,0,1,0,0))
+  
+  
+  model_predictions = c(bbMain[[1]], bbMain[[2]], bbMain[[3]], bbControl[[1]], bbControl[[2]], bbControl[[3]], bbControl[[4]])
+  
+  res <- postResample(pred = model_predictions, obs = behavioral_data)
+  
+  
+  resultsBayes <- rbind(prior = i, RMSE = res[["RMSE"]], MAE = res[["MAE"]])
+  
+  print(resultsBayes)
+  
+}
+
+
+
+
+#### %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ####                 
+#### %%%%%%%%%%  THIS SECTION COMPUTES FITS FOR THE ISO  OVERALL %%%%%%%%%% ####
+#### %%%%%%%%%%                                                  %%%%%%%%%% ####
+#### %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ####
+#### ----> LOAD BEHAVIORAL DATA <---- ####
+
+# NOTE: This assumes you've loaded the data from the 'exp1Rscript.R' datafile
+
+# create objects for the means of different objects across the BB and ISO conditions
+# ISO
+A.main.iso = mean(D_tall$choice[D_tall$objectType=="A" & D_tall$trialType=="main" & D_tall$Condition=="Indirect Screening-Off"])
+B.main.iso = mean(D_tall$choice[D_tall$objectType=="B" & D_tall$trialType=="main" & D_tall$Condition=="Indirect Screening-Off"])
+C.main.iso = mean(D_tall$choice[D_tall$objectType=="C" & D_tall$trialType=="main" & D_tall$Condition=="Indirect Screening-Off"])
+
+A.control.iso = mean(D_tall$choice[D_tall$objectType=="A" & D_tall$trialType=="control" & D_tall$Condition=="Indirect Screening-Off"])
+B.control.iso = mean(D_tall$choice[D_tall$objectType=="B" & D_tall$trialType=="control" & D_tall$Condition=="Indirect Screening-Off"])
+C.control.iso = mean(D_tall$choice[D_tall$objectType=="C" & D_tall$trialType=="control" & D_tall$Condition=="Indirect Screening-Off"])
+D.control.iso = mean(D_tall$choice[D_tall$objectType=="D" & D_tall$trialType=="control" & D_tall$Condition=="Indirect Screening-Off"])
+
+# create an object called 'behavioral_data' that stores the means across columns
+
+behavioral_data = c(A.main.iso, B.main.iso, C.main.iso, A.control.iso, B.control.iso, C.control.iso, D.control.iso)
+
+
+#### ----> NEURAL NETWORK AND BEHAVIORAL DATA COMPARISON <---- ####
+folder_path <- "C:/Users/bentod2/Documents/projects/current/bbInChildren/model/NNModelWithRandomWeights/exp1/modelData"
+
+files <- list.files(path = folder_path, pattern = ".txt", full.names = TRUE)
+
+# Initialize a data frame to hold the results
+results <- data.frame(RMSE = numeric(), MAE = numeric())
+
+for (file in files) {
+  data <- read.table(file, header = FALSE, stringsAsFactors = FALSE)
+  data$condition <- rep(c("Backwards Blocking", "Indirect Screening-Off"), each = 1400)
+  data$objects <- data$V2
+  data$trialtype <- rep(c("main", "control", "main", "control"), times = c(600, 800, 600, 800))
+  
+  # BB
+  A.BB.main <- mean(data$V3[data$trialtype=="main" & data$objects=="A" & data$condition=="Backwards Blocking"])
+  B.BB.main <- mean(data$V3[data$trialtype=="main" & data$objects=="B" & data$condition=="Backwards Blocking"])
+  C.BB.main <- mean(data$V3[data$trialtype=="main" & data$objects=="C" & data$condition=="Backwards Blocking"])
+  
+  A.BB.control <- mean(data$V3[data$trialtype=="control" & data$objects=="A" & data$condition=="Backwards Blocking"])
+  B.BB.control <- mean(data$V3[data$trialtype=="control" & data$objects=="B" & data$condition=="Backwards Blocking"])
+  C.BB.control <- mean(data$V3[data$trialtype=="control" & data$objects=="C" & data$condition=="Backwards Blocking"])
+  D.BB.control <- mean(data$V3[data$trialtype=="control" & data$objects=="D" & data$condition=="Backwards Blocking"])
+
+  # ISO
+  A.ISO.main <- mean(data$V3[data$trialtype=="main" & data$objects=="A" & data$condition=="Indirect Screening-Off"])
+  B.ISO.main <- mean(data$V3[data$trialtype=="main" & data$objects=="B" & data$condition=="Indirect Screening-Off"])
+  C.ISO.main <- mean(data$V3[data$trialtype=="main" & data$objects=="C" & data$condition=="Indirect Screening-Off"])
+  
+  A.ISO.control <- mean(data$V3[data$trialtype=="control" & data$objects=="A" & data$condition=="Indirect Screening-Off"])
+  B.ISO.control <- mean(data$V3[data$trialtype=="control" & data$objects=="B" & data$condition=="Indirect Screening-Off"])
+  C.ISO.control <- mean(data$V3[data$trialtype=="control" & data$objects=="C" & data$condition=="Indirect Screening-Off"])
+  D.ISO.control <- mean(data$V3[data$trialtype=="control" & data$objects=="D" & data$condition=="Indirect Screening-Off"])
+
+  model_predictions <- c(A.ISO.main, B.ISO.main, C.ISO.main, A.ISO.control, B.ISO.control, C.ISO.control, D.ISO.control)
+  
+  # Assuming you have the `behavioral_data` variable defined somewhere
+  
+  res <- postResample(pred = model_predictions, obs = behavioral_data)
+  
+  epoch_number <- tools::file_path_sans_ext(basename(file))
+  
+  results <- rbind(as.numeric(epoch_number)*4, RMSE = res[["RMSE"]], MAE = res[["MAE"]])
+  
+  print(results)
+}
+
+
+#### ----> BAYESIAN MODEL AND BEHAVIORAL DATA COMPARISON <---- ####
+
+# NOTE: YOU NEED TO LOAD THE BAYESIAN MODEL BEFORE YOU CAN USE THE CODE BELOW ##
+
+# create a vector of priors
+priors = c(0.5, 0.65, 0.80, 0.95, 1)
+
+resultsBayes <- data.frame(RMSE = numeric(), MAE = numeric())
+
+for(i in priors){
+  # BBexperimental: ABC+ A+
+  bbMain = bayes_model_func(x=3,i,event1=c(1,1,1,1),event2=c(1,0,0,1)) 
+  
+  # BBcontrol: ABC+ D+
+  bbControl = bayes_model_func(x=5,i,event1=c(1,1,1,0,0,1),event2=c(0,0,0,1,0,1)) 
+  
+  
+  # ISOexperimental: ABC+ A-
+  isoMain = bayes_model_func(x=3,i,event1=c(1,1,1,1),event2=c(1,0,0,0)) 
+  
+  # ISOcontrol: ABC+ D-
+  isoControl = bayes_model_func(x=5,i,event1=c(1,1,1,0,0,1),event2=c(0,0,0,1,0,0))
+  
+  
+  model_predictions = c(isoMain[[1]], isoMain[[2]], isoMain[[3]], isoControl[[1]], isoControl[[2]], isoControl[[3]], isoControl[[4]])
+  
+  res <- postResample(pred = model_predictions, obs = behavioral_data)
+  
+  
+  resultsBayes <- rbind(prior = i, RMSE = res[["RMSE"]], MAE = res[["MAE"]])
+  
+  print(resultsBayes)
+  
+}
+
+
+
+#### %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ####                 
+#### %%%%%%%%%%  THIS SECTION COMPUTES FITS FOR THE EXPERIMENTAL DATA OVERALL %%%%%%%%%% ####
+#### %%%%%%%%%%                                                               %%%%%%%%%% ####
+#### %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ####
+#### ----> LOAD BEHAVIORAL DATA <---- ####
+
+# NOTE: This assumes you've loaded the data from the 'exp1Rscript.R' datafile
+
+# create objects for the means of different objects across the BB and ISO conditions
+# BB
+A.main.bb = mean(D_tall$choice[D_tall$objectType=="A" & D_tall$trialType=="main" & D_tall$Condition=="Backwards Blocking"])
+B.main.bb = mean(D_tall$choice[D_tall$objectType=="B" & D_tall$trialType=="main" & D_tall$Condition=="Backwards Blocking"])
+C.main.bb = mean(D_tall$choice[D_tall$objectType=="C" & D_tall$trialType=="main" & D_tall$Condition=="Backwards Blocking"])
+
+
+# ISO
+A.main.iso = mean(D_tall$choice[D_tall$objectType=="A" & D_tall$trialType=="main" & D_tall$Condition=="Indirect Screening-Off"])
+B.main.iso = mean(D_tall$choice[D_tall$objectType=="B" & D_tall$trialType=="main" & D_tall$Condition=="Indirect Screening-Off"])
+C.main.iso = mean(D_tall$choice[D_tall$objectType=="C" & D_tall$trialType=="main" & D_tall$Condition=="Indirect Screening-Off"])
+
+
+# create an object called 'behavioral_data' that stores the means across columns
+
+behavioral_data = c(A.main.bb, B.main.bb, C.main.bb, A.main.iso, B.main.iso, C.main.iso)
+
+
+#### ----> NEURAL NETWORK AND BEHAVIORAL DATA COMPARISON <---- ####
+folder_path <- "C:/Users/bentod2/Documents/projects/current/bbInChildren/model/NNModelWithRandomWeights/exp1/modelData"
+
+files <- list.files(path = folder_path, pattern = ".txt", full.names = TRUE)
+
+# Initialize a data frame to hold the results
+results <- data.frame(RMSE = numeric(), MAE = numeric())
+
+for (file in files) {
+  data <- read.table(file, header = FALSE, stringsAsFactors = FALSE)
+  data$condition <- rep(c("Backwards Blocking", "Indirect Screening-Off"), each = 1400)
+  data$objects <- data$V2
+  data$trialtype <- rep(c("main", "control", "main", "control"), times = c(600, 800, 600, 800))
+  
+  # BB
+  A.BB.main <- mean(data$V3[data$trialtype=="main" & data$objects=="A" & data$condition=="Backwards Blocking"])
+  B.BB.main <- mean(data$V3[data$trialtype=="main" & data$objects=="B" & data$condition=="Backwards Blocking"])
+  C.BB.main <- mean(data$V3[data$trialtype=="main" & data$objects=="C" & data$condition=="Backwards Blocking"])
+  
+  A.BB.control <- mean(data$V3[data$trialtype=="control" & data$objects=="A" & data$condition=="Backwards Blocking"])
+  B.BB.control <- mean(data$V3[data$trialtype=="control" & data$objects=="B" & data$condition=="Backwards Blocking"])
+  C.BB.control <- mean(data$V3[data$trialtype=="control" & data$objects=="C" & data$condition=="Backwards Blocking"])
+  D.BB.control <- mean(data$V3[data$trialtype=="control" & data$objects=="D" & data$condition=="Backwards Blocking"])
+
+  # ISO
+  A.ISO.main <- mean(data$V3[data$trialtype=="main" & data$objects=="A" & data$condition=="Indirect Screening-Off"])
+  B.ISO.main <- mean(data$V3[data$trialtype=="main" & data$objects=="B" & data$condition=="Indirect Screening-Off"])
+  C.ISO.main <- mean(data$V3[data$trialtype=="main" & data$objects=="C" & data$condition=="Indirect Screening-Off"])
+  
+  A.ISO.control <- mean(data$V3[data$trialtype=="control" & data$objects=="A" & data$condition=="Indirect Screening-Off"])
+  B.ISO.control <- mean(data$V3[data$trialtype=="control" & data$objects=="B" & data$condition=="Indirect Screening-Off"])
+  C.ISO.control <- mean(data$V3[data$trialtype=="control" & data$objects=="C" & data$condition=="Indirect Screening-Off"])
+  D.ISO.control <- mean(data$V3[data$trialtype=="control" & data$objects=="D" & data$condition=="Indirect Screening-Off"])
+
+  model_predictions <- c(A.BB.main, B.BB.main, C.BB.main, A.ISO.main, B.ISO.main, C.ISO.main)
+  
+  # Assuming you have the `behavioral_data` variable defined somewhere
+  
+  res <- postResample(pred = model_predictions, obs = behavioral_data)
+  
+  epoch_number <- tools::file_path_sans_ext(basename(file))
+  
+  results <- rbind(as.numeric(epoch_number)*4, RMSE = res[["RMSE"]], MAE = res[["MAE"]])
+  
+  print(results)
+}
+
+
+#### ----> BAYESIAN MODEL AND BEHAVIORAL DATA COMPARISON <---- ####
+
+# NOTE: YOU NEED TO LOAD THE BAYESIAN MODEL BEFORE YOU CAN USE THE CODE BELOW ##
+
+# create a vector of priors
+priors = c(0.5, 0.65, 0.80, 0.95, 1)
+
+resultsBayes <- data.frame(RMSE = numeric(), MAE = numeric())
+
+for(i in priors){
+  # BBexperimental: ABC+ A+
+  bbMain = bayes_model_func(x=3,i,event1=c(1,1,1,1),event2=c(1,0,0,1)) 
+  
+  # BBcontrol: ABC+ D+
+  bbControl = bayes_model_func(x=5,i,event1=c(1,1,1,0,0,1),event2=c(0,0,0,1,0,1)) 
+  
+  
+  # ISOexperimental: ABC+ A-
+  isoMain = bayes_model_func(x=3,i,event1=c(1,1,1,1),event2=c(1,0,0,0)) 
+  
+  # ISOcontrol: ABC+ DE-
+  isoControl = bayes_model_func(x=5,i,event1=c(1,1,1,0,0,1),event2=c(0,0,0,1,0,0))
+  
+  
+  model_predictions = c(bbMain[[1]], bbMain[[2]], bbMain[[3]], isoMain[[1]], isoMain[[2]], isoMain[[3]])
+  
+  res <- postResample(pred = model_predictions, obs = behavioral_data)
+  
+  
+  resultsBayes <- rbind(prior = i, RMSE = res[["RMSE"]], MAE = res[["MAE"]])
+  
+  print(resultsBayes)
+  
+}
+
+
+
+#### %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ####                 
+#### %%%%%%%%%%  THIS SECTION COMPUTES FITS FOR THE CONTROL DATA %%%%%%%%%% ####
+#### %%%%%%%%%%                                                  %%%%%%%%%% ####
+#### %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ####
+#### ----> LOAD BEHAVIORAL DATA <---- ####
+
+# NOTE: This assumes you've loaded the data from the 'exp1Rscript.R' datafile
+
+# create objects for the means of different objects across the BB and ISO conditions
+# BB
+A.control.bb = mean(D_tall$choice[D_tall$objectType=="A" & D_tall$trialType=="control" & D_tall$Condition=="Backwards Blocking"])
+B.control.bb = mean(D_tall$choice[D_tall$objectType=="B" & D_tall$trialType=="control" & D_tall$Condition=="Backwards Blocking"])
+C.control.bb = mean(D_tall$choice[D_tall$objectType=="C" & D_tall$trialType=="control" & D_tall$Condition=="Backwards Blocking"])
+D.control.bb = mean(D_tall$choice[D_tall$objectType=="D" & D_tall$trialType=="control" & D_tall$Condition=="Backwards Blocking"])
+
+
+# ISO
+A.control.iso = mean(D_tall$choice[D_tall$objectType=="A" & D_tall$trialType=="control" & D_tall$Condition=="Indirect Screening-Off"])
+B.control.iso = mean(D_tall$choice[D_tall$objectType=="B" & D_tall$trialType=="control" & D_tall$Condition=="Indirect Screening-Off"])
+C.control.iso = mean(D_tall$choice[D_tall$objectType=="C" & D_tall$trialType=="control" & D_tall$Condition=="Indirect Screening-Off"])
+D.control.iso = mean(D_tall$choice[D_tall$objectType=="D" & D_tall$trialType=="control" & D_tall$Condition=="Indirect Screening-Off"])
+
+# create an object called 'behavioral_data' that stores the means across columns
+
+behavioral_data = c(A.control.bb, B.control.bb, C.control.bb, D.control.bb, 
+                    A.control.iso, B.control.iso, C.control.iso, D.control.iso)
+
+
+#### ----> NEURAL NETWORK AND BEHAVIORAL DATA COMPARISON <---- ####
+folder_path <- "C:/Users/bentod2/Documents/projects/current/bbInChildren/model/NNModelWithRandomWeights/exp1/modelData"
+
+files <- list.files(path = folder_path, pattern = ".txt", full.names = TRUE)
+
+# Initialize a data frame to hold the results
+results <- data.frame(RMSE = numeric(), MAE = numeric())
+
+for (file in files) {
+  data <- read.table(file, header = FALSE, stringsAsFactors = FALSE)
+  data$condition <- rep(c("Backwards Blocking", "Indirect Screening-Off"), each = 1400)
+  data$objects <- data$V2
+  data$trialtype <- rep(c("main", "control", "main", "control"), times = c(600, 800, 600, 800))
+  
+  # BB
+  A.BB.main <- mean(data$V3[data$trialtype=="main" & data$objects=="A" & data$condition=="Backwards Blocking"])
+  B.BB.main <- mean(data$V3[data$trialtype=="main" & data$objects=="B" & data$condition=="Backwards Blocking"])
+  C.BB.main <- mean(data$V3[data$trialtype=="main" & data$objects=="C" & data$condition=="Backwards Blocking"])
+  
+  A.BB.control <- mean(data$V3[data$trialtype=="control" & data$objects=="A" & data$condition=="Backwards Blocking"])
+  B.BB.control <- mean(data$V3[data$trialtype=="control" & data$objects=="B" & data$condition=="Backwards Blocking"])
+  C.BB.control <- mean(data$V3[data$trialtype=="control" & data$objects=="C" & data$condition=="Backwards Blocking"])
+  D.BB.control <- mean(data$V3[data$trialtype=="control" & data$objects=="D" & data$condition=="Backwards Blocking"])
+
+  # ISO
+  A.ISO.main <- mean(data$V3[data$trialtype=="main" & data$objects=="A" & data$condition=="Indirect Screening-Off"])
+  B.ISO.main <- mean(data$V3[data$trialtype=="main" & data$objects=="B" & data$condition=="Indirect Screening-Off"])
+  C.ISO.main <- mean(data$V3[data$trialtype=="main" & data$objects=="C" & data$condition=="Indirect Screening-Off"])
+  
+  A.ISO.control <- mean(data$V3[data$trialtype=="control" & data$objects=="A" & data$condition=="Indirect Screening-Off"])
+  B.ISO.control <- mean(data$V3[data$trialtype=="control" & data$objects=="B" & data$condition=="Indirect Screening-Off"])
+  C.ISO.control <- mean(data$V3[data$trialtype=="control" & data$objects=="C" & data$condition=="Indirect Screening-Off"])
+  D.ISO.control <- mean(data$V3[data$trialtype=="control" & data$objects=="D" & data$condition=="Indirect Screening-Off"])
+
+  model_predictions <- c(A.BB.control, B.BB.control, C.BB.control, D.BB.control,
+                         A.ISO.control, B.ISO.control, C.ISO.control, D.ISO.control)
+  
+  # Assuming you have the `behavioral_data` variable defined somewhere
+  
+  res <- postResample(pred = model_predictions, obs = behavioral_data)
+  
+  epoch_number <- tools::file_path_sans_ext(basename(file))
+  
+  results <- rbind(as.numeric(epoch_number)*4, RMSE = res[["RMSE"]], MAE = res[["MAE"]])
+  
+  print(results)
+}
+
+
+#### ----> BAYESIAN MODEL AND BEHAVIORAL DATA COMPARISON <---- ####
+
+# NOTE: YOU NEED TO LOAD THE BAYESIAN MODEL BEFORE YOU CAN USE THE CODE BELOW ##
+
+# create a vector of priors
+priors = c(0.5, 0.65, 0.80, 0.95, 1)
+
+resultsBayes <- data.frame(RMSE = numeric(), MAE = numeric())
+
+for(i in priors){
+  # BBexperimental: ABC+ A+
+  bbMain = bayes_model_func(x=3,i,event1=c(1,1,1,1),event2=c(1,0,0,1)) 
+  
+  # BBcontrol: ABC+ D+
+  bbControl = bayes_model_func(x=5,i,event1=c(1,1,1,0,0,1),event2=c(0,0,0,1,0,1)) 
+  
+  
+  # ISOexperimental: ABC+ A-
+  isoMain = bayes_model_func(x=3,i,event1=c(1,1,1,1),event2=c(1,0,0,0)) 
+  
+  # ISOcontrol: ABC+ D-
+  isoControl = bayes_model_func(x=5,i,event1=c(1,1,1,0,0,1),event2=c(0,0,0,1,0,0))
+  
+  
+  model_predictions = c(bbControl[[1]], bbControl[[2]], bbControl[[3]], bbControl[[4]],
+                        isoControl[[1]], isoControl[[2]], isoControl[[3]], isoControl[[4]])
+  
+  res <- postResample(pred = model_predictions, obs = behavioral_data)
+  
+  
+  resultsBayes <- rbind(prior = i, RMSE = res[["RMSE"]], MAE = res[["MAE"]])
+  
+  print(resultsBayes)
+  
+}
+
+
+#### %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ####                 
+#### %%%%%%%%%%  THIS SECTION COMPUTES FITS FOR THE DATA OVERALL %%%%%%%%%% ####
+#### %%%%%%%%%%                 FOR EXPERIMENT 2                 %%%%%%%%%% ####
+#### %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ####
+#### ----> LOAD BEHAVIORAL DATA <---- ####
+
+# NOTE: This assumes you've loaded the data from the 'exp2Rscript.R' datafile
+
+# create objects for the means of different objects across the BB and ISO conditions
+# BB
+A.main.bb = mean(D_tall$choice[D_tall$objectType=="A" & D_tall$trialType=="main" & D_tall$Condition=="Backwards Blocking"])
+B.main.bb = mean(D_tall$choice[D_tall$objectType=="B" & D_tall$trialType=="main" & D_tall$Condition=="Backwards Blocking"])
+C.main.bb = mean(D_tall$choice[D_tall$objectType=="C" & D_tall$trialType=="main" & D_tall$Condition=="Backwards Blocking"])
+
+A.control.bb = mean(D_tall$choice[D_tall$objectType=="A" & D_tall$trialType=="control" & D_tall$Condition=="Backwards Blocking"])
+B.control.bb = mean(D_tall$choice[D_tall$objectType=="B" & D_tall$trialType=="control" & D_tall$Condition=="Backwards Blocking"])
+C.control.bb = mean(D_tall$choice[D_tall$objectType=="C" & D_tall$trialType=="control" & D_tall$Condition=="Backwards Blocking"])
+D.control.bb = mean(D_tall$choice[D_tall$objectType=="D" & D_tall$trialType=="control" & D_tall$Condition=="Backwards Blocking"])
+E.control.bb = mean(D_tall$choice[D_tall$objectType=="E" & D_tall$trialType=="control" & D_tall$Condition=="Backwards Blocking"])
+
+
+# ISO
+A.main.iso = mean(D_tall$choice[D_tall$objectType=="A" & D_tall$trialType=="main" & D_tall$Condition=="Indirect Screening-Off"])
+B.main.iso = mean(D_tall$choice[D_tall$objectType=="B" & D_tall$trialType=="main" & D_tall$Condition=="Indirect Screening-Off"])
+C.main.iso = mean(D_tall$choice[D_tall$objectType=="C" & D_tall$trialType=="main" & D_tall$Condition=="Indirect Screening-Off"])
+
+A.control.iso = mean(D_tall$choice[D_tall$objectType=="A" & D_tall$trialType=="control" & D_tall$Condition=="Indirect Screening-Off"])
+B.control.iso = mean(D_tall$choice[D_tall$objectType=="B" & D_tall$trialType=="control" & D_tall$Condition=="Indirect Screening-Off"])
+C.control.iso = mean(D_tall$choice[D_tall$objectType=="C" & D_tall$trialType=="control" & D_tall$Condition=="Indirect Screening-Off"])
+D.control.iso = mean(D_tall$choice[D_tall$objectType=="D" & D_tall$trialType=="control" & D_tall$Condition=="Indirect Screening-Off"])
+E.control.iso = mean(D_tall$choice[D_tall$objectType=="E" & D_tall$trialType=="control" & D_tall$Condition=="Indirect Screening-Off"])
+
+# create an object called 'behavioral_data' that stores the means across columns
+
+behavioral_data = c(A.main.bb, B.main.bb, C.main.bb, A.control.bb, B.control.bb, C.control.bb, D.control.bb, E.control.bb,
+                    A.main.iso, B.main.iso, C.main.iso, A.control.iso, B.control.iso, C.control.iso, D.control.iso, E.control.iso)
+
+
+#### ----> NEURAL NETWORK AND BEHAVIORAL DATA COMPARISON <---- ####
+folder_path <- "C:/Users/bentod2/Documents/projects/current/bbInChildren/model/NNModelWithRandomWeights/exp2/modelData"
+
+files <- list.files(path = folder_path, pattern = ".txt", full.names = TRUE)
+
+# Initialize a data frame to hold the results
+results <- data.frame(RMSE = numeric(), MAE = numeric())
+
+for (file in files) {
+  data <- read.table(file, header = FALSE, stringsAsFactors = FALSE)
+  data$condition <- rep(c("Backwards Blocking", "Indirect Screening-Off"), each = 1600)
+  data$objects <- data$V2
+  data$trialtype <- rep(c("main", "control", "main", "control"), times = c(600, 1000, 600, 1000))
+  
+  # BB
+  A.BB.main <- mean(data$V3[data$trialtype=="main" & data$objects=="A" & data$condition=="Backwards Blocking"])
+  B.BB.main <- mean(data$V3[data$trialtype=="main" & data$objects=="B" & data$condition=="Backwards Blocking"])
+  C.BB.main <- mean(data$V3[data$trialtype=="main" & data$objects=="C" & data$condition=="Backwards Blocking"])
+  
+  A.BB.control <- mean(data$V3[data$trialtype=="control" & data$objects=="A" & data$condition=="Backwards Blocking"])
+  B.BB.control <- mean(data$V3[data$trialtype=="control" & data$objects=="B" & data$condition=="Backwards Blocking"])
+  C.BB.control <- mean(data$V3[data$trialtype=="control" & data$objects=="C" & data$condition=="Backwards Blocking"])
+  D.BB.control <- mean(data$V3[data$trialtype=="control" & data$objects=="D" & data$condition=="Backwards Blocking"])
+  E.BB.control <- mean(data$V3[data$trialtype=="control" & data$objects=="E" & data$condition=="Backwards Blocking"])
+  
+  # ISO
+  A.ISO.main <- mean(data$V3[data$trialtype=="main" & data$objects=="A" & data$condition=="Indirect Screening-Off"])
+  B.ISO.main <- mean(data$V3[data$trialtype=="main" & data$objects=="B" & data$condition=="Indirect Screening-Off"])
+  C.ISO.main <- mean(data$V3[data$trialtype=="main" & data$objects=="C" & data$condition=="Indirect Screening-Off"])
+  
+  A.ISO.control <- mean(data$V3[data$trialtype=="control" & data$objects=="A" & data$condition=="Indirect Screening-Off"])
+  B.ISO.control <- mean(data$V3[data$trialtype=="control" & data$objects=="B" & data$condition=="Indirect Screening-Off"])
+  C.ISO.control <- mean(data$V3[data$trialtype=="control" & data$objects=="C" & data$condition=="Indirect Screening-Off"])
+  D.ISO.control <- mean(data$V3[data$trialtype=="control" & data$objects=="D" & data$condition=="Indirect Screening-Off"])
+  E.ISO.control <- mean(data$V3[data$trialtype=="control" & data$objects=="E" & data$condition=="Indirect Screening-Off"])
+  
+  model_predictions <- c(A.BB.main, B.BB.main, C.BB.main, A.BB.control, B.BB.control, C.BB.control, D.BB.control, E.BB.control,
+                         A.ISO.main, B.ISO.main, C.ISO.main, A.ISO.control, B.ISO.control, C.ISO.control, D.ISO.control, E.ISO.control)
+  
+  # Assuming you have the `behavioral_data` variable defined somewhere
+  
+  res <- postResample(pred = model_predictions, obs = behavioral_data)
+  
+  epoch_number <- tools::file_path_sans_ext(basename(file))
+  
+  results <- rbind(as.numeric(epoch_number)*4, RMSE = res[["RMSE"]], MAE = res[["MAE"]])
+  
+  print(results)
+}
+
+
+#### ----> BAYESIAN MODEL AND BEHAVIORAL DATA COMPARISON <---- ####
+
+# NOTE: YOU NEED TO LOAD THE BAYESIAN MODEL BEFORE YOU CAN USE THE CODE BELOW ##
+
+# create a vector of priors
+priors = c(0.5, 0.65, 0.80, 0.95, 1)
+
+resultsBayes <- data.frame(RMSE = numeric(), MAE = numeric())
+
+for(i in priors){
+  # BBexperimental: ABC+ AB+
+  bbMain = bayes_model_func(x=3,i,event1=c(1,1,1,1),event2=c(1,1,0,1)) 
+  
+  # BBcontrol: ABC+ DE+
+  bbControl = bayes_model_func(x=5,i,event1=c(1,1,1,0,0,1),event2=c(0,0,0,1,1,1)) 
+  
+  
+  # ISOexperimental: ABC+ AB-
+  isoMain = bayes_model_func(x=3,i,event1=c(1,1,1,1),event2=c(1,1,0,0)) 
+  
+  # ISOcontrol: ABC+ DE-
+  isoControl = bayes_model_func(x=5,i,event1=c(1,1,1,0,0,1),event2=c(0,0,0,1,1,0))
+  
+  
+  model_predictions = c(bbMain[[1]], bbMain[[2]], bbMain[[3]], bbControl[[1]], bbControl[[2]], bbControl[[3]], bbControl[[4]], bbControl[[5]],
+                        isoMain[[1]], isoMain[[2]], isoMain[[3]], isoControl[[1]], isoControl[[2]], isoControl[[3]], isoControl[[4]], isoControl[[5]])
+  
+  res <- postResample(pred = model_predictions, obs = behavioral_data)
+  
+  
+  resultsBayes <- rbind(prior = i, RMSE = res[["RMSE"]], MAE = res[["MAE"]])
+  
+  print(resultsBayes)
+  
+}
+
+
+
+
+#### %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ####                 
+#### %%%%%%%%%%  THIS SECTION COMPUTES FITS FOR THE BB DATA      %%%%%%%%%% ####
+#### %%%%%%%%%%                                                  %%%%%%%%%% ####
+#### %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ####
+
+# BB
+A.main.bb = mean(D_tall$choice[D_tall$objectType=="A" & D_tall$trialType=="main" & D_tall$Condition=="Backwards Blocking"])
+B.main.bb = mean(D_tall$choice[D_tall$objectType=="B" & D_tall$trialType=="main" & D_tall$Condition=="Backwards Blocking"])
+C.main.bb = mean(D_tall$choice[D_tall$objectType=="C" & D_tall$trialType=="main" & D_tall$Condition=="Backwards Blocking"])
+
+A.control.bb = mean(D_tall$choice[D_tall$objectType=="A" & D_tall$trialType=="control" & D_tall$Condition=="Backwards Blocking"])
+B.control.bb = mean(D_tall$choice[D_tall$objectType=="B" & D_tall$trialType=="control" & D_tall$Condition=="Backwards Blocking"])
+C.control.bb = mean(D_tall$choice[D_tall$objectType=="C" & D_tall$trialType=="control" & D_tall$Condition=="Backwards Blocking"])
+D.control.bb = mean(D_tall$choice[D_tall$objectType=="D" & D_tall$trialType=="control" & D_tall$Condition=="Backwards Blocking"])
+E.control.bb = mean(D_tall$choice[D_tall$objectType=="E" & D_tall$trialType=="control" & D_tall$Condition=="Backwards Blocking"])
+
+
+# create an object called 'behavioral_data' that stores the means across columns
+
+behavioral_data = c(A.main.bb, B.main.bb, C.main.bb, A.control.bb, B.control.bb, C.control.bb, D.control.bb, E.control.bb)
+
+
+#### ----> NEURAL NETWORK AND BEHAVIORAL DATA COMPARISON <---- ####
+folder_path <- "C:/Users/bentod2/Documents/projects/current/bbInChildren/model/NNModelWithRandomWeights/exp2/modelData"
+
+files <- list.files(path = folder_path, pattern = ".txt", full.names = TRUE)
+
+# Initialize a data frame to hold the results
+results <- data.frame(RMSE = numeric(), MAE = numeric())
+
+for (file in files) {
+  data <- read.table(file, header = FALSE, stringsAsFactors = FALSE)
+  data$condition <- rep(c("Backwards Blocking", "Indirect Screening-Off"), each = 1600)
+  data$objects <- data$V2
+  data$trialtype <- rep(c("main", "control", "main", "control"), times = c(600, 1000, 600, 1000))
+  
+  # BB
+  A.BB.main <- mean(data$V3[data$trialtype=="main" & data$objects=="A" & data$condition=="Backwards Blocking"])
+  B.BB.main <- mean(data$V3[data$trialtype=="main" & data$objects=="B" & data$condition=="Backwards Blocking"])
+  C.BB.main <- mean(data$V3[data$trialtype=="main" & data$objects=="C" & data$condition=="Backwards Blocking"])
+  
+  A.BB.control <- mean(data$V3[data$trialtype=="control" & data$objects=="A" & data$condition=="Backwards Blocking"])
+  B.BB.control <- mean(data$V3[data$trialtype=="control" & data$objects=="B" & data$condition=="Backwards Blocking"])
+  C.BB.control <- mean(data$V3[data$trialtype=="control" & data$objects=="C" & data$condition=="Backwards Blocking"])
+  D.BB.control <- mean(data$V3[data$trialtype=="control" & data$objects=="D" & data$condition=="Backwards Blocking"])
+  E.BB.control <- mean(data$V3[data$trialtype=="control" & data$objects=="E" & data$condition=="Backwards Blocking"])
+  
+  model_predictions <- c(A.BB.main, B.BB.main, C.BB.main, A.BB.control, B.BB.control, C.BB.control, D.BB.control, E.BB.control)
+  
+  # Assuming you have the `behavioral_data` variable defined somewhere
+  
+  res <- postResample(pred = model_predictions, obs = behavioral_data)
+  
+  epoch_number <- tools::file_path_sans_ext(basename(file))
+  
+  results <- rbind(as.numeric(epoch_number)*4, RMSE = res[["RMSE"]], MAE = res[["MAE"]])
+  
+  print(results)
+}
+
+
+#### ----> BAYESIAN MODEL AND BEHAVIORAL DATA COMPARISON <---- ####
+
+# NOTE: YOU NEED TO LOAD THE BAYESIAN MODEL BEFORE YOU CAN USE THE CODE BELOW ##
+
+# create a vector of priors
+priors = c(0.5, 0.65, 0.80, 0.95, 1)
+
+resultsBayes <- data.frame(RMSE = numeric(), MAE = numeric())
+
+for(i in priors){
+  # BBexperimental: ABC+ AB+
+  bbMain = bayes_model_func(x=3,i,event1=c(1,1,1,1),event2=c(1,1,0,1)) 
+  
+  # BBcontrol: ABC+ DE+
+  bbControl = bayes_model_func(x=5,i,event1=c(1,1,1,0,0,1),event2=c(0,0,0,1,1,1)) 
+  
+  
+  # ISOexperimental: ABC+ AB-
+  isoMain = bayes_model_func(x=3,i,event1=c(1,1,1,1),event2=c(1,1,0,0)) 
+  
+  # ISOcontrol: ABC+ DE-
+  isoControl = bayes_model_func(x=5,i,event1=c(1,1,1,0,0,1),event2=c(0,0,0,1,1,0))
+  
+  
+  model_predictions = c(bbMain[[1]], bbMain[[2]], bbMain[[3]], bbControl[[1]], bbControl[[2]], bbControl[[3]], bbControl[[4]], bbControl[[5]])
+  
+  res <- postResample(pred = model_predictions, obs = behavioral_data)
+  
+  
+  resultsBayes <- rbind(prior = i, RMSE = res[["RMSE"]], MAE = res[["MAE"]])
+  
+  print(resultsBayes)
+  
+}
+
+
+
+
+#### %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ####                 
+#### %%%%%%%%%%  THIS SECTION COMPUTES FITS FOR THE ISO  OVERALL %%%%%%%%%% ####
+#### %%%%%%%%%%                                                  %%%%%%%%%% ####
+#### %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ####
+#### ----> LOAD BEHAVIORAL DATA <---- ####
+
+# NOTE: This assumes you've loaded the data from the 'exp2RscriptNEW.R' datafile
+
+# create objects for the means of different objects across the BB and ISO conditions
+# ISO
+A.main.iso = mean(D_tall$choice[D_tall$objectType=="A" & D_tall$trialType=="main" & D_tall$Condition=="Indirect Screening-Off"])
+B.main.iso = mean(D_tall$choice[D_tall$objectType=="B" & D_tall$trialType=="main" & D_tall$Condition=="Indirect Screening-Off"])
+C.main.iso = mean(D_tall$choice[D_tall$objectType=="C" & D_tall$trialType=="main" & D_tall$Condition=="Indirect Screening-Off"])
+
+A.control.iso = mean(D_tall$choice[D_tall$objectType=="A" & D_tall$trialType=="control" & D_tall$Condition=="Indirect Screening-Off"])
+B.control.iso = mean(D_tall$choice[D_tall$objectType=="B" & D_tall$trialType=="control" & D_tall$Condition=="Indirect Screening-Off"])
+C.control.iso = mean(D_tall$choice[D_tall$objectType=="C" & D_tall$trialType=="control" & D_tall$Condition=="Indirect Screening-Off"])
+D.control.iso = mean(D_tall$choice[D_tall$objectType=="D" & D_tall$trialType=="control" & D_tall$Condition=="Indirect Screening-Off"])
+E.control.iso = mean(D_tall$choice[D_tall$objectType=="E" & D_tall$trialType=="control" & D_tall$Condition=="Indirect Screening-Off"])
+
+# create an object called 'behavioral_data' that stores the means across columns
+
+behavioral_data = c(A.main.iso, B.main.iso, C.main.iso, A.control.iso, B.control.iso, C.control.iso, D.control.iso, E.control.iso)
+
+
+#### ----> NEURAL NETWORK AND BEHAVIORAL DATA COMPARISON <---- ####
+folder_path <- "C:/Users/bentod2/Documents/projects/current/bbInChildren/model/NNModelWithRandomWeights/exp2/modelData"
+
+files <- list.files(path = folder_path, pattern = ".txt", full.names = TRUE)
+
+# Initialize a data frame to hold the results
+results <- data.frame(RMSE = numeric(), MAE = numeric())
+
+for (file in files) {
+  data <- read.table(file, header = FALSE, stringsAsFactors = FALSE)
+  data$condition <- rep(c("Backwards Blocking", "Indirect Screening-Off"), each = 1600)
+  data$objects <- data$V2
+  data$trialtype <- rep(c("main", "control", "main", "control"), times = c(600, 1000, 600, 1000))
+  
+  # BB
+  A.BB.main <- mean(data$V3[data$trialtype=="main" & data$objects=="A" & data$condition=="Backwards Blocking"])
+  B.BB.main <- mean(data$V3[data$trialtype=="main" & data$objects=="B" & data$condition=="Backwards Blocking"])
+  C.BB.main <- mean(data$V3[data$trialtype=="main" & data$objects=="C" & data$condition=="Backwards Blocking"])
+  
+  A.BB.control <- mean(data$V3[data$trialtype=="control" & data$objects=="A" & data$condition=="Backwards Blocking"])
+  B.BB.control <- mean(data$V3[data$trialtype=="control" & data$objects=="B" & data$condition=="Backwards Blocking"])
+  C.BB.control <- mean(data$V3[data$trialtype=="control" & data$objects=="C" & data$condition=="Backwards Blocking"])
+  D.BB.control <- mean(data$V3[data$trialtype=="control" & data$objects=="D" & data$condition=="Backwards Blocking"])
+  E.BB.control <- mean(data$V3[data$trialtype=="control" & data$objects=="E" & data$condition=="Backwards Blocking"])
+  
+  # ISO
+  A.ISO.main <- mean(data$V3[data$trialtype=="main" & data$objects=="A" & data$condition=="Indirect Screening-Off"])
+  B.ISO.main <- mean(data$V3[data$trialtype=="main" & data$objects=="B" & data$condition=="Indirect Screening-Off"])
+  C.ISO.main <- mean(data$V3[data$trialtype=="main" & data$objects=="C" & data$condition=="Indirect Screening-Off"])
+  
+  A.ISO.control <- mean(data$V3[data$trialtype=="control" & data$objects=="A" & data$condition=="Indirect Screening-Off"])
+  B.ISO.control <- mean(data$V3[data$trialtype=="control" & data$objects=="B" & data$condition=="Indirect Screening-Off"])
+  C.ISO.control <- mean(data$V3[data$trialtype=="control" & data$objects=="C" & data$condition=="Indirect Screening-Off"])
+  D.ISO.control <- mean(data$V3[data$trialtype=="control" & data$objects=="D" & data$condition=="Indirect Screening-Off"])
+  E.ISO.control <- mean(data$V3[data$trialtype=="control" & data$objects=="E" & data$condition=="Indirect Screening-Off"])
+  
+  model_predictions <- c(A.ISO.main, B.ISO.main, C.ISO.main, A.ISO.control, B.ISO.control, C.ISO.control, D.ISO.control, E.ISO.control)
+  
+  # Assuming you have the `behavioral_data` variable defined somewhere
+  
+  res <- postResample(pred = model_predictions, obs = behavioral_data)
+  
+  epoch_number <- tools::file_path_sans_ext(basename(file))
+  
+  results <- rbind(as.numeric(epoch_number)*4, RMSE = res[["RMSE"]], MAE = res[["MAE"]])
+  
+  print(results)
+}
+
+
+#### ----> BAYESIAN MODEL AND BEHAVIORAL DATA COMPARISON <---- ####
+
+# NOTE: YOU NEED TO LOAD THE BAYESIAN MODEL BEFORE YOU CAN USE THE CODE BELOW ##
+
+# create a vector of priors
+priors = c(0.5, 0.65, 0.80, 0.95, 1)
+
+resultsBayes <- data.frame(RMSE = numeric(), MAE = numeric())
+
+for(i in priors){
+  # BBexperimental: ABC+ AB+
+  bbMain = bayes_model_func(x=3,i,event1=c(1,1,1,1),event2=c(1,1,0,1)) 
+  
+  # BBcontrol: ABC+ DE+
+  bbControl = bayes_model_func(x=5,i,event1=c(1,1,1,0,0,1),event2=c(0,0,0,1,1,1)) 
+  
+  
+  # ISOexperimental: ABC+ AB-
+  isoMain = bayes_model_func(x=3,i,event1=c(1,1,1,1),event2=c(1,1,0,0)) 
+  
+  # ISOcontrol: ABC+ DE-
+  isoControl = bayes_model_func(x=5,i,event1=c(1,1,1,0,0,1),event2=c(0,0,0,1,1,0))
+  
+  
+  model_predictions = c(isoMain[[1]], isoMain[[2]], isoMain[[3]], isoControl[[1]], isoControl[[2]], isoControl[[3]], isoControl[[4]], isoControl[[5]])
+  
+  res <- postResample(pred = model_predictions, obs = behavioral_data)
+  
+  
+  resultsBayes <- rbind(prior = i, RMSE = res[["RMSE"]], MAE = res[["MAE"]])
+  
+  print(resultsBayes)
+  
+}
+
+
+
+#### %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ####                 
+#### %%%%%%%%%%  THIS SECTION COMPUTES FITS FOR THE EXPERIMENTAL DATA OVERALL %%%%%%%%%% ####
+#### %%%%%%%%%%                                                               %%%%%%%%%% ####
+#### %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ####
+#### ----> LOAD BEHAVIORAL DATA <---- ####
+
+# NOTE: This assumes you've loaded the data from the 'exp2RscriptNEW.R' datafile
+
+# create objects for the means of different objects across the BB and ISO conditions
+# BB
+A.main.bb = mean(D_tall$choice[D_tall$objectType=="A" & D_tall$trialType=="main" & D_tall$Condition=="Backwards Blocking"])
+B.main.bb = mean(D_tall$choice[D_tall$objectType=="B" & D_tall$trialType=="main" & D_tall$Condition=="Backwards Blocking"])
+C.main.bb = mean(D_tall$choice[D_tall$objectType=="C" & D_tall$trialType=="main" & D_tall$Condition=="Backwards Blocking"])
+
+
+# ISO
+A.main.iso = mean(D_tall$choice[D_tall$objectType=="A" & D_tall$trialType=="main" & D_tall$Condition=="Indirect Screening-Off"])
+B.main.iso = mean(D_tall$choice[D_tall$objectType=="B" & D_tall$trialType=="main" & D_tall$Condition=="Indirect Screening-Off"])
+C.main.iso = mean(D_tall$choice[D_tall$objectType=="C" & D_tall$trialType=="main" & D_tall$Condition=="Indirect Screening-Off"])
+
+
+# create an object called 'behavioral_data' that stores the means across columns
+
+behavioral_data = c(A.main.bb, B.main.bb, C.main.bb, A.main.iso, B.main.iso, C.main.iso)
+
+
+#### ----> NEURAL NETWORK AND BEHAVIORAL DATA COMPARISON <---- ####
+folder_path <- "C:/Users/bentod2/Documents/projects/current/bbInChildren/model/NNModelWithRandomWeights/exp2/modelData"
+
+files <- list.files(path = folder_path, pattern = ".txt", full.names = TRUE)
+
+# Initialize a data frame to hold the results
+results <- data.frame(RMSE = numeric(), MAE = numeric())
+
+for (file in files) {
+  data <- read.table(file, header = FALSE, stringsAsFactors = FALSE)
+  data$condition <- rep(c("Backwards Blocking", "Indirect Screening-Off"), each = 1600)
+  data$objects <- data$V2
+  data$trialtype <- rep(c("main", "control", "main", "control"), times = c(600, 1000, 600, 1000))
+  
+  # BB
+  A.BB.main <- mean(data$V3[data$trialtype=="main" & data$objects=="A" & data$condition=="Backwards Blocking"])
+  B.BB.main <- mean(data$V3[data$trialtype=="main" & data$objects=="B" & data$condition=="Backwards Blocking"])
+  C.BB.main <- mean(data$V3[data$trialtype=="main" & data$objects=="C" & data$condition=="Backwards Blocking"])
+  
+  A.BB.control <- mean(data$V3[data$trialtype=="control" & data$objects=="A" & data$condition=="Backwards Blocking"])
+  B.BB.control <- mean(data$V3[data$trialtype=="control" & data$objects=="B" & data$condition=="Backwards Blocking"])
+  C.BB.control <- mean(data$V3[data$trialtype=="control" & data$objects=="C" & data$condition=="Backwards Blocking"])
+  D.BB.control <- mean(data$V3[data$trialtype=="control" & data$objects=="D" & data$condition=="Backwards Blocking"])
+  E.BB.control <- mean(data$V3[data$trialtype=="control" & data$objects=="E" & data$condition=="Backwards Blocking"])
+  
+  # ISO
+  A.ISO.main <- mean(data$V3[data$trialtype=="main" & data$objects=="A" & data$condition=="Indirect Screening-Off"])
+  B.ISO.main <- mean(data$V3[data$trialtype=="main" & data$objects=="B" & data$condition=="Indirect Screening-Off"])
+  C.ISO.main <- mean(data$V3[data$trialtype=="main" & data$objects=="C" & data$condition=="Indirect Screening-Off"])
+  
+  A.ISO.control <- mean(data$V3[data$trialtype=="control" & data$objects=="A" & data$condition=="Indirect Screening-Off"])
+  B.ISO.control <- mean(data$V3[data$trialtype=="control" & data$objects=="B" & data$condition=="Indirect Screening-Off"])
+  C.ISO.control <- mean(data$V3[data$trialtype=="control" & data$objects=="C" & data$condition=="Indirect Screening-Off"])
+  D.ISO.control <- mean(data$V3[data$trialtype=="control" & data$objects=="D" & data$condition=="Indirect Screening-Off"])
+  E.ISO.control <- mean(data$V3[data$trialtype=="control" & data$objects=="E" & data$condition=="Indirect Screening-Off"])
+  
+  model_predictions <- c(A.BB.main, B.BB.main, C.BB.main, A.ISO.main, B.ISO.main, C.ISO.main)
+  
+  # Assuming you have the `behavioral_data` variable defined somewhere
+  
+  res <- postResample(pred = model_predictions, obs = behavioral_data)
+  
+  epoch_number <- tools::file_path_sans_ext(basename(file))
+  
+  results <- rbind(as.numeric(epoch_number)*4, RMSE = res[["RMSE"]], MAE = res[["MAE"]])
+  
+  print(results)
+}
+
+
+#### ----> BAYESIAN MODEL AND BEHAVIORAL DATA COMPARISON <---- ####
+
+# NOTE: YOU NEED TO LOAD THE BAYESIAN MODEL BEFORE YOU CAN USE THE CODE BELOW ##
+
+# create a vector of priors
+priors = c(0.5, 0.65, 0.80, 0.95, 1)
+
+resultsBayes <- data.frame(RMSE = numeric(), MAE = numeric())
+
+for(i in priors){
+  # BBexperimental: ABC+ AB+
+  bbMain = bayes_model_func(x=3,i,event1=c(1,1,1,1),event2=c(1,1,0,1)) 
+  
+  # BBcontrol: ABC+ DE+
+  bbControl = bayes_model_func(x=5,i,event1=c(1,1,1,0,0,1),event2=c(0,0,0,1,1,1)) 
+  
+  
+  # ISOexperimental: ABC+ AB-
+  isoMain = bayes_model_func(x=3,i,event1=c(1,1,1,1),event2=c(1,1,0,0)) 
+  
+  # ISOcontrol: ABC+ DE-
+  isoControl = bayes_model_func(x=5,i,event1=c(1,1,1,0,0,1),event2=c(0,0,0,1,1,0))
+  
+  
+  model_predictions = c(bbMain[[1]], bbMain[[2]], bbMain[[3]], isoMain[[1]], isoMain[[2]], isoMain[[3]])
+  
+  res <- postResample(pred = model_predictions, obs = behavioral_data)
+  
+  
+  resultsBayes <- rbind(prior = i, RMSE = res[["RMSE"]], MAE = res[["MAE"]])
+  
+  print(resultsBayes)
+  
+}
+
+
+
+#### %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ####                 
+#### %%%%%%%%%%  THIS SECTION COMPUTES FITS FOR THE CONTROL DATA %%%%%%%%%% ####
+#### %%%%%%%%%%                                                  %%%%%%%%%% ####
+#### %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ####
+#### ----> LOAD BEHAVIORAL DATA <---- ####
+
+# NOTE: This assumes you've loaded the data from the 'exp2RscriptNEW.R' datafile
+
+# create objects for the means of different objects across the BB and ISO conditions
+# BB
+A.control.bb = mean(D_tall$choice[D_tall$objectType=="A" & D_tall$trialType=="control" & D_tall$Condition=="Backwards Blocking"])
+B.control.bb = mean(D_tall$choice[D_tall$objectType=="B" & D_tall$trialType=="control" & D_tall$Condition=="Backwards Blocking"])
+C.control.bb = mean(D_tall$choice[D_tall$objectType=="C" & D_tall$trialType=="control" & D_tall$Condition=="Backwards Blocking"])
+D.control.bb = mean(D_tall$choice[D_tall$objectType=="D" & D_tall$trialType=="control" & D_tall$Condition=="Backwards Blocking"])
+E.control.bb = mean(D_tall$choice[D_tall$objectType=="E" & D_tall$trialType=="control" & D_tall$Condition=="Backwards Blocking"])
+
+
+# ISO
+A.control.iso = mean(D_tall$choice[D_tall$objectType=="A" & D_tall$trialType=="control" & D_tall$Condition=="Indirect Screening-Off"])
+B.control.iso = mean(D_tall$choice[D_tall$objectType=="B" & D_tall$trialType=="control" & D_tall$Condition=="Indirect Screening-Off"])
+C.control.iso = mean(D_tall$choice[D_tall$objectType=="C" & D_tall$trialType=="control" & D_tall$Condition=="Indirect Screening-Off"])
+D.control.iso = mean(D_tall$choice[D_tall$objectType=="D" & D_tall$trialType=="control" & D_tall$Condition=="Indirect Screening-Off"])
+E.control.iso = mean(D_tall$choice[D_tall$objectType=="E" & D_tall$trialType=="control" & D_tall$Condition=="Indirect Screening-Off"])
+
+# create an object called 'behavioral_data' that stores the means across columns
+
+behavioral_data = c(A.control.bb, B.control.bb, C.control.bb, D.control.bb, E.control.bb, 
+                    A.control.iso, B.control.iso, C.control.iso, D.control.iso, E.control.iso)
+
+
+#### ----> NEURAL NETWORK AND BEHAVIORAL DATA COMPARISON <---- ####
+folder_path <- "C:/Users/bentod2/Documents/projects/current/bbInChildren/model/NNModelWithRandomWeights/exp2/modelData"
+
+files <- list.files(path = folder_path, pattern = ".txt", full.names = TRUE)
+
+# Initialize a data frame to hold the results
+results <- data.frame(RMSE = numeric(), MAE = numeric())
+
+for (file in files) {
+  data <- read.table(file, header = FALSE, stringsAsFactors = FALSE)
+  data$condition <- rep(c("Backwards Blocking", "Indirect Screening-Off"), each = 1600)
+  data$objects <- data$V2
+  data$trialtype <- rep(c("main", "control", "main", "control"), times = c(600, 1000, 600, 1000))
+  
+  # BB
+  A.BB.main <- mean(data$V3[data$trialtype=="main" & data$objects=="A" & data$condition=="Backwards Blocking"])
+  B.BB.main <- mean(data$V3[data$trialtype=="main" & data$objects=="B" & data$condition=="Backwards Blocking"])
+  C.BB.main <- mean(data$V3[data$trialtype=="main" & data$objects=="C" & data$condition=="Backwards Blocking"])
+  
+  A.BB.control <- mean(data$V3[data$trialtype=="control" & data$objects=="A" & data$condition=="Backwards Blocking"])
+  B.BB.control <- mean(data$V3[data$trialtype=="control" & data$objects=="B" & data$condition=="Backwards Blocking"])
+  C.BB.control <- mean(data$V3[data$trialtype=="control" & data$objects=="C" & data$condition=="Backwards Blocking"])
+  D.BB.control <- mean(data$V3[data$trialtype=="control" & data$objects=="D" & data$condition=="Backwards Blocking"])
+  E.BB.control <- mean(data$V3[data$trialtype=="control" & data$objects=="E" & data$condition=="Backwards Blocking"])
+  
+  # ISO
+  A.ISO.main <- mean(data$V3[data$trialtype=="main" & data$objects=="A" & data$condition=="Indirect Screening-Off"])
+  B.ISO.main <- mean(data$V3[data$trialtype=="main" & data$objects=="B" & data$condition=="Indirect Screening-Off"])
+  C.ISO.main <- mean(data$V3[data$trialtype=="main" & data$objects=="C" & data$condition=="Indirect Screening-Off"])
+  
+  A.ISO.control <- mean(data$V3[data$trialtype=="control" & data$objects=="A" & data$condition=="Indirect Screening-Off"])
+  B.ISO.control <- mean(data$V3[data$trialtype=="control" & data$objects=="B" & data$condition=="Indirect Screening-Off"])
+  C.ISO.control <- mean(data$V3[data$trialtype=="control" & data$objects=="C" & data$condition=="Indirect Screening-Off"])
+  D.ISO.control <- mean(data$V3[data$trialtype=="control" & data$objects=="D" & data$condition=="Indirect Screening-Off"])
+  E.ISO.control <- mean(data$V3[data$trialtype=="control" & data$objects=="E" & data$condition=="Indirect Screening-Off"])
+  
+  model_predictions <- c(A.BB.control, B.BB.control, C.BB.control, D.BB.control, E.BB.control,
+                         A.ISO.control, B.ISO.control, C.ISO.control, D.ISO.control, E.ISO.control)
+  
+  # Assuming you have the `behavioral_data` variable defined somewhere
+  
+  res <- postResample(pred = model_predictions, obs = behavioral_data)
+  
+  epoch_number <- tools::file_path_sans_ext(basename(file))
+  
+  results <- rbind(as.numeric(epoch_number)*4, RMSE = res[["RMSE"]], MAE = res[["MAE"]])
+  
+  print(results)
+}
+
+
+#### ----> BAYESIAN MODEL AND BEHAVIORAL DATA COMPARISON <---- ####
+
+# NOTE: YOU NEED TO LOAD THE BAYESIAN MODEL BEFORE YOU CAN USE THE CODE BELOW ##
+
+# create a vector of priors
+priors = c(0.5, 0.65, 0.80, 0.95, 1)
+
+resultsBayes <- data.frame(RMSE = numeric(), MAE = numeric())
+
+for(i in priors){
+  # BBexperimental: ABC+ AB+
+  bbMain = bayes_model_func(x=3,i,event1=c(1,1,1,1),event2=c(1,1,0,1)) 
+  
+  # BBcontrol: ABC+ DE+
+  bbControl = bayes_model_func(x=5,i,event1=c(1,1,1,0,0,1),event2=c(0,0,0,1,1,1)) 
+  
+  
+  # ISOexperimental: ABC+ AB-
+  isoMain = bayes_model_func(x=3,i,event1=c(1,1,1,1),event2=c(1,1,0,0)) 
+  
+  # ISOcontrol: ABC+ DE-
+  isoControl = bayes_model_func(x=5,i,event1=c(1,1,1,0,0,1),event2=c(0,0,0,1,1,0))
+  
+  
+  model_predictions = c(bbControl[[1]], bbControl[[2]], bbControl[[3]], bbControl[[4]], bbControl[[5]],
+                        isoControl[[1]], isoControl[[2]], isoControl[[3]], isoControl[[4]], isoControl[[5]])
+  
+  res <- postResample(pred = model_predictions, obs = behavioral_data)
+  
+  
+  resultsBayes <- rbind(prior = i, RMSE = res[["RMSE"]], MAE = res[["MAE"]])
+  
+  print(resultsBayes)
+  
+}

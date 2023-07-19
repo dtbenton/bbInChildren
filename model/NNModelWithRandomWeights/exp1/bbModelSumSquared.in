@@ -24,7 +24,6 @@ loadExamples Aplus.ex
 loadExamples Aminus.ex
 loadExamples Dplus.ex
 loadExamples Dminus.ex
-loadExamples Dnothing.ex
 loadExamples experimentalTest.ex
 loadExamples controlTest.ex
 
@@ -43,11 +42,11 @@ setObj randRange 0.1
 
 
 
-resetPlot 
-plotRow 2 b 6 n Effect 1 
-plotRow 2 b 2 n A 4 b 2 n B 4 b 2 n C 4 b 2 n D 4
-drawUnits
-viewUnits
+#resetPlot 
+#plotRow 2 b 6 n Effect 1 
+#plotRow 2 b 2 n A 4 b 2 n B 4 b 2 n C 4 b 2 n D 4
+#drawUnits
+#viewUnits
 
 
 
@@ -93,21 +92,19 @@ proc testNetwork {n train trainNum train2 trainNum2 test train3 trainNum3 train4
 			testAllFinalActs $fname $groups
 	}
 }
+set workingdirectory "C:/Users/dbenton2/Desktop/God Folder/publications/ongoing/2022-2023/bbInChildren/model/NNModelWithRandomWeights/exp1/modelData"
+cd $workingdirectory
 
 # define lists for looping
 set condition [list BBexperimental BBcontrol ISOexperimental ISOcontrol]
 set trainingEpochs [list 200 400 500 750 1000]
-set totalEpochs [list 400 800 1000 1500 2000]
 set elementalPhase [list Aplus Dplus Aminus Dminus]
 set testPhase [list experimentalTest controlTest experimentalTest controlTest]
 
 
 # define loop
-foreach epoch $trainingEpochs totalEpoch $totalEpochs { 
-	foreach elemPhase $elementalPhase conLevel $condition testEvent $testPhase {
-	testNetwork 100 ABCplus $epoch $elemPhase $epoch $testEvent ABCplus $epoch $elemPhase $epoch $testEvent $conLevel$totalEpoch.txt Effect 
+foreach epoch $trainingEpochs { 
+	foreach elemPhase $elementalPhase testEvent $testPhase {
+	testNetwork 100 ABCplus $epoch $elemPhase $epoch $testEvent ABCplus $epoch $elemPhase $epoch $testEvent $epoch.txt Effect 
 	}
 }
-
-# Example command, corresponding to the above:
-# testNetwork 16 ABCplus 200 Dplus 200 controlTest ABCplus 200 Dplus 200 controlTest BBcontrolExp400epochs.txt Effect

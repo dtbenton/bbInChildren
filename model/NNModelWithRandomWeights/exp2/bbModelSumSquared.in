@@ -103,11 +103,8 @@ set testPhase [list experimentalTest controlTest experimentalTest controlTest]
 
 
 # define loop
-foreach epoch $trainingEpochs totalEpoch $totalEpochs { 
+foreach epoch $trainingEpochs { 
 	foreach elemPhase $elementalPhase testEvent $testPhase {
 	testNetwork 100 ABCplus $epoch $elemPhase $epoch $testEvent ABCplus $epoch $elemPhase $epoch $testEvent $epoch.txt Effect 
 	}
 }
-
-# Example command, corresponding to the above:
-# testNetwork 16 ABCplus 200 DEplus 200 controlTest ABCplus 200 DEplus 200 controlTest BBcontrolExp400epochs.txt Effect
