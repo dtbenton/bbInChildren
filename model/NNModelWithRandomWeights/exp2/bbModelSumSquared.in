@@ -95,16 +95,27 @@ proc testNetwork {n train trainNum train2 trainNum2 test train3 trainNum3 train4
 	}
 }
 
+################################################################################################################################################
+# The path that is specified below should be modified to reflect where, on your machine, you'd like the output of the simulations to be stored #
+################################################################################################################################################
+
+set workingdirectory "C:/Users/dbenton2/Desktop/God Folder/publications/ongoing/2022-2023/bbInChildren/model/NNModelWithRandomWeights/exp2/modelData"
+cd $workingdirectory
+
+##########################################################################################################################################################
+# UNCOMMENT THE CODE BELOW TO AUTOMATE THE SIMULATIONS. THE TIME IT TAKES FOR THE SIMULATIONS TO COMPLETE WILL DEPEND ON CHARACTERISTICS OF YOUR MACHINE #
+##########################################################################################################################################################
+
 # define lists for looping
-set condition [list BBexperimental BBcontrol ISOexperimental ISOcontrol]
-set trainingEpochs [list 200 400 500 750 1000]
-set elementalPhase [list ABplus DEplus ABminus DEminus]
-set testPhase [list experimentalTest controlTest experimentalTest controlTest]
+# set condition [list BBexperimental BBcontrol ISOexperimental ISOcontrol]
+# set trainingEpochs [list 200 400 500 750 1000]
+# set elementalPhase [list ABplus DEplus ABminus DEminus]
+# set testPhase [list experimentalTest controlTest experimentalTest controlTest]
 
 
 # define loop
-foreach epoch $trainingEpochs { 
-	foreach elemPhase $elementalPhase testEvent $testPhase {
-	testNetwork 100 ABCplus $epoch $elemPhase $epoch $testEvent ABCplus $epoch $elemPhase $epoch $testEvent $epoch.txt Effect 
-	}
-}
+# foreach epoch $trainingEpochs { 
+#	foreach elemPhase $elementalPhase testEvent $testPhase {
+#	testNetwork 100 ABCplus $epoch $elemPhase $epoch $testEvent ABCplus $epoch $elemPhase $epoch $testEvent $epoch.txt Effect 
+#	}
+# }
