@@ -183,18 +183,19 @@ Anova(lmer.fit)
 ##########################
 
 ## FIRST THREE-WAY INTERACTION: AGE X CONDITION X OBJECT
-#BB
+## BB ##
 first.three.way.BB.lmer = lmer(choice~(AgeNum+objectType)^3+(1|ID), 
                             data=D_tall[D_tall$Condition=="Backwards Blocking",])
 summary(first.three.way.BB.lmer)
 Anova(first.three.way.BB.lmer)
 
-# get p.value for first.three.way.BB.lmer
-coefs = data.frame(coef(summary(first.three.way.BB.lmer)))
-coefs$p.z <- 2 * (1 - pnorm(abs(coefs$t.value))) # a column where the p-value is computed from the z-distribution
-coefs 
+# explore the interaction for different reference levels of object
+refLevFunc("A","Backwards Blocking")
+refLevFunc("B","Backwards Blocking")
+refLevFunc("C","Backwards Blocking")
 
-# follow up analyses for the first three-way interaction
+
+## follow up analyses for the first three-way interaction for the BB condition 
 A.BB.mean = mean(D_tall$choice[D_tall$objectType=="A" & D_tall$Condition=="Backwards Blocking"], rm.na=TRUE)
 A.BB.mean
 A.BB.sd = sd(D_tall$choice[D_tall$objectType=="A" & D_tall$Condition=="Backwards Blocking"])
@@ -240,8 +241,7 @@ t.test(D_tall$choice[D_tall$objectType=="B" & D_tall$Condition=="Backwards Block
 t.test(D_tall$choice[D_tall$objectType=="C" & D_tall$Condition=="Backwards Blocking"],
        D_tall$choice[D_tall$objectType=="D" & D_tall$Condition=="Backwards Blocking"])
 
-
-# ISO
+## ISO ##
 first.three.way.ISO.lmer = lmer(choice~(AgeNum+objectType)^3+(1|ID), 
                                data=D_tall[D_tall$Condition=="Indirect Screening-Off",])
 summary(first.three.way.ISO.lmer)
@@ -252,6 +252,10 @@ coefs = data.frame(coef(summary(first.three.way.BB.lmer)))
 coefs$p.z <- 2 * (1 - pnorm(abs(coefs$t.value))) # a column where the p-value is computed from the z-distribution
 coefs 
 
+# explore the interaction for different reference levels of object
+refLevFunc("A","Indirect Screening-Off")
+refLevFunc("B","Indirect Screening-Off")
+refLevFunc("C","Indirect Screening-Off")
 
 # follow up analyses for the first three-way interaction
 A.ISO.mean = mean(D_tall$choice[D_tall$objectType=="A" & D_tall$Condition=="Indirect Screening-Off"], rm.na=TRUE)
@@ -301,10 +305,19 @@ t.test(D_tall$choice[D_tall$objectType=="C" & D_tall$Condition=="Indirect Screen
 
 
 
+## a plot to visualize the 
+# three-way interaction between age, object
+# and condition
+ggplot(D_tall, aes(x = AgeNum, y = choice, color = objectType)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  facet_wrap(~ Condition)
 
 
 
-## SECOND THREE-WAY INTERACTION: CONDITION X TRIAL X OBJECT
+
+
+## SECOND THREE-WAY INTERACTION: CONDITION X TRIAL X OBJECT ##
 second.three.way.BB.lmer = lmer(choice~(phaseOrder+objectType)^3+(1|ID), 
                                data=D_tall[D_tall$Condition=="Backwards Blocking",])
 summary(second.three.way.BB.lmer)
@@ -439,7 +452,7 @@ t.test(D_tall$choice[D_tall$objectType=="C" & D_tall$phaseOrder=="Phase 2"],
        D_tall$choice[D_tall$objectType=="D" & D_tall$phaseOrder=="Phase 2"])
 
 
-## THIRD THREE-WAY INTERACTION: AGE X CONDITION X OBJECT
+## THIRD THREE-WAY INTERACTION: CONDITION, TRIAL TYPE, OBJECT
 ## BB EXPERIMENTAL CONDITION ##
 bb.experimental.lmer = lmer(choice~objectType+(1|ID), data=D_tall[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="experimental",])
 Anova(bb.experimental.lmer)
