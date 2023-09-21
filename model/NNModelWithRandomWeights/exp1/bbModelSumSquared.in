@@ -97,8 +97,8 @@ proc testNetwork {n train trainNum train2 trainNum2 test train3 trainNum3 train4
 # The path that is specified below should be modified to reflect where, on your machine, you'd like the output of the simulations to be stored #
 ################################################################################################################################################
 
-set workingdirectory "C:/Users/dbenton2/Desktop/God Folder/publications/ongoing/2022-2023/bbInChildren/model/NNModelWithRandomWeights/exp1/modelData"
-cd $workingdirectory
+#set workingdirectory "C:/Users/dbenton2/Desktop/God #Folder/publications/ongoing/2022-2023/bbInChildren/model/NNModelWithRandomWeights/exp1/modelData"
+#cd $workingdirectory
 
 ##########################################################################################################################################################
 # UNCOMMENT THE CODE BELOW TO AUTOMATE THE SIMULATIONS. THE TIME IT TAKES FOR THE SIMULATIONS TO COMPLETE WILL DEPEND ON CHARACTERISTICS OF YOUR MACHINE #
