@@ -99,8 +99,8 @@ D_tall$id = NULL
 names(D_tall)
 
 D_tall$trialType = rep(c("control","control","control","control","control","control","control",
-                         "control","control", "control","main","main",
-                         "main","main","main","main"), times =64)
+                         "control","control", "control","experimental","experimental",
+                         "experimental","experimental","experimental","experimental"), times =64)
 
 D_tall$testPhase = rep(c("first","first","first","first","first",
                          "second","second","second","second","second",
@@ -453,7 +453,7 @@ condition_barplot + stat_summary(fun = mean, geom = "bar", position = "dodge") +
                              "#696969",
                              "#A8A8A8")) +
   
-  coord_cartesian(ylim=c(0, 1.5)) +
+  coord_cartesian(ylim=c(0, 1)) +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_blank(), axis.line = element_line(colour = "black"),
         axis.title.x=element_blank()) + 

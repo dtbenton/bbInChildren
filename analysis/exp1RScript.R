@@ -454,6 +454,10 @@ t.test(D_tall$choice[D_tall$objectType=="C" & D_tall$phaseOrder=="Phase 2"],
 
 ## THIRD THREE-WAY INTERACTION: CONDITION, TRIAL TYPE, OBJECT
 ## BB EXPERIMENTAL CONDITION ##
+bb.experimental.lmer = lmer(choice~(trialType+objectType)^2+(1|ID), 
+                data=D_tall[D_tall$Condition=="Backwards Blocking",])
+Anova(bb.experimental.lmer)
+
 bb.experimental.lmer = lmer(choice~objectType+(1|ID), data=D_tall[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="experimental",])
 Anova(bb.experimental.lmer)
 
@@ -511,6 +515,10 @@ t.test(B,C, alternative="two.sided", paired = TRUE)
 
 
 ## ISO EXPERIMENTAL CONDITION ##
+iso.experimental.lmer = lmer(choice~(trialType+objectType)^2+(1|ID), 
+                            data=D_tall[D_tall$Condition=="Indirect Screening-Off",])
+Anova(iso.experimental.lmer)
+
 iso.experimental.lmer = lmer(choice~objectType+(1|ID), data=D_tall[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="experimental",])
 Anova(iso.experimental.lmer)
 
