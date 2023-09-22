@@ -170,12 +170,20 @@ anova(lmer.fit,lm.fit)
 ###               ###
 #####################
 #####################
-# this is just the model from above
+# lmer model
 lmer.fit = lmer(choice~(AgeNum+Condition+trialType+phaseOrder+objectType)^5+(1|ID), 
                 data=D_tall)
 Anova(lmer.fit)
 
+residuals.vec = residuals(lmer.fit)
+shapiro.test(residuals.vec)
 
+
+# glmer model
+glmer.fit = glmer(choice~(AgeNum+Condition+trialType+phaseOrder+objectType)^5+(1|ID), family=binomial, 
+                  data=D_tall,
+                  control=glmerControl(optimizer="bobyqa", optCtrl=list(maxfun=1e5)))
+Anova(glmer.fit)
 ##########################
 ##########################
 ### FOLLOW-UP ANALYSES ###
