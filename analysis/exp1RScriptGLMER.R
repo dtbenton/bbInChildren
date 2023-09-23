@@ -312,6 +312,7 @@ iso.experimental.CIs
 # create a dataframe just for the BB condition, and only for the redundant objects within the experimental
 # and control conditions
 
+## backwards blocking ##
 bb.df = data.frame(ID = c(1:62), B_exp = D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="experimental" & D_tall$objectType=="B"],
                   C_exp = D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="experimental" & D_tall$objectType=="C"],
                   A_control = D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="control" & D_tall$objectType=="A"],
@@ -332,3 +333,38 @@ bb.df_tall$trialType = factor(bb.df_tall$trialType)
 bb_condition_only_glmer = glmer(choice~(objectType+trialType)^2+(1|ID), family=binomial,
                                 data=bb.df_tall)
 Anova(bb_condition_only_glmer)
+
+bb_condition_only_trial_type_glmer = glmer(choice~trialType+(1|ID), family=binomial,
+                                data=bb.df_tall)
+summary(bb_condition_only_trial_type_glmer)
+exp(fixef(bb_condition_only_trial_type_glmer))
+exp(confint(bb_condition_only_trial_type_glmer, method = "profile"))
+
+
+## indirect screening-off ##
+iso.df = data.frame(ID = c(1:66), B_exp = D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="experimental" & D_tall$objectType=="B"],
+                    C_exp = D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="experimental" & D_tall$objectType=="C"],
+                    A_control = D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="control" & D_tall$objectType=="A"],
+                    B_control = D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="control" & D_tall$objectType=="B"],
+                    C_control = D_tall$choice[D_tall$Condition=="Indirect Screening-Off" & D_tall$trialType=="control" & D_tall$objectType=="C"])
+
+iso.df_tall = reshape(iso.df, varying = c(2:6), v.names = "choice", 
+                      timevar = "condition",   direction = "long")
+iso.df_tall = iso.df_tall[order(iso.df_tall$ID),] 
+
+iso.df_tall$objectType = rep(c("B","C","A","B","C"), times = 33)
+iso.df_tall$trialType = rep(c("experimental","experimental","control",
+                              "control","control"), times = 33)
+iso.df_tall$objectType = factor(iso.df_tall$objectType)
+iso.df_tall$trialType = factor(iso.df_tall$trialType)
+
+# run model to test for main effects and two-way interactions
+iso_condition_only_glmer = glmer(choice~(objectType+trialType)^2+(1|ID), family=binomial,
+                                 data=iso.df_tall)
+Anova(iso_condition_only_glmer)
+
+iso_condition_only_trial_type_glmer = glmer(choice~trialType+(1|ID), family=binomial,
+                                            data=iso.df_tall)
+summary(iso_condition_only_trial_type_glmer)
+exp(fixef(iso_condition_only_trial_type_glmer))
+exp(confint(iso_condition_only_trial_type_glmer, method = "Wald"))
