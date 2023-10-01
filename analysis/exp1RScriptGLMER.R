@@ -1,53 +1,3 @@
-## helper functions ##
-boot_func = function(y,x, data, condition, trial_type){
-  glmer.boot = function(data,b,formula){ 
-    d= data[b,]
-    dif.1 =  glmer(d[,y]~d[,x]+(1|ID), data=D_tall[D_tall$Condition==condition & D_tall$trialType==trial_type,], 
-                   family=binomial)
-    return(exp(fixef(dif.1))) #return the fixed effects coefficients. Notice that you're returning the fixed effects
-  }
-  glmer.Bootobj = boot(data, glmer.boot, R=500)
-  return(c(exp(glmer.Bootobj$t0[[1]]), exp(glmer.Bootobj$t0[[2]]),
-           exp(glmer.Bootobj$t0[[1]])  + 1.96*c(-summary(glmer.Bootobj)$bootSE[[1]], 
-                                                summary(glmer.Bootobj)$bootSE[[1]]),
-           exp(glmer.Bootobj$t0[[2]])  + 1.96*c(-summary(glmer.Bootobj)$bootSE[[2]], 
-                                                summary(glmer.Bootobj)$bootSE[[2]])))
-}
-
-
-boot_func_relev = function(x,y,data,relev){
-  glmer.boot = function(data,b,formula){ 
-    d= data[b,]
-    dif.1 =  glmer(d[,x]~relevel(d[,y], ref = relev)+(1|ID), data=data, 
-                   family=binomial)
-    return(exp(fixef(dif.1))) #return the fixed effects coefficients. Notice that you're returning the fixed effects
-  }
-  glmer.Bootobj = boot(data, glmer.boot, R=500)
-  return(c(exp(glmer.Bootobj$t0[[1]]), exp(glmer.Bootobj$t0[[2]]),
-           exp(glmer.Bootobj$t0[[1]])  + 1.96*c(-summary(glmer.Bootobj)$bootSE[[1]], 
-                                                summary(glmer.Bootobj)$bootSE[[1]]),
-           exp(glmer.Bootobj$t0[[2]])  + 1.96*c(-summary(glmer.Bootobj)$bootSE[[2]], 
-                                                summary(glmer.Bootobj)$bootSE[[2]])))
-}
-
-boot_func_relev(16,12,D.inservice,"Absolutist")
-
-follow_up_func <- function(x, y, z) {
-  D_tall$objectType <- relevel(D_tall$objectType, ref = x)
-  bb.experimental.glmer = glmer(choice ~ objectType + (1|ID), family = binomial,
-                                data = D_tall[D_tall$Condition == y & D_tall$trialType == z, ])
-  bb.experimental.CIs = exp(confint(bb.experimental.glmer, method = "profile"))
-  
-  results <- list(
-    fixed_effects = exp(fixef(bb.experimental.glmer)),
-    confidence_intervals = bb.experimental.CIs,
-    p.values = summary(bb.glmer)$coefficients[,4]
-  )
-  
-  return(results)
-}
-
-
 # load all relevant libraries
 library(nlme)
 library(lme4)
@@ -70,7 +20,6 @@ library(BFpack)
 options(scipen=9999)
 
 # DATA CLEAN UP AND RESTRUCTURING #
-# load: newData03202023.csv
 D = read.csv(file.choose(), header = TRUE, stringsAsFactors = FALSE)
 
 # remove unnecessary columns
@@ -309,8 +258,6 @@ iso.experimental.CIs
 # ANALYSES THAT ASSESS EVIDENCE OF BACKWARDS BLOCKING BY COMPARING REDUNDANT OBJECTS ACROSS THE EXPERIMENTAL ###
 # AND CONTROL TRIALS                                                                                         ###
 ################################################################################################################
-# create a dataframe just for the BB condition, and only for the redundant objects within the experimental
-# and control conditions
 
 ## backwards blocking ##
 bb.df = data.frame(ID = c(1:62), B_exp = D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="experimental" & D_tall$objectType=="B"],

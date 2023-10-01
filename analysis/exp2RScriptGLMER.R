@@ -20,7 +20,6 @@ library(openxlsx)
 options(scipen=9999)
 
 # DATA CLEAN UP AND RESTRUCTURING #
-# load: exp2data.csv
 D = read.csv(file.choose(), header = TRUE, stringsAsFactors = FALSE)
 
 # get dimension of dataframe
@@ -192,8 +191,6 @@ bb.CIs
 # ANALYSES THAT ASSESS EVIDENCE OF BACKWARDS BLOCKING BY COMPARING REDUNDANT OBJECTS ACROSS THE EXPERIMENTAL ###
 # AND CONTROL TRIALS                                                                                         ###
 ################################################################################################################
-# create a dataframe just for the BB condition, and only for the redundant objects within the experimental
-# and control conditions
 
 ## backwards blocking ##
 bb.df = data.frame(ID = c(1:64), C_exp = D_tall$choice[D_tall$Condition=="Backwards Blocking" & D_tall$trialType=="experimental" & D_tall$objectType=="C"],
